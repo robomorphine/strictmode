@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="build.android.jar" >
+    
+    <fail unless="build.imported" 
+          message="Import build.xml in order to use ${ant.file.build.android.jar} build file." />
+    
+    <!-- 
+    ############################################ 
+    ##                imports                 ## 
+    ############################################
+    -->    
+    <import file="common.xml" />
+    
+    <!-- 
+    ############################################ 
+    ##                paths                   ## 
+    ############################################
+    -->
+    
+    <property name="common.bin.dir" location="${project.dir}/bin" />
+    <property name="src.dir" location="${project.dir}/src" />
+    <property name="libs.dir" location="${project.dir}/libs" />
+    
+    <!-- 
+    ############################################ 
+    ##        get android target platform     ## 
+    ############################################
+    -->
+    <property file="${project.dir}/default.properties" />
+
+    <!-- 
+    ############################################ 
+    ##        check android.jar path          ## 
+    ############################################
+    -->
+    <property name="android.jar.path" location="${sdk.dir}/platforms/${target}/android.jar" />
+    <available file="${android.jar.path}" property="android.jar.exists" value="true" />
+    <fail unless="android.jar.exists" message="File android.jar at path ${android.jar.path} does not exist!" />
+
+    <!--
+    ############################################ 
+    ##            compiler options            ## 
+    ############################################
+    -->
+
+    <property name="java.encoding" value="ascii" />
+    <property name="java.target" value="1.5" />
+    <property name="java.source" value="1.5" />    
+
+    <!--
+    ############################################ 
+    ##                build targets           ## 
+    ############################################
+    -->
+
+    <target name="-pre-debug" >
+        <property name="build.mode" value="debug" />
+        <property name="debug.mode" value="true" />
+    </target>
+
+    <target name="-pre-instrument" >
+        <property name="build.mode" value="instrument" />
+        <property name="debug.mode" value="true" />
+  </target>
+
+    <target name="-pre-release" >
+        <property name="build.mode" value="release" />
+        <property name="debug.mode" value="false" />
+    </target>
+
+    <target name="-pre-compile">
+        <property name="bin.dir" location="${common.bin.dir}/${build.mode}" />
+
+        <property name="bin.classes.dir" location="${bin.dir}/classes" />
+        <property name="jar.file"          location="${bin.dir}/${project.name}.jar" />
+    </target>
+
+    <target name="compile" >
+        <mkdir dir="${bin.dir}"/>
+        <mkdir dir="${bin.classes.dir}"/>
+        <mkdir dir="${libs.dir}"/>
+
+        <!-- default to debug mode, if none was set -->
+        <property name="debug.mode" value="true" />
+
+        <javac  encoding="${java.encoding}"
+                source="${java.source}" target="${java.target}"
+                srcdir="${src.dir}" destdir="${bin.classes.dir}"
+                debug="${debug.mode}"
+                bootclasspath="${android.jar.path}"
+                includeantruntime="false">
+
+                <classpath>
+                    <fileset dir="${libs.dir}" includes="*.jar" />
+                    <fileset dir="${libs.dir}" includes="*.zip" />
+                </classpath>
+        </javac>
+    </target>
+    
+    <target name="-post-compile" />
+    
+    <target name="make-jar" >
+         <jar destfile="${jar.file}" 
+              includes="**/*.class" basedir="${bin.classes.dir}" >
+
+            <manifest>
+                <!-- Who is building this jar? -->
+                <attribute name="Built-By" value="${user.name}"/>
+
+                <!-- Information about the program itself -->
+                <attribute name="Implementation-Vendor" value="${vendor}"/>
+                <attribute name="Implementation-Title" value="${project.name}"/>
+                <attribute name="Implementation-Version" value="${version.name}"/>
+            </manifest>
+        </jar>
+    </target>
+    
+    <target name="drop" >
+        <mkdir dir="${drop.dir}" />
+        <copy file="${jar.file}" todir="${drop.dir}/${build.mode}" />
+    </target>
+    
+    <target name="-common" 
+          depends="prepare-project, -pre-compile, compile, -post-compile, make-jar, drop" />
+    
+    <target name="debug"      depends="-pre-debug, -common" />
+    <target name="instrument" depends="-pre-instrument, -common" />
+    <target name="release"    depends="-pre-release, -common" />
+    
+    <target name="clean" >
+        <delete dir="${common.bin.dir}" />
+        <delete dir="${libs.dir}" />
+    </target>
+    
+</project>

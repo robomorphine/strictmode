@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="build.android.app" >
+    
+    <fail unless="build.imported" 
+          message="Import build.xml in order to use ${ant.file.build.android.app} build file." />
+
+    <!-- 
+    ############################################ 
+    ##                 properties             ## 
+    ############################################
+    -->
+    
+    <property name="global.configs.dir" location="${root.dir}/src/config" />
+    <property name="local.configs.dir"  location="${project.dir}/config" />
+    
+    <property name="res.dir"            location="${project.dir}/res" />    
+    <property name="common.bin.dir"     location="${project.dir}/bin" />
+    
+    <property name="file.build-properties" value="${res.dir}/values/build-properties.xml" />
+    
+    <property name="enable.config" value="false" />
+    <property name="default.config.debug" value="dev" />
+    <property name="default.config.release" value="production" />
+    
+    <property name="embed.build.properties" value="false" />
+    
+    <property name="instr.metadata.file.name" value="coverage.em" />
+
+    <!-- 
+    ############################################
+    ##                  imports               ##
+    ############################################
+    -->
+
+    <import file="common.xml" />
+    <import file="android.sdk.xml" />
+
+    <!--
+    ############################################
+    ##     build-config.xml    generation     ##
+    ############################################
+    -->
+    <target name="embed-build-properties" 
+            description="Generates build-vars.xml file to be consumed as resource by android application."
+            if="${embed.build.properties}" >
+
+    <!-- DO NOT CHANGE FORMATTING/INDENTATION IN THIS TARGET! THIS MAY BREAK THE BUILD! -->
+            <echo file="${file.build-properties}" append="false"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
+<!-- THIS IS AUTO GENERATED FILE, DO NOT MODIFY IT -->
+<resources>]]>
+            </echo>
+
+            <echo file="${file.build-properties}" append="true">
+    <![CDATA[
+    <string name="build_mode">${build.mode}</string>
+</resources>]]>
+            </echo>
+    </target>
+    
+    <target name="clean-build-properties" >
+        <delete file="${file.build-properties}" failonerror="no" />
+    </target>
+
+    <!--
+    ############################################
+    ##          android target overrides      ##
+    ############################################
+    -->
+    <target name="-set-defaults" >
+    </target>
+
+    <target name="-set-defaults-debug" depends="-set-defaults" >
+        <property name="build.mode" value="debug" />
+    </target>
+    
+    <target name="-set-defaults-instrument" depends="-set-defaults" >
+      <property name="build.mode" value="instrument" />
+    </target>
+        
+    <target name="-set-defaults-release" depends="-set-defaults" >
+        <property name="build.mode" value="release" />
+    </target>
+
+    <target name="-pre-build" >
+        <property name="bin.dir" location="${common.bin.dir}/${build.mode}" />
+        <property name="instr.metadata.file" location="${bin.dir}/coverage.em" />
+        <property name="jar.file" location="${bin.dir}/${project.name}.jar" />
+        <property name="jar.dir"  location="${bin.dir}/jar" />
+    </target>
+
+    <target name="-pre-build-debug" depends="-set-defaults-debug, -pre-build" />
+
+    <target name="-pre-build-instrument" depends="-set-defaults-instrument, -pre-build" />
+
+    <target name="-pre-build-release" depends="-set-defaults-release, -pre-build" />
+
+    <target name="-post-build" >
+
+        <!--Set filename as '${ant.project.name}-${config}.apk', 
+            omit config if it is not enabled. -->
+
+        <var name="file.name" value="${project.alias}" />
+
+        <if condition="${enable.configs}" >
+          <then>
+            <var name="file.name" value="${file.name}-${config}" />
+          </then>
+        </if>
+
+        <!--var name="file.name" value="${file.name}-${build.mode}" /-->
+        <property name="out.file.name" value="${file.name}.apk" />
+        <property name="out.file" location="${bin.dir}/${out.file.name}" />
+        
+        <property name="drop.properties.file.name" value="${file.name}.properties" />
+        <property name="drop.properties.file" 
+                  location="${drop.dir}/${build.mode}/${drop.properties.file.name}" />
+                            
+        <property name="drop.coverage.file.name" value="${file.name}.em" />
+    </target>
+    
+    <target name="-post-build-debug" depends="-post-build" >
+        <copy overwrite="yes" file="${out.final.file}" tofile="${out.file}" />
+    </target>
+    
+    <target name="-post-build-instrument" depends="-post-build" >
+        <copy overwrite="yes" file="${out.final.file}" tofile="${out.file}" />
+    </target>
+        
+    <target name="-post-build-release" depends="-post-build">
+        <copy overwrite="yes" file="${out.final.file}" tofile="${out.file}" />
+    </target>
+    
+    <!-- creates empty jar file for dependency management purposes -->
+    <target name="make-jar" >
+         <delete dir="${jar.dir}" />
+         <mkdir dir="${jar.dir}" />
+         <jar destfile="${jar.file}" 
+              includes="**/*.class" basedir="${jar.dir}" >        
+
+              <manifest>
+                  <!-- Who is building this jar? -->
+                  <attribute name="Built-By" value="${user.name}"/>
+        
+                  <!-- Information about the program itself -->
+                  <attribute name="Implementation-Vendor" value="${vendor}"/>
+                  <attribute name="Implementation-Title" value="${project.name}"/>
+                  <attribute name="Implementation-Version" value="${version.name}"/>
+                  <attribute name="Description" value="Empty stub jar for dependcy management." />
+              </manifest>
+        </jar>    
+        <delete dir="${jar.dir}" />
+    </target>
+            
+    <target name="drop" depends="make-jar" >
+            <mkdir dir="${drop.dir}" />
+            <copy file="${jar.file}" todir="${drop.dir}/${build.mode}" />
+            <copy file="${out.file}" todir="${drop.dir}/${build.mode}" />          
+    </target>
+    
+    <target name="drop.instrument" depends="drop" >        
+        <fail  message="Sorry, instrumnetation is not yet supported!" unless="instrumentation.ignore"/>
+        <!--copy file="${instr.metadata.file}" 
+              tofile="${drop.dir}/${build.mode}/${drop.coverage.file.name}" /-->
+    </target>
+    
+        
+    <target name="debug" 
+            depends="-pre-build-debug, prepare-project, 
+                  embed-build-properties, update-manifest, 
+                    android.debug, -post-build-debug, drop" />
+        
+    <target name="instrument" 
+            depends="-pre-build-instrument, prepare-project, 
+                     embed-build-properties, update-manifest,
+                   android.instrument, -post-build-instrument, drop.instrument" />
+            
+    <target name="release" 
+            depends="-pre-build-release, prepare-project, 
+                   embed-build-properties, update-manifest,
+                         android.release, -post-build-release, drop" />
+        
+    <target name="clean" depends="android.clean, clean-build-properties" >
+        <delete dir="${jar.libs.absolute.dir}" />
+        <!-- re-create removed folders -->
+        <mkdir dir="${gen.absolute.dir}" />
+        <mkdir dir="${out.absolute.dir}" />
+        <mkdir dir="${jar.libs.absolute.dir}" />
+    </target>
+    
+    <!-- Emma-instruments tested project classes (compiles the tested project if necessary)
+                 and writes instrumented classes to ${instrumentation.absolute.dir}/classes -->
+    <!-- target name="-emma-instrument" depends="android.compile">
+      <echo>Instrumenting classes from ${out.absolute.dir}/classes...</echo>      
+      <emma enabled="true">
+          <instr verbosity="${verbosity}"
+                 mode="overwrite"   
+                 metadatafile="${instr.metadata.file}"
+                 instrpath="${out.absolute.dir}/classes"              
+                 outdir="${out.absolute.dir}/classes">
+            <filter excludes="com.google.*" />
+              <filter excludes="*.R" />
+              <filter excludes="*.R$*" /> 
+          </instr>       
+      </emma>
+    </target-->          
+    
+    <!-- 
+    ############################################
+    ##        Modify AndroidManifest.xml      ##
+    ############################################
+    --> 
+      
+    <target name="-init-manifest" >
+        <fail unless="bin.dir" message="The bin.dir property is not set! Internal error." /> 
+        <property name="manifest.orig" location="${project.dir}/AndroidManifest.xml" />
+        <property name="manifest.copy" location="${bin.dir}/AndroidManifest.xml" />
+    </target>
+
+    <target name="-copy-manifest" depends="-init-manifest">
+        <delete file="${manifest.copy}" />
+        <copy file="${manifest.orig}" tofile="${manifest.copy}" />      
+    </target>
+    
+    <target name="-verify-manifest" depends="-copy-manifest" >
+        <xpath input="${manifest.copy}" expression="/manifest/@android:versionCode"
+               output="manifest.copy.versionCode" />
+        <if>
+            <condition>
+                <equals arg1="${manifest.copy.versionCode}" arg2="" />
+            </condition>
+            <then>
+                <fail message="AndroidManifest.xml must have android:versionCode specified!" />
+            </then>
+        </if>
+            
+        <xpath input="${manifest.copy}" expression="/manifest/@android:versionName"
+               output="manifest.copy.versionName" />
+        
+        <if>
+            <condition>
+                <equals arg1="${manifest.copy.versionName}" arg2="" />
+            </condition>
+            <then>
+                <fail message="AndroidManifest.xml must have android:versionName specified!" />
+            </then>
+         </if>
+    </target>
+    
+    <target name="update-manifest" depends="-verify-manifest" >
+        <replaceregexp 
+            file="${manifest.copy}"
+            flags="g"
+            match='versionCode="(.*)"' 
+            replace='versionCode="${version.code}"' />
+        
+        <replaceregexp 
+            file="${manifest.copy}"
+            flags="g"
+            match='versionName="(.*)"' 
+            replace='versionName="${version.name}"' />
+
+    </target>
+    
+    <!-- 
+    ############################################ 
+    ##              install/uninstall         ## 
+    ############################################
+    -->
+
+    <target name="-default-build-target" >
+        <property name="build.mode" value="debug" />
+    </target>
+
+    <target name="install-debug" depends="debug" >
+        <install-apk apk="${out.file}" reinstall="true" />
+    </target>
+
+    <target name="install-release" depends="release" >
+        <install-apk apk="${out.file}" reinstall="true" />
+    </target>
+
+    <target name="uninstall" depends="-set-defaults" >
+        <uninstall-apk package="${manifest.package}" />
+    </target>
+
+    <!-- 
+    Calls install-debug or install-release 
+    depending on what current build.mode is set to "debug" or "release"
+    -->
+    <target name="install" depends="-default-build-target" >
+        <antcall target="install-${build.mode}" inheritall="true" />
+    </target>
+
+    <target name="reinstall" depends="uninstall, install" />
+    <target name="reinstall-debug" depends="uninstall, install-debug" />
+    <target name="reinstall-release" depends="uninstall, install-release" />
+
+</project>

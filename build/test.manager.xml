@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="test.manager"  default="run-all-tests" >
+
+    <property name="project.name" value="tools" />
+        
+    <import file="build.properties.xml" />
+    <import file="${build.dir}/ant-tasks.xml" />
+	<import file="${build.dir}/tools.xml" />
+    
+    <fail unless="sdk.dir" message="SDK dir is not set." />
+    
+    <property name="build.mode" value="debug" />
+    <fail unless="build.mode" message="build.mode property is not specified!" />
+    
+    <property name="drop.build.mode.dir" location="${drop.dir}/${build.mode}" />
+    <property name="report.dir" location="${drop.build.mode.dir}/test-reports" />
+    <property name="report.dir.orig" location="${report.dir}/original" />
+    <property name="report.dir.html" location="${report.dir}/html" />
+    
+    <property name="tester.report.dir" location="${report.dir.orig}" />
+
+    <target name="-report-dirs" >
+        <delete dir="${report.dir}" />
+        <mkdir dir="${report.dir}" />
+        <mkdir dir="${report.dir.orig}" />
+        <mkdir dir="${report.dir.html}" />
+    </target>
+
+    <target name="run-all-tests" depends="-report-dirs">
+
+        <echo>Running tests from ${drop.build.mode.dir}</echo>
+        <for param="tester.apk">
+            <path>
+                <fileset dir="${drop.build.mode.dir}" includes="*.test.apk" />
+            </path>
+            <sequential>
+                <!-- detect target file if any
+                1) some.package.test.apk is a tester package, then next paths are probed: 
+                   some.package.apk, some.package.*.apk,                    
+                2) if more then one result is available for some.pacakge.*.apk, script fails
+                3) if no target files are found, script launches *.test.apk file without installing target file.
+                -->
+
+                <!-- step 1: detect which target apk to use, if any -->
+                <local name="target.file.base" />              
+                <local name="target.file.exists" />
+                <local name="target.apk" />
+
+                <basename file="@{tester.apk}" suffix=".test.apk" property="target.file.base" />
+
+                <!-- best match -->
+                <available file="${drop.build.mode.dir}/${target.file.base}.apk" 
+                       property="target.apk"
+                       value="${drop.build.mode.dir}/${target.file.base}.apk" />
+              
+                <if>
+                    <condition>
+                        <isset property="target.apk" />
+                    </condition>
+                    <then>
+                        <echo>Found direct target candidate: ${target.apk}</echo>
+                    </then>
+               </if>
+                            
+               <for param="file">
+                  <fileset dir="${drop.build.mode.dir}" 
+                           includes="${target.file.base}*.apk" 
+                           excludes="*.test.apk" />
+                  <sequential>
+                      <if>
+                        <condition>
+                            <isset property="target.apk" />
+                        </condition>
+                        <then>
+                              <echo level="error" >Ignored possible target candidate: @{file}</echo>
+                        </then>
+                          <else>
+                              <property name="target.apk" location="@{file}" />
+                            <echo>Found target candidate: @{file}</echo>
+                        </else>
+                    </if>
+                  </sequential>
+              </for>
+    
+              <echo>#################################################</echo>
+              <echo></echo>
+              <echo>Target: ${target.apk}</echo>
+              <echo>Tester: @{tester.apk}</echo>
+              <echo></echo>    
+              <echo>#################################################</echo>
+
+              <if>
+                  <condition>
+                      <isset property="target.apk" />
+                  </condition>
+                  <then>
+                      <subant target="run" inheritall="true" >
+                          <property name="target.apk" value="${target.apk}" />
+                          <property name="tester.apk" value="@{tester.apk}" />
+                          <property name="tester.report.dir" value="${tester.report.dir}" />
+                          <fileset dir="${build.dir}" includes="test.runner.xml"/>
+                      </subant>
+                </then>
+                <else>
+                    <subant target="run" inheritall="true" >
+                        <property name="tester.apk" value="@{tester.apk}" />
+                        <property name="tester.report.dir" value="${tester.report.dir}" />
+                        <fileset dir="${build.dir}" includes="test.runner.xml"/>
+                      </subant>
+                </else>
+            </if>
+          </sequential>
+        </for>
+    </target>
+    
+    <target name="create-test-report" depends="-report-dirs,run-all-tests" >
+        <junitreport todir="${report.dir}" tofile="all-suites.xml" >
+              <fileset dir="${report.dir.orig}">
+                <include name="*.xml"/>
+               </fileset>
+            <report format="frames" todir="${report.dir.html}"/>
+        </junitreport>
+    </target>
+    
+    <target name="check-test-report" >
+        <run-python name="check-test">
+            <args>
+                <arg value="${report.dir}/all-suites.xml" />
+            </args>
+        </run-python>
+    </target>
+
+</project>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>    
+    <string-array name="stream_names_array">
+        <item>STREAM_VOICE_CALL</item>
+        <item>STREAM_SYSTEM</item>
+        <item>STREAM_RING</item>
+        <item>STREAM_MUSIC</item>
+        <item>STREAM_ALARM</item>
+        <item>STREAM_NOTIFICATION</item>
+        <item>STRREAM_6</item>
+        <item>STRREAM_7</item>
+        <item>STRREAM_DTMF</item>        
+    </string-array>
+</resources>

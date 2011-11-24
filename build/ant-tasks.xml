@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="all-tasks" >
+    <typedef resource="net/sf/antcontrib/antlib.xml" format="xml">
+      <classpath>
+        <pathelement location="${prebuilt.libs.dir}/ant-contrib.jar"/>
+      </classpath>
+    </typedef>    
+    
+    <!-- Override ant-contrib if task with android's if task.
+         Android's if task requires <condition> element, while 
+         ant-contrib's if task does not support it. 
+         Because we can not change Android's build files and must
+         comply with them, we are forced to use Android's if task 
+         in all places 
+    -->
+    <!--###########################################################-->
+    <fail unless="sdk.dir" message="Android SDK dir is not set." />
+         
+    <path id="build.android.antlibs">
+        <pathelement path="${sdk.dir}/tools/lib/anttasks.jar" />
+    </path>    
+    <taskdef name="if" classname="com.android.ant.IfElseTask"
+                       classpathref="build.android.antlibs" />
+    <!--###########################################################-->
+</project>

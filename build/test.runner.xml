@@ -1,0 +1,480 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="test.runner"  default="run" >
+    
+    <property name="project.name" value="test.runner" />
+                
+    <import file="build.properties.xml" />
+    <import file="${build.dir}/ant-tasks.xml" />
+    <import file="${build.dir}/tools.xml" />
+    
+    <fail unless="sdk.dir" message="SDK dir is not set." />
+    
+    <property name="emma.dir" value="${sdk.dir}/tools/lib" />
+    <path id="emma.lib">
+        <pathelement location="${emma.dir}/emma.jar" />
+        <pathelement location="${emma.dir}/emma_ant.jar" />
+    </path>
+    <taskdef resource="emma_ant.properties" classpathref="emma.lib" />
+        
+    <!--
+    #############################    
+    ##   Process arguments       ##
+    #############################
+    -->
+    
+    <!-- List of parameters:
+    target.apk         - optional, path to apk file that is required to be installed before teseter.apk is launched.
+                       Normally this apk file contains your primary application under test.
+    target.apk.reinstall - optional, defaults to false. If this is set to true, then package will be reinstalled
+                      instead of uninstalling and then installing.
+    target.apk.pkg  - optional, package name of target.apk application. Should normally not be defined via 
+                      arguments. Defaults to package name in target.apk file.
+    tester.apk         - required, path to apk that will be installed and launched for tests.
+    tester.apk.reinstall - - optional, defaults to false. If this is set to true, then package will be reinstalled
+                      instead of uninstalling and then installing.
+    tester.apk.pkg  - optional, package name of tester.apk application, should normally not be defined via 
+                      arguments. Defaults to package name in tester.apk file.    
+    tester.filter     - optional, default to empty string (all tests are included). 
+                      Filter that is used to select tests for run (f.e. "s+m+l", see FilterTestRunner)
+    tester.report.dir  - optional, default to current directory. Directory where report file is placed.
+    tester.report.file - optional, defaults to [teseter.apk: *.apk -> *.xml]. Filename for report.
+    tester.runner   - optional, default to android.test.JUnitReportTestRunner. Determines which runner is used to run tests.
+    tester.listonly - optional, defaults to false. If set to true then tests are just listed in report but they never run.
+    tester.args     - optional, defaults to empty string. Extra options that are passed to adb during test launch.
+                      Normally this is list of "-e <name> <value>".
+  
+    tester.coverage - optional, default to false. Enables code coverage [true|false]
+    -->
+
+    <!-- if "target.apk" is not set, display warning -->
+    <if>
+        <condition>
+            <not>
+                <isset property="target.apk" /> 
+            </not>
+        </condition>
+        <then>
+            <echo level="warning">Property target.apk is not set. Application under test will not be installed.</echo>
+        </then>
+    </if>
+
+    <!-- target.apk.reinstall defaults to false -->
+    <property name="target.apk.reinstall" value="false" />
+    
+    <!-- if "target.apk" is set and "target.apk.pkg" is not set, determine target package name 
+         and set "target.apk.pkg" proeprty with appropriate value. -->
+    <if>        
+        <condition>
+            <and>
+                <not>
+                    <isset property="target.apk.pkg" /> 
+                </not>
+                <isset property="target.apk" />
+            </and>
+        </condition>
+        <then>
+            <get-apk-package apk="${target.apk}" property="target.apk.pkg" />
+        </then>
+    </if>
+
+    <!-- if "tester.apk" is not set, fail -->
+    <fail unless="tester.apk" message="Property 'tester.apk' must be set!" />
+    <basename file="${tester.apk}" property="tester.name" suffix=".apk"/>
+
+    <!-- tester.apk.reinstall defaults to false -->
+    <property name="tester.apk.reinstall" value="false" />
+
+    <!-- if "tester.apk.pkg" is not set, determine tester  package name 
+         and set "tester.apk.pkg" proeprty with appropriate value. -->
+    <if>
+        <condition>
+            <not>
+                <isset property="tester.apk.pkg" /> 
+            </not>
+        </condition>
+        <then>
+            <get-apk-package apk="${tester.apk}" property="tester.apk.pkg" />
+        </then>
+    </if>
+
+    <!-- default tester.filter to empty string -->
+    <property name="tester.filter" value="" />
+
+    <!-- default tester.report.dir to current dir -->
+    <property name="tester.report.dir" location=".\" />
+
+    <!-- default tester.report.file: tester-file-name.apk -> tester-file-name.xml -->
+    <sequential>
+        <local name="filename"/>
+        <basename file="${tester.apk}" suffix="apk" property="filename" />
+        <property name="tester.report.file" value="${filename}.xml" />
+    </sequential>
+
+    <!-- default tester.runner to  report runner -->
+    <property name="tester.runner" value="android.test.JUnitReportTestRunner" />
+
+    <!-- default tester.listonly to false -->
+    <property name="tester.listonly" value="false" />
+
+    <!-- default tester.listonly to false -->
+    <property name="tester.listonly" value="false" />
+
+    <!-- default tester.args to "" -->
+    <property name="tester.args" value="" />
+
+    <!-- code coverage -->
+    <property name="tester.coverage" value="false" />
+    
+    <property name="emma.device.dump.file"
+              value="/data/data/${target.apk.pkg}/files/coverage.ec" />
+    
+    <if> 
+        <condition>
+            <and>
+                <istrue value="${tester.coverage}" />
+                <isset property="target.apk" />
+            </and>
+        </condition>
+        <then>       
+            <property name="run.coverage" value="true" />
+            
+            <basename file="${target.apk}" property="target.name" suffix=".apk"/>
+            <dirname  file="${target.apk}" property="target.dir"/>
+            
+            <property name="target.properties.file.name" value="${target.name}.properties" />
+            <property name="target.properties.file" 
+                        location="${target.dir}/${target.properties.file.name}" />
+                
+            <property name="emma.metadata.file.name" value="${target.name}.em" />
+            <property name="emma.dump.file.name"     value="${target.name}.ec" />
+                
+            <property name="emma.metadata.file" location="${target.dir}/${emma.metadata.file.name}" />
+            <property name="emma.dump.file"     location="${target.dir}/${emma.dump.file.name}" />
+                
+            <property name="tester.coverage.args" 
+                      value="-e coverage true -e coverageFile ${emma.device.dump.file}" />
+        </then>
+        <else>
+             <property name="run.coverage" value="false" />
+             <property name="tester.coverage.args" value="" />
+        </else>
+    </if>
+    
+    
+    <!-- print all arguments -->    
+    <echo>#####################################</echo>
+    <echo>############# Arguments #############</echo>
+    <echo>#####################################</echo>    
+    <echo>target.apk:            ${target.apk}</echo>    
+    <echo>target.apk.reinstall:  ${target.apk.reinstall}</echo>
+    <echo>target.apk.pkg:        ${target.apk.pkg}</echo>
+    <echo>target.properties.file:${target.properties.file}</echo>
+    <echo>tester.apk:            ${tester.apk}</echo>
+    <echo>tester.name:           ${tester.name}</echo>
+    <echo>tester.apk.reinstall:  ${tester.apk.reinstall}</echo>
+    <echo>tester.apk.pkg:        ${tester.apk.pkg}</echo>
+    <echo>tester.filter:         ${tester.filter}</echo>
+    <echo>tester.report.dir:     ${tester.report.dir}</echo>
+    <echo>tester.report.file:    ${tester.report.file}</echo>
+    <echo>tester.runner:         ${tester.runner}</echo>
+    <echo>tester.listonly:       ${tester.listonly}</echo>
+    <echo>tester.coverage:       ${tester.coverage}</echo>
+    <echo>tester.coverage.args:  ${tester.coverage.args}</echo>
+    <echo>tester.args:           ${tester.args}</echo>
+    <echo>#####################################</echo>
+    <echo>run.coverage:             ${run.coverage}</echo>
+    <echo>emma.meatadata.file: ${emma.metadata.file}</echo>
+    <echo>emma.dump.file:      ${emma.dump.file}</echo>
+    <echo></echo>
+    
+    <!-- List of all skip.* variables
+    skip.install   [default: false]
+    skip.uninstall [default: ${skip.install} ]
+     
+    skip.target    [default: is "target.apk" defined ]
+    
+    skip.target.install   [default: skip.install   | skip.target]
+    skip.target.uninstall [default: target.apk.reinstall | skip.target.install | skip.uninstall | skip.target) ] 
+    
+    skip.tester.install   [default: skip.install   ]
+    skip.tester.uninstall [default: tester.apk.reinstall | skip.tester.install | skip.uninstall ]
+    
+    -->
+    
+    <!--
+    #############################
+    ##   Process skippers      ##
+    #############################
+    -->
+
+    <property name="skip.install" value="false" />
+    <property name="skip.uninstall" value="${skip.install}" />
+
+    <!-- set default value for skip.target -->
+    <if>
+        <condition>
+            <isset property="target.apk" />
+        </condition>
+        <then>
+            <property name="skip.target" value="false" />
+        </then>
+        <else>
+            <property name="skip.target" value="true" />
+        </else>
+    </if>    
+    
+    <!-- set default value for skip.target.install -->
+    <if> 
+        <condition>
+            <or>
+                <istrue value="${skip.install}" />
+                <istrue value="${skip.target}" />
+            </or>
+        </condition>
+        <then>
+            <property name="skip.target.install" value="true" />
+        </then>
+        <else>
+            <property name="skip.target.install" value="false" />
+        </else>
+    </if>
+
+    <!-- set default value for skip.target.uninstall -->
+    <if> 
+        <condition>
+            <or>
+                <istrue value="${skip.target.install}" />
+                <istrue value="${skip.uninstall}" />
+                <istrue value="${skip.target}" />
+                <istrue value="${target.apk.reinstall}" />
+            </or>
+        </condition>
+        <then>
+            <property name="skip.target.uninstall" value="true" />
+        </then>
+        <else>
+            <property name="skip.target.uninstall" value="false" />
+        </else>
+    </if>
+
+    <!-- set default value for skip.tester.install -->
+    <if> 
+        <condition>
+            <istrue value="${skip.install}" />
+        </condition>
+        <then>
+            <property name="skip.tester.install" value="true" />
+        </then>
+        <else>
+            <property name="skip.tester.install" value="false" />
+        </else>
+    </if>
+            
+    <!-- set default value for skip.tester.uninstall -->
+    <if> 
+        <condition>
+            <or>
+                <istrue value="${skip.tester.install}" />
+                <istrue value="${skip.uninstall}" />
+                <istrue value="${tester.apk.reinstall}" />
+            </or>
+        </condition>
+        <then>
+            <property name="skip.tester.uninstall" value="true" />
+        </then>
+        <else>
+            <property name="skip.tester.uninstall" value="false" />
+        </else>
+    </if>
+
+    <!-- print all skippers -->
+    <echo>#####################################</echo>
+    <echo>############# Skippers ##############</echo>
+    <echo>#####################################</echo>
+    <echo>skip.install:          ${skip.install}</echo>
+    <echo>skip.uninstall:        ${skip.uninstall}</echo>
+    <echo>skip.target:           ${skip.target}</echo>
+    <echo>skip.target.install:   ${skip.target.install}</echo>
+    <echo>skip.target.uninstall: ${skip.target.uninstall}</echo>
+    <echo>skip.tester.install:   ${skip.tester.install}</echo>
+    <echo>skip.tester.uninstall: ${skip.tester.uninstall}</echo>
+    <echo>#####################################</echo>
+    <echo></echo>
+
+    <!--
+    #############################
+    ##           Targets       ##
+    #############################
+    -->
+    <target name="restart-adb" unless="skip.restart.adb">
+        <restart-adb />
+    </target>
+    
+    <target name="target.uninstall" depends="restart-adb" unless="${skip.target.uninstall}" >
+        <uninstall-apk package="${target.apk.pkg}" />
+    </target>
+
+    <target name="target.install" depends="restart-adb" unless="${skip.target.install}" >
+        <install-apk apk="${target.apk}" reinstall="${target.apk.reinstall}" />
+    </target>
+
+    <target name="tester.uninstall" depends="restart-adb" unless="${skip.tester.uninstall}" >
+        <uninstall-apk package="${tester.apk.pkg}" />
+    </target>
+
+    <target name="tester.install" depends="restart-adb" unless="${skip.tester.install}" >
+        <install-apk apk="${tester.apk}" reinstall="${tester.apk.reinstall}"/>
+    </target>
+
+    <target name="tester"  depends="restart-adb, target.uninstall, tester.uninstall, target.install, tester.install" />
+    
+    <macrodef name="get-coverage-file">
+        <attribute name="device-file"/>
+        <attribute name="host-file"/>
+        <sequential>
+            <echo>Downloading coverage file into project directory...</echo>
+            <echo>Device: @{device-file}</echo>
+            <echo>Host: @{host-file}</echo>
+            <exec executable="${sdk.adb}" failonerror="true">
+                <arg value="pull" />
+                <arg value="@{device-file}" />
+                    <arg value="@{host-file}" />
+            </exec>
+        </sequential>
+    </macrodef>
+    
+    <macrodef name="make-coverage-report" >
+        <attribute name="property-file" />
+        <attribute name="metadata-file"/>
+        <attribute name="dump-file"/>
+        <attribute name="report-dir"/>
+        <sequential>
+            <echo>Extracting coverage report...</echo>
+            <available file="@{property-file}" property="property.file.available"/>
+            <fail unless="property.file.available" message="@{property-file} is not found" />
+            
+            <local name="src.dir" />
+            <property file="@{property-file}"/>
+                    
+            <emma>
+                <report sourcepath="${src.dir}"    verbosity="info">
+                  
+                    <infileset file="@{metadata-file}" />
+                    <infileset file="@{dump-file}" />
+                  
+                    <txt  outfile="@{report-dir}/coverage.txt" />
+                    <xml  outfile="@{report-dir}/coverage.xml" />
+                    <html outfile="@{report-dir}/coverage.html" />
+               </report>
+            </emma>
+        </sequential>
+    </macrodef>
+    
+    <target name="run" depends="tester" >
+        <property name="device.report.dir" value="/sdcard/test-reports" />
+        <property name="tester.report.dir" location="${tester.report.dir}/${tester.report.file}" />
+        <property name="device.report.file" value="${tester.name}-[suite].xml" />
+        <property name="device.report.mask" value="${device.report.dir}/${device.report.file}" />
+
+    	<property name="device.success.file" value="/sdcard/adb.shell.success" />
+        <property name="tester.success.file" location="${drop.dir}/adb.shell.success" />
+        
+        <!-- create report dir -->
+        <exec executable="${sdk.adb}" >
+            <arg line="shell" />
+            <arg line="mkdir" />
+            <arg line="${device.report.dir}" />
+        </exec>
+        
+        <!-- remove previous report files -->
+        <exec executable="${sdk.adb}" failonerror="true">
+            <arg line="shell" />
+            <arg line="rm" />
+            <arg line="${device.report.dir}/*.*" />
+        </exec>
+
+        <!-- create success marker file -->
+        <exec executable="${sdk.adb}" failonerror="true">
+            <arg line="shell" />
+            <arg line="echo" />
+            <arg line="success" />
+            <arg line=">" />
+            <arg line="${device.success.file}" />
+        </exec>
+
+        <!-- run test -->
+        <exec executable="${sdk.adb}" failonerror="true" >
+            <arg line="shell" />
+            <arg line="am" />
+            <arg line="instrument" />
+            
+            <arg line="-e" />
+            <arg line="multiFile" />
+            <arg line="true" />
+                
+            <arg line="-e" />
+            <arg line="log" />
+            <arg line="${tester.listonly}" />
+    
+            <arg line="-e" />
+            <arg line="filter" />
+            <arg line='"${tester.filter}"' />
+                
+            <arg line="-e" />
+            <arg line="reportDir" />
+            <arg line="${device.report.dir}" />
+    
+            <arg line="-e" />
+            <arg line="reportFile" />
+            <arg line="${device.report.file}" />
+            
+            <arg line="${tester.coverage.args}" />
+                                  
+            <arg line="${tester.args}" />
+    
+            <arg line="-w" />
+            <arg line="${tester.apk.pkg}/${tester.runner}" />
+            
+            <arg line=";if [ ! $? -eq 0 ]; then rm ${device.success.file}; fi" />
+        </exec>
+        
+        <!-- detect test run failure -->
+        <echo>Getting ${device.success.file} file from device.</echo>
+        <echo>If file does not exist, then fatal error occured during test run.</echo>
+        <exec executable="${sdk.adb}" failonerror="true">
+            <arg line="pull" />
+            <arg line="${device.success.file}" />
+            <arg line="${tester.success.file}" />
+        </exec>
+        <delete file="${tester.success.file}" />
+        
+        <!-- get report -->
+        <exec executable="${sdk.adb}" failonerror="true">            
+            <arg line="pull" />
+            <arg line="${device.report.dir}" />
+            <arg line="${tester.report.dir}" />
+        </exec>
+        
+        <!-- if coverage was enabled -->
+        <if>
+        <condition>
+              <istrue value="${run.coverage}" />
+        </condition>
+        <then>
+            <property name="coverage.report.dir" 
+                      location="${target.dir}/coverage-reports/${target.name}" />
+                
+            <mkdir dir="${coverage.report.dir}" />
+            
+            <get-coverage-file device-file="${emma.device.dump.file}" host-file="${emma.dump.file}" />
+            <make-coverage-report 
+                 property-file="${target.properties.file}"
+                 metadata-file="${emma.metadata.file}" 
+                 dump-file="${emma.dump.file}" 
+             report-dir="${coverage.report.dir}"/>
+        </then>
+      </if>
+        
+    </target>
+    
+</project>

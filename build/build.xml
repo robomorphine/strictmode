@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="build" >
+
+<!--############################################
+    #                Check validity               #
+    #    (verifies properties that should've    #
+    #     been set before build is started)     #
+    ############################################-->
+    
+    <property file="project.properties" />
+
+    <fail unless="project.name" message="Please specify project.name in project.properties." />        
+    <fail unless="project.type" message="Please specify project.type in project.properties." />    
+    <fail message="Incorrect project type: '${project.type}'. 
+                   Supported types: 'app', 'lib', 'jar', 'app.test', 'lib.test', 'jar.test'">
+        <condition>
+            <not>
+                <or>
+                    <equals arg1="${project.type}" arg2="app" /> 
+                    <equals arg1="${project.type}" arg2="lib" />
+                    <equals arg1="${project.type}" arg2="jar" />
+                    <equals arg1="${project.type}" arg2="app.test" /> 
+                    <equals arg1="${project.type}" arg2="lib.test" />
+                    <equals arg1="${project.type}" arg2="jar.test" />
+                </or>
+            </not>
+        </condition>
+    </fail>
+
+    <fail unless="version.code" message="Please specify version.code in project.properties." />
+    <fail unless="version.name.major" message="Please specify version.name.major in project.properties." />
+    <fail unless="version.name.minor" message="Please specify version.name.minor in project.properties." />
+    <fail unless="version.name.build" message="Please specify version.name.build in project.properties." />
+
+    <echo>###########################################################</echo>
+    <echo>###########################################################</echo>
+    <echo> project: ${project.name} as '${project.type}'             </echo>
+    <echo> Version Code: ${version.code}                             </echo>
+    <echo> Version Name: ${version.name.major}.${version.name.minor}.${version.name.build}</echo>
+    <echo>###########################################################</echo>
+    <echo>###########################################################</echo>
+                
+<!--##########################################
+    #              imports                   #
+    ##########################################-->
+    
+    <!-- build properties -->
+    <import file="build.properties.xml" />
+    
+    <!-- all custom and 3d-party tasks -->
+    <import file="${build.dir}/ant-tasks.xml" />
+    <!-- import tools -->
+    <import file="${build.dir}/tools.xml" />
+
+    <!-- import project type specific build file -->
+    <property name="build.imported" value="true" />
+    <import file="android.${project.type}.xml"  />
+    
+</project>

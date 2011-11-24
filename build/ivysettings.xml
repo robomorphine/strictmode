@@ -1,0 +1,28 @@
+<ivysettings>
+    <property name="repository.dir" value="${drop.dir}" />
+    
+    <!-- prevents copying artifacts from local repository to cache -->
+    <caches useOrigin="true" default="cache.${build.mode}">
+      
+      <cache name="cache.${build.mode}" useOrigin="true"
+             basedir="${drop.dir}/${build.mode}/cache"
+             defaultTTL="0s" />
+             
+    </caches>    
+    
+    <resolvers>
+            <filesystem name="internal" checkmodified="true" >
+                <artifact pattern="${drop.dir}/${build.mode}/[artifact].[ext]" />
+            </filesystem>
+            
+            <filesystem name="prebuilt" checkmodified="true" >
+                <artifact pattern="${prebuilt.libs.dir}/[artifact].[ext]" />
+                <artifact pattern="${prebuilt.libs.dir}/[artifact]-[revision].[ext]" />
+            </filesystem>
+    </resolvers>
+    <modules>
+            <module organisation="com.${vendor}" name="*" resolver="internal" />
+            <module organisation="com.robomorphine" name="*" resolver="internal" />
+            <module organisation="*" name="*" resolver="prebuilt" />
+    </modules>
+</ivysettings>

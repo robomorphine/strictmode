@@ -1,0 +1,8 @@
+<ivy-module version="1.0">
+    <info organisation="com.robomorphine" module="com.robomorphine.test" />	
+	<dependencies>
+		<dependency org="com.google.guava" name="guava" rev="latest.integration" />
+		<dependency org="com.robomorphine" name="com.robomorphine.testrunner" rev="latest.integration"  />
+		<dependency org="com.robomorphine" name="com.robomorphine" rev="latest.integration" />
+	</dependencies>
+</ivy-module>

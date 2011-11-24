@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="build.common" xmlns:ivy="antlib:org.apache.ivy.ant" >
+
+    <fail unless="build.imported" 
+          message="Import build.xml in order to use ${ant.file.build.common} build file." />
+
+    <!-- sets version name's revision part and then composes whole version name value -->
+    <target name="set-version" >
+
+        <exec executable="git" outputproperty="git.revision" errorproperty="">
+            <arg value="rev-parse"/>
+            <arg value="--short"/>
+            <arg value="HEAD"/>
+        </exec>
+
+        <if>
+            <condition>
+                <and>
+                    <isset property="git.revision"/>
+                    <length string="${git.revision}" trim="yes" length="0" when="greater"/>
+                </and>
+            </condition>
+            <then>
+                <echo> Git revision: ${git.revision} </echo>
+                <property name="version.name.revision" value="${git.revision}" />
+            </then>
+            <else>
+                <property name="version.name.revision" value="0" />
+                <echo level="warning">WARNING: Was not able to detect Git revision. Defaulting to '0'.</echo>
+                <fail if="${git.revision.force}" message="WARNING: Was not able to detect Git revision." />
+            </else>
+        </if>
+        
+        <property name="version.name" 
+                   value="${version.name.major}.${version.name.minor}.${version.name.build}.${version.name.revision}" />
+    </target>
+
+    <target name="-check-version">
+        <fail unless="version.name.revision" message="Property version.revision was not set!" />
+        <fail unless="version.name" message="Property version.name was not set!" />
+    </target>
+
+    <target name="-check-build-mode" >
+        <fail message="property 'build.mode' was not set or has invalid value (build.mode=${build.mode})">
+            <condition>
+                <not>
+                    <or>
+                        <equals arg1="${build.mode}" arg2="debug" /> 
+                        <equals arg1="${build.mode}" arg2="instrument" />
+                        <equals arg1="${build.mode}" arg2="release" />
+                    </or>
+                </not>
+            </condition>
+        </fail>    
+    </target>
+        
+    <!-- check that multiple build properties are set --> 
+    <target name="-check-build-properties" depends="-check-version, -check-build-mode" >
+        <echo>*********************************</echo>
+        <echo>project.name = ${project.name}   </echo>
+        <echo>project.type = ${project.type}   </echo>
+        <echo>build.mode = ${build.mode}       </echo>  
+        <echo>version.name = ${version.name}   </echo>
+        <echo>version.code = ${version.code}   </echo>
+        <echo>*********************************</echo>
+    </target>
+
+
+    <target name="ivy-resolve" depends="set-version, -check-build-properties">
+        <ivy:settings file="${build.dir}/ivysettings.xml" />
+        <ivy:retrieve pattern="libs/[artifact].[ext]" />
+        <ivy:report todir="${drop.dir}/${build.mode}/ivy-reports" />
+    </target>
+
+
+    <!-- this target should be called just after build.mode is set 
+         and before something important is going to be done (such as compilation) -->
+    <target name="prepare-project" depends="set-version, -check-build-properties, ivy-resolve" />
+
+</project>

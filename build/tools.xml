@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="tools" >
+  
+    <property name="project.name" value="tools" />
+  
+    <import file="build.properties.xml" />
+    <import file="${build.dir}/ant-tasks.xml" />
+    
+    <fail unless="sdk.dir" message="SDK dir is not set." />
+    <property name="sdk.platform.tools.dir" location="${sdk.dir}/platform-tools" />
+    <property name="sdk.adb" location="${sdk.platform.tools.dir}/adb" />
+    <property name="sdk.aapt" location="${sdk.platform.tools.dir}/aapt" />
+
+    <property name="adb.device" value="" />
+
+    <macrodef name="restart-adb" >
+        <sequential>
+            <exec executable="${sdk.adb}" failonerror="true">
+                <arg value="kill-server" />
+            </exec>
+            <exec executable="${sdk.adb}" failonerror="true">
+                <arg value="start-server" />
+            </exec>
+        </sequential>
+    </macrodef>
+    
+    <macrodef name="get-apk-package" >
+        <attribute name="apk" />
+        <attribute name="property" />
+        <sequential>
+            <local name="output" />
+            <local name="result" />
+            
+            <!-- run aapt to dump info about apk AndroidManifest.xml, including package name -->
+            <echo>Getting apk package name from @{apk}</echo>      
+            <exec executable="${sdk.aapt}"   resultproperty="result" outputproperty="output" >
+                <arg line="dump" />
+                <arg line="badging" />
+                <arg line="@{apk}" />
+            </exec>
+          
+            <!-- verify aapt run successfully and if so parse its results -->
+            <if>      
+                <condition>
+                    <equals arg1="${result}" arg2="0" />
+                </condition>
+                <then>              
+                    <!-- 
+                    example of output string:  
+                    package: name='com.company.testapp' versionCode='18' versionName='2.2.0.0'
+                    -->
+                    <propertyregex property="@{property}" 
+                       input="${output}" 
+                       regexp="name='(.*?)'" 
+                       select="\1" />
+  
+                    <!-- verify that package name was found and extracted -->
+                    <if>
+                        <condition>
+                            <equals arg1="" arg2="@{property}" />
+                        </condition>
+                        <then>
+                            <fail message="Failed to retreive apk package name" />
+                        </then>
+                    </if>
+                    <echo>Apk package name is "${@{property}}"</echo>
+                </then>
+                <else>
+                    <echo level="error" >${output}</echo>
+                    <fail message="Failed to get package name from apk file @{apk}" />  
+                </else>
+            </if>  
+        </sequential>
+    </macrodef>  
+  
+    <macrodef name="install-apk">
+        <attribute name="apk" />
+        <attribute name="reinstall" default="false" />
+        <sequential>
+            <local name="apk.file.name" />
+            <local name="reinstall.arg" />
+            <local name="adb.out" />
+            <local name="adb.result" />
+            <local name="adb.failed" />
+
+            <if>
+                <condition>
+                    <istrue value="@{reinstall}" />
+                </condition>
+                <then>
+                    <property name="reinstall.arg" value="-r" />
+                </then>
+                <else>
+                    <property name="reinstall.arg" value="" />
+                </else>
+            </if>
+          
+            <basename file="@{apk}" property="apk.file.name"/>
+          
+            <echo>Installing ${apk.file.name} [reinstall: @{reinstall}]...</echo>
+              
+            <exec executable="${sdk.adb}"
+                  resultproperty="adb.result"
+                  outputproperty="adb.out" >
+              
+                <arg line="${adb.device}" />
+                <arg value="install" />
+                <arg line="${reinstall.arg} @{apk}" />
+            </exec>
+      
+            <echo>${adb.out}</echo>
+            <if>
+                <condition>
+                    <not>
+                        <equals arg1="${adb.result}" arg2="0" />
+                    </not>
+                </condition>
+                <then>
+                    <fail message="Failed to install @{apk}" />
+                </then>
+            </if>
+          
+            <condition property="adb.failed" value="true" >
+                <matches string="${adb.out}" pattern="^Failure.*$" multiline="true" casesensitive="false" />
+            </condition>
+
+            <fail if="adb.failed" message="Failed to install ${apk.file.name}." />
+
+        </sequential>
+    </macrodef>
+  
+    <macrodef name="uninstall-apk">
+        <attribute name="package" default="" />
+        <attribute name="apk" default="" />
+        <attribute name="failonerror" default="false" />
+        <sequential>
+            <local name="local.package" />
+            <local name="adb.out" />
+            <local name="adb.result" />
+            <local name="adb.failed" />
+
+            <if>
+                 <condition>
+                     <equals arg1="@{package}" arg2="" />
+                 </condition>
+            <then>
+                <if>
+                    <condition>
+                        <equals arg1="@{apk}" arg2="" />
+                    </condition>
+                    <then>
+                        <fail message="Nor package name neither apk file is not specified. Can not uninstall" />
+                    </then>
+                </if>
+                <get-apk-package apk="@{apk}" property="local.package" />
+            </then>
+            <else>
+                <property name="local.package" value="@{package}" />
+            </else>
+        </if>
+            
+        <echo>Uinstalling ${local.package} from emulator or device...</echo>
+          
+        <exec executable="${sdk.adb}" resultproperty="adb.result" outputproperty="adb.out">
+            <arg line="${adb.device}" />
+            <arg value="shell" />
+            <arg value="pm" />
+            <arg value="uninstall" />
+            <arg value="${local.package}" />
+        </exec>
+        <echo>${adb.out}</echo>
+          
+        <if>
+            <condition>
+               <not>
+                   <equals arg1="${adb.result}" arg2="0" />
+               </not>
+            </condition>
+            <then>
+                <fail message="Failed to install @{apk}" />
+            </then>
+        </if>
+        <condition property="adb.failed" value="true" >
+            <and>
+                <matches string="${adb.out}" pattern="^Failure.*$" casesensitive="false" />
+                <istrue value="@{failonerror}"/>
+            </and>
+        </condition>
+        <fail if="adb.failed" message="Failed to uninstall ${local.package}." />
+        </sequential>
+    </macrodef>
+    
+    <macrodef name="run-python">
+        <attribute name="name" />
+        <attribute name="timeout" default="10000000"/>
+        <attribute name="failonerror" default="true"/>
+        <element name="args" optional="yes" />
+        <sequential>
+            <exec executable="python" failonerror="@{failonerror}" timeout="@{timeout}">
+                <env key="ANDROID_SDK" value="${sdk.dir}" />
+                <arg file="${build.dir}/python/@{name}.py" />
+                <args />
+            </exec>
+        </sequential>
+    </macrodef>
+  
+    <target name="get-apk-package" >
+        <fail unless="apk" message="Please specify 'apk' property with apk path." />
+    
+        <local name="pkg.name" />
+        <get-apk-package apk="${apk}" property="pkg.name" />
+        <echo>Result: ${pkg.name}</echo>
+    </target>
+  
+    <target name="install-apk" >
+        <fail unless="apk" message="Please specify 'apk' property with apk path." />
+        <property name="reinstall" value="false" />
+        <install-apk apk="${apk}" reinstall="${reinstall}"/>
+    </target>
+  
+    <target name="uninstall-apk" >
+        <property name="failonerror" value="false" />
+        <uninstall-apk apk="${apk}" failonerror="${failonerror}" />
+    </target>
+  
+    <target name="uninstall-package" >
+        <property name="failonerror" value="false" />
+        <uninstall-apk package="${package}" failonerror="${failonerror}" />
+    </target>
+    
+    <target name="run-python">
+        <fail unless="script" message="Please specify -Dscript=... to run script."/>
+        <property name="arg1" value="" />
+        <property name="arg2" value="" />
+        <property name="arg3" value="" />
+        <run-python name="${script}">
+            <args>
+                <arg line="${arg1}" />
+                <arg line="${arg2}" />
+                <arg line="${arg3}" />
+            </args>
+        </run-python>
+    </target>
+  
+</project>

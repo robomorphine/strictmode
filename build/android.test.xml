@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="build.android.test" >
+    
+    <property name="project.is.test" value="true" />
+    <import file="android.app.xml" as="super" />
+    
+    <target name="-pre-release" >
+        <property name="tested.project.target" value="release" />
+    </target>
+    
+    <target name="-pre-debug" >
+        <property name="tested.project.target" value="debug" />
+    </target>
+    
+    <target name="-pre-instrument" >
+        <property name="tested.project.target" value="instrument" />
+    </target>
+    
+    <target name="release" depends="-pre-release, super.release" >
+        
+    </target>
+    
+    <target name="debug" depends="-pre-debug, super.debug" >
+        
+    </target>
+    
+    <target name="instrument" depends="-pre-instrument, super.instrument" >
+       
+    </target>
+
+    <target name="clean" >
+        <delete dir="${out.absolute.dir}" />
+        <delete dir="${gen.absolute.dir}" />
+        <delete dir="libs" />
+    </target>
+    
+</project>

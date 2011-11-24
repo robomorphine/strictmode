@@ -1,0 +1,11 @@
+.svn/
+bin/
+obj/
+gen/
+out/
+libs/
+!/libs/
+
+local.properties
+build-properties.xml
+release.keystore

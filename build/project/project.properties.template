@@ -1,0 +1,12 @@
+#Copy this file to your project's directory.
+#
+#Required properties:
+#
+#root.relative.dir = path to root directory (f.e. ../../../)
+#project.name = name of project
+#project.type = { app, lib, jar }, app - android app, lib - android lib, jar - plain jar 
+#
+#version.code=0
+#version.name.major - a number that represent major version of application
+#version.name.minor - a number that represent minor version of application
+#version.name.build - a number that represent build version of application
