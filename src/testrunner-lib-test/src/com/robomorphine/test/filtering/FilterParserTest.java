@@ -1,11 +1,11 @@
-package com.inazaruk.test.filtering;
+package com.robomorphine.test.filtering;
 
 import java.util.List;
 
 import junit.framework.TestCase;
 
-import com.inazaruk.test.filtering.FilterParser;
-import com.inazaruk.test.filtering.FilterParser.FilterEntry;
+import com.robomorphine.test.filtering.FilterParser;
+import com.robomorphine.test.filtering.FilterParser.FilterEntry;
 
 public class FilterParserTest extends TestCase
 {

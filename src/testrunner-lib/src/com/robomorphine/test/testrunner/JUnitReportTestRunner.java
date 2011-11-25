@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
-package android.test;
+package com.robomorphine.test.testrunner;
 
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.test.AndroidTestRunner;
+import android.test.InstrumentationTestRunner;
 import android.util.Log;
 
 /**

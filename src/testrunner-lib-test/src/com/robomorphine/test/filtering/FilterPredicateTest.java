@@ -1,4 +1,4 @@
-package com.inazaruk.test.filtering;
+package com.robomorphine.test.filtering;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -8,14 +8,14 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.inazaruk.test.filtering.FilterPredicate;
+import com.robomorphine.test.annotation.ManualTest;
+import com.robomorphine.test.annotation.PerformanceTest;
+import com.robomorphine.test.filtering.FilterPredicate;
 
 import junit.framework.TestCase;
 import android.test.suitebuilder.TestMethod;
 import android.test.suitebuilder.annotation.LargeTest;
-import android.test.suitebuilder.annotation.ManualTest;
 import android.test.suitebuilder.annotation.MediumTest;
-import android.test.suitebuilder.annotation.PerformanceTest;
 import android.test.suitebuilder.annotation.SmallTest;
 
 public class FilterPredicateTest extends TestCase

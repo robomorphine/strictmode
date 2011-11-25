@@ -1,16 +1,19 @@
-package com.inazaruk.test.filtering;
+package com.robomorphine.test.filtering;
+
+import com.robomorphine.test.annotation.LongTest;
+import com.robomorphine.test.annotation.ManualTest;
+import com.robomorphine.test.annotation.PerformanceTest;
+import com.robomorphine.test.annotation.ShortTest;
+import com.robomorphine.test.predicate.TestTypeEqualsTo;
+
+import android.test.suitebuilder.TestMethod;
+import android.test.suitebuilder.annotation.LargeTest;
+import android.test.suitebuilder.annotation.MediumTest;
+import android.test.suitebuilder.annotation.SmallTest;
 
 import java.lang.annotation.Annotation;
 
 import junit.framework.TestCase;
-import android.test.suitebuilder.TestMethod;
-import android.test.suitebuilder.annotation.LargeTest;
-import android.test.suitebuilder.annotation.ManualTest;
-import android.test.suitebuilder.annotation.MediumTest;
-import android.test.suitebuilder.annotation.PerformanceTest;
-import android.test.suitebuilder.annotation.SmallTest;
-
-import com.inazaruk.test.predicate.TestTypeEqualsTo;
 
 public class TestTypeEqualsToTest extends TestCase
 {
@@ -18,9 +21,17 @@ public class TestTypeEqualsToTest extends TestCase
 	{
 		public void testNoAnnotationsTestMethod(){}
 		
-		@SmallTest 	public void testSmallTestMethod(){}		
+		@ShortTest  public void testShortTestMethod(){}
+		@SmallTest 	public void testSmallTestMethod(){}
+		@android.test.suitebuilder.annotation.SmallTest public void testAndroidSmallTestMethod(){}
+		
 		@MediumTest public void testMediumTestMethod(){}		
+		@android.test.suitebuilder.annotation.MediumTest public void testAndroidMediumTestMethod(){}
+				
+		@LongTest   public void testLongTestMethod(){}
 		@LargeTest 	public void testLargeTestMethod(){}
+		@android.test.suitebuilder.annotation.LargeTest    public void testAndroidLargeTestMethod(){}
+		
 		@PerformanceTest public void testPerformanceTestMethod(){}		
 		@ManualTest	public void testManualTestMethod(){}
 		

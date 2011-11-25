@@ -1,13 +1,14 @@
-package android.test;
+package com.robomorphine.test.testrunner;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import android.os.Bundle;
+import android.test.InstrumentationTestRunner;
 import android.test.suitebuilder.TestMethod;
 
-import com.android.internal.util.Predicate;
-import com.inazaruk.test.filtering.FilterPredicate;
+import com.robomorphine.test.filtering.FilterPredicate;
+import com.robomorphine.test.predicate.Predicate;
 
 /**
  * This class will deprecate "size" argument and add "filter" argument instead.

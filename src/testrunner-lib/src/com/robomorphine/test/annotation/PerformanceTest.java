@@ -1,4 +1,4 @@
-package android.test.suitebuilder.annotation;
+package com.robomorphine.test.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

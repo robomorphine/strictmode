@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package android.test;
+package com.robomorphine.test.testrunner;
 
 import android.content.Context;
 import android.util.Log;
