@@ -29,8 +29,8 @@ public class TestTypeEqualsTo implements Predicate<TestMethod> {
     static {
         ArrayList<Class<? extends Annotation>> list = new ArrayList<Class<? extends Annotation>>();
         list.add(ManualTest.class);
-        list.add(PerformanceTest.class);
         list.add(StabilityTest.class);
+        list.add(PerformanceTest.class);
         list.add(LongTest.class);
         list.add(LargeTest.class);
         list.add(LongTest.class);
