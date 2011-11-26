@@ -40,7 +40,7 @@ import java.util.Map;
  * of the "-" annotations.
  * ( Exclusion "-" takes precedences over Inclusion "+" ). The order is not relevant.
  * 
- * Note: TestMethid annotations are "inherited" from enclosing TestCase class.
+ * Note: TestMethod annotations are "inherited" from enclosing TestCase class.
  * 
  *      For example:
  *          @a
@@ -49,13 +49,13 @@ import java.util.Map;
  *              void tm1() {}
  *              @b void tm2() {}
  *              @b @c void tm3() {}
- *                @b @c @d void tm4() {}
+ *              @b @c @d void tm4() {}
  *          }
  *  
  *          "+a" -> tm1, tm2, tm3, tm4
  *          "-a" -> none
  *          "+b" -> tm2, tm3, tm4
- *          "-b" -> tm
+ *          "-b" -> tm1
  *          "+a-b" -> tm1
  *          "+c-d" -> tm3
  *          "-d+a" -> tm1, tm2, tm3
@@ -68,24 +68,51 @@ import java.util.Map;
  * Some specific annotations have built-in aliases. This aliases are case insensitive 
  * (but note that annotation class names _are_ case sensitive). List of aliases: 
  * 
- * s, small   - android.test.suitebuilder.annotation.SmallTest 
- * m, medium  - android.test.suitebuilder.annotation.MediumTest
- * l, large   - android.test.suitebuilder.annotation.LargeTest
- * p, perf, performance - android.test.suitebuilder.annotation.PerformanceTest
- * mn, manual - android.test.suitebuilder.annotation.ManualTest
+ * s, small - com.robomorphine.test.annotation.SmallTest
+ * short    - com.robomorphine.test.annotation.ShortTest (same as SmallTest) 
+ * m, medium  - com.robomorphine.test.annotation.MediumTest
+ * l, large   - com.robomorphine.test.annotation.LargeTest
+ * long       - com.robomorphine.test.annotation.LongTest (same as LargeTest) * 
+ * p, perf, performance - com.robomorphine.test.annotation.PerformanceTest
+ * st, stability - com.robomorphine.test.annotation.StabilityTest
+ * mn, manual - com.robomorphine.test.annotation.ManualTest
+ * ui - com.robomorphine.test.annotation.UiTest
  * 
  *         For example: 
  * 
- *         "+s-medium" == "+android.test.suitebuilder.annotation.SmallTest-android.test.suitebuilder.annotation.MediumTest"
+ *         "+s-medium" == "+com.robomorphine.test.annotation.SmallTest-com.robomorphine.test.annotation.MediumTest"
  *         "s+M+l" == "s+m+l" == "S+M+L"
+ *    
+ * But some annotations have special meaning and a handled in a different way then all other annotations are.
+ * 
+ * First group of special annotation are:
+ * 
+ *  UiTest - com.robomorphine.test.annotation.UiTest
+ *  NonUiTest - com.robomorphine.test.annotation.NonUiTest
  *  
- * Five annotation have special meaning and a handled in a different way then all other annotations are.
- * These annotations represent test types:
+ * Note that when "+ui" or "-ui" is specified on filter, FilterPredicate uses special logic for 
+ * filtering. It does not use usual "annotation present" logic. If "+ui" or "-ui" is met in filter,
+ * than "IsUiTest" predicate is used on all test methods. It has next logic (in order of precedence):
  *  
- *   small - android.test.suitebuilder.annotation.SmallTest
+ *  1) If test method has NonUiTest annotation, its considered non-ui test.
+ *  2) If test method has UiTest annotation, its considered ui test.
+ *  3) If test method's class has NonUiTest annotation, its considered non-ui test.
+ *  4) If test method's class has UiTest annotation, its considered ui test.
+ *  5) If test method's class extends ActivityInstrumentationTestCase/mIsActivityInstrumentationTestCase2
+ *     class its considered ui test.
+ *  6) Otherwise test method is considered non-ui test.
+ *  
+ * At any given time each test method is either ui test or non-ui test. If "+ui" test is specified,
+ * then only ui tests are filtered in. If "-ui" is specified, then only non-ui tests are filtered in.
+ * If "+ui"/"-ui" is omitted from filter then both ui and non-ui tests are filtered in.
+ * 
+ * Second (and last) group of special annotations represent test types:
+ *  
+ *   small/short - com.robomorphine.test.annotation.SmallTest/.ShortTest
  *   medium - android.test.suitebuilder.annotation.MediumTest
- *   large - android.test.suitebuilder.annotation.LargeTest
+ *   large/long - android.test.suitebuilder.annotation.LargeTest/.LongTest   
  *   performance - android.test.suitebuilder.annotation.PerformanceTest
+ *   stability - android.test.suitebuilder.annotation.StabilityTest
  *   manual - android.test.suitebuilder.annotation.ManualTest
  *   
  * At any given time any TestMethod may have only one effective test type associated with it. 
@@ -99,7 +126,7 @@ import java.util.Map;
  *  
  *  2) If TestMethod has several TestType annotations, only one annotations takes effect. 
  *     The winner is determined by annotation precedence order which is next:
- *     manual > performance > large > medium > small.
+ *     manual > stability > performance > large/long > medium > small/short.
  *     
  *     For example:
  *             @SmallTest @LargeTest void testM1() -> large test
@@ -130,17 +157,17 @@ import java.util.Map;
  *       @SmallTest @LargeTest class T1 extends TestCase 
  *      {
  *          void testM1() {} -> large test 
- *         } 
+ *      } 
  *     
  *      @LargeTest @SmallTest class T1 extends TestCase 
  *      {
  *          void testM1() {} -> large test 
- *         }
+ *      }
  *     
  *      @LargeTest @SmallTest @ManualTest class T1 extends TestCase 
  *      {
  *          void testM1() {} -> manual test 
- *         }
+ *      }
  *     
  *  5) If nor TestMethod, neither enclosing TestCase class has any of the test type annotations,
  *      then test is considered to be SmallTest.
@@ -150,7 +177,7 @@ import java.util.Map;
  *      class T1 extends TestCase 
  *      {
  *          void testM1() {} -> small test 
- *         } 
+ *      }  
  *
  */
 public class FilterPredicate implements Predicate<TestMethod> {
@@ -191,6 +218,11 @@ public class FilterPredicate implements Predicate<TestMethod> {
         @Override
         public boolean apply(TestMethod t) {
             return true;
+        }
+        
+        @Override
+        public String toString() {
+            return "[true]";
         }
     }
 
@@ -300,5 +332,10 @@ public class FilterPredicate implements Predicate<TestMethod> {
     @Override
     public boolean apply(TestMethod t) {
         return m_predicate.apply(t);
+    }
+    
+    @Override
+    public String toString() {
+        return "[filter " + m_predicate.toString() + "]";
     }
 }

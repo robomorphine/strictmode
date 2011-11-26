@@ -31,11 +31,13 @@ public class TestTypeEqualsTo implements Predicate<TestMethod> {
         list.add(ManualTest.class);
         list.add(PerformanceTest.class);
         list.add(StabilityTest.class);
+        list.add(LongTest.class);
         list.add(LargeTest.class);
         list.add(LongTest.class);
         list.add(android.test.suitebuilder.annotation.LargeTest.class);
         list.add(MediumTest.class);
         list.add(android.test.suitebuilder.annotation.MediumTest.class);
+        list.add(ShortTest.class);
         list.add(SmallTest.class);
         list.add(android.test.suitebuilder.annotation.SmallTest.class);
         TEST_TYPE_ANNOTATIONS = Collections.unmodifiableList(list);
@@ -102,5 +104,10 @@ public class TestTypeEqualsTo implements Predicate<TestMethod> {
     @Override
     public boolean apply(TestMethod t) {
         return getTestType(t).equals(m_testType);
+    }
+    
+    @Override
+    public String toString() {
+        return "[is-test-type " + m_testType.getSimpleName() + "]";
     }
 }

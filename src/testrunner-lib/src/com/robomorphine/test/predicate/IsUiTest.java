@@ -17,10 +17,10 @@ public class IsUiTest implements Predicate<TestMethod>{
     
     @SuppressWarnings("deprecation")
     public IsUiTest() {
-        mMethodHasUiTestAnnotation = new HasMethodAnnotation(NonUiTest.class);
-        mMethodHasNonUiTestAnnotation = new HasMethodAnnotation(UiTest.class);
-        mClassHasUiTestAnnotation = new HasClassAnnotation(NonUiTest.class);
-        mClassHasNonUiTestAnnotation = new HasClassAnnotation(UiTest.class);
+        mMethodHasUiTestAnnotation = new HasMethodAnnotation(UiTest.class);
+        mMethodHasNonUiTestAnnotation = new HasMethodAnnotation(NonUiTest.class);
+        mClassHasUiTestAnnotation = new HasClassAnnotation(UiTest.class);
+        mClassHasNonUiTestAnnotation = new HasClassAnnotation(NonUiTest.class);
         mIsActivityInstrumentationTestCase = new IsSubclassOf(android.test.ActivityInstrumentationTestCase.class);
         mIsActivityInstrumentationTestCase2 = new IsSubclassOf(ActivityInstrumentationTestCase2.class);
     }
@@ -49,5 +49,10 @@ public class IsUiTest implements Predicate<TestMethod>{
         }
         
         return false;
+    }
+    
+    @Override
+    public String toString() {
+        return "[is-ui-test]";
     }
 }

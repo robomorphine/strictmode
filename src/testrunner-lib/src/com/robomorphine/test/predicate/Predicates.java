@@ -17,6 +17,10 @@
 package com.robomorphine.test.predicate;
 
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Predicates contains static methods for creating the standard set of
@@ -45,7 +49,7 @@ public class Predicates {
      * Predicate will always evaluate to true.
      */
     @SuppressWarnings("all")
-    public static <T> Predicate<T> and(Iterable<? extends Predicate<? super T>> components) {
+    public static <T> Predicate<T> and(Collection<? extends Predicate<? super T>> components) {
         return new AndPredicate(components);
     }
 
@@ -67,7 +71,7 @@ public class Predicates {
      * Predicate will always evaluate to false.
      */
     @SuppressWarnings("all")
-    public static <T> Predicate<T> or(Iterable<? extends Predicate<? super T>> components) {
+    public static <T> Predicate<T> or(Collection<? extends Predicate<? super T>> components) {
         return new OrPredicate(components);
     }
 
@@ -80,48 +84,99 @@ public class Predicates {
     }
 
     private static class AndPredicate<T> implements Predicate<T> {
-        private final Iterable<? extends Predicate<? super T>> components;
+        private final List<? extends Predicate<? super T>> mComponents;
 
-        private AndPredicate(Iterable<? extends Predicate<? super T>> components) {
-            this.components = components;
+        private AndPredicate(Collection<? extends Predicate<? super T>> components) {
+            List<Predicate<? super T>> list = new LinkedList<Predicate<? super T>>(components);
+            mComponents = Collections.unmodifiableList(list);
         }
 
         public boolean apply(T t) {
-            for (Predicate<? super T> predicate : components) {
+            for (Predicate<? super T> predicate : mComponents) {
                 if (!predicate.apply(t)) {
                     return false;
                 }
             }
             return true;
         }
+        
+        @Override
+        public String toString() {
+            if(mComponents.size() == 0) {
+                return "(<empty-and> [true])";
+            }
+            
+            if(mComponents.size() == 1) {
+                Object predicate = mComponents.get(0); 
+                return "(<single-and> " + predicate.toString() + ")";
+            }
+            
+            StringBuilder builder = new StringBuilder();
+            for(Object predicate : mComponents) {
+                if(builder.length() != 0) {
+                    builder.append(" and ");
+                }
+                builder.append(predicate.toString());
+            }            
+            return "(" + builder.toString() + ")";
+        }
     }
 
     private static class OrPredicate<T> implements Predicate<T> {
-        private final Iterable<? extends Predicate<? super T>> components;
+        private final List<? extends Predicate<? super T>> mComponents;
 
-        private OrPredicate(Iterable<? extends Predicate<? super T>> components) {
-            this.components = components;
+        private OrPredicate(Collection<? extends Predicate<? super T>> components) {
+            List<Predicate<? super T>> list = new LinkedList<Predicate<? super T>>(components);
+            mComponents = Collections.unmodifiableList(list);
         }
 
         public boolean apply(T t) {
-            for (Predicate<? super T> predicate : components) {
+            for (Predicate<? super T> predicate : mComponents) {
                 if (predicate.apply(t)) {
                     return true;
                 }
             }
             return false;
         }
+        
+        @Override
+        public String toString() {
+            
+            if(mComponents.size() == 0) {
+                return "(<empty-or> [false])";
+            }
+            
+            if(mComponents.size() == 1) {
+                Object predicate = mComponents.get(0); 
+                return "(<single-or> " + predicate.toString() + ")";
+            }
+            
+            StringBuilder builder = new StringBuilder();
+            for(Object predicate : mComponents) {
+                if(builder.length() != 0) {
+                    builder.append(" or ");
+                }
+                builder.append(predicate.toString());
+            }
+            
+            return "(" + builder.toString() + ")";
+        }
     }
 
     private static class NotPredicate<T> implements Predicate<T> {
-        private final Predicate<? super T> predicate;
+        private final Predicate<? super T> mPredicate;
 
         private NotPredicate(Predicate<? super T> predicate) {
-            this.predicate = predicate;
+            this.mPredicate = predicate;
         }
 
         public boolean apply(T t) {
-            return !predicate.apply(t);
+            return !mPredicate.apply(t);
+        }
+        
+        @Override
+        public String toString() {
+            return "(not " + mPredicate.toString() + ")";
         }
     }
 }

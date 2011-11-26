@@ -17,10 +17,23 @@ public class FilterParser {
 
         final int action;
         final String value;
+        
+        @Override
+        public String toString() {
+            return "[" + ACTION_NAMES[action] + " " + value + "]";
+        }
     }
 
     static public final int INCLUDE_ACTION = 1;
     static public final int EXCLUDE_ACTION = 2;
+    
+    static private final String INCLUDE_ACTION_NAME = "include";
+    static private final String EXCLUDE_ACTION_NAME = "exclude";
+    static private final String [] ACTION_NAMES = new String[] {
+        "",
+        INCLUDE_ACTION_NAME,
+        EXCLUDE_ACTION_NAME
+    };
 
     static private final char INCLUDE_ACTION_SYMBOL = '+';
     static private final char EXCLUDE_ACTION_SYMBOL = '-';

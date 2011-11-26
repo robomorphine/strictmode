@@ -6,18 +6,24 @@ import java.lang.annotation.Annotation;
 
 import android.test.suitebuilder.TestMethod;
 
-
 public class HasAnnotation implements Predicate<TestMethod> {
 
-    private Predicate<TestMethod> hasMethodOrClassAnnotation;
+    private final Class<? extends Annotation> mAnnotationClass;
+    private final Predicate<TestMethod> mHasMethodOrClassAnnotation;
 
     @SuppressWarnings("all")
     public HasAnnotation(Class<? extends Annotation> annotationClass) {
-        this.hasMethodOrClassAnnotation = or(new HasMethodAnnotation(annotationClass),
+        mAnnotationClass = annotationClass;
+        this.mHasMethodOrClassAnnotation = or(new HasMethodAnnotation(annotationClass),
                                              new HasClassAnnotation(annotationClass));
     }
 
     public boolean apply(TestMethod testMethod) {
-        return hasMethodOrClassAnnotation.apply(testMethod);
+        return mHasMethodOrClassAnnotation.apply(testMethod);
+    }
+    
+    @Override
+    public String toString() {
+        return "[has-annotation " + mAnnotationClass.getSimpleName() + "]";
     }
 }
