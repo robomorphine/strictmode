@@ -82,6 +82,23 @@ public class Predicates {
     public static <T> Predicate<T> not(Predicate<? super T> predicate) {
         return new NotPredicate<T>(predicate);
     }
+    
+    public static <T> Predicate<T> alwaysTrue() {
+        return new TruePredicate<T>();
+    }
+    
+    public static <T> Predicate<T> alwaysTrue(T t) {
+        return new TruePredicate<T>();
+    }
+    
+    public static <T> Predicate<T> alwaysFalse() {
+        return new FalsePredicate<T>();
+    }
+    
+    public static <T> Predicate<T> alwaysFalse(T t) {
+        return new FalsePredicate<T>();
+    }
+
 
     private static class AndPredicate<T> implements Predicate<T> {
         private final List<? extends Predicate<? super T>> mComponents;
@@ -177,6 +194,28 @@ public class Predicates {
         @Override
         public String toString() {
             return "(not " + mPredicate.toString() + ")";
+        }
+    }
+    
+    private static class TruePredicate<T> implements Predicate<T> {
+        public boolean apply(T t) {
+            return true;
+        }
+        
+        @Override
+        public String toString() {
+            return "[true]";
+        }        
+    }
+    
+    private static class FalsePredicate<T> implements Predicate<T> {
+        public boolean apply(T t) {
+            return false;
+        }
+        
+        @Override
+        public String toString() {
+            return "[false]";
         }
     }
 }

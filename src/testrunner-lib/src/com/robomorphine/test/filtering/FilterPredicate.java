@@ -217,21 +217,9 @@ public class FilterPredicate implements Predicate<TestMethod> {
             return KNOWN_ALIASES.get(val);
         }
         return val;
-    }
+    }   
 
-    private static class TruePredicate implements Predicate<TestMethod> {
-        @Override
-        public boolean apply(TestMethod t) {
-            return true;
-        }
-        
-        @Override
-        public String toString() {
-            return "[true]";
-        }
-    }
-
-    private final static TruePredicate TRUE_PREDICATE = new TruePredicate();
+    private final static Predicate<TestMethod> TRUE_PREDICATE = Predicates.<TestMethod>alwaysTrue();
 
     private final Predicate<TestMethod> m_predicate;
 

@@ -1,6 +1,8 @@
 
 package com.robomorphine.test.testrunner;
 
+import com.robomorphine.test.annotation.DisabledTest;
+import com.robomorphine.test.annotation.EnabledTest;
 import com.robomorphine.test.annotation.LongTest;
 import com.robomorphine.test.annotation.ManualTest;
 import com.robomorphine.test.annotation.NonUiTest;
@@ -77,6 +79,11 @@ public class TestFilterTestRunner extends TestCase {
 
     }
     
+    @NonUiTest
+    public void testAsNonUi() {
+
+    }
+    
     @UiTest
     @PerformanceTest
     public void testAsUiPerformance() {
@@ -86,6 +93,16 @@ public class TestFilterTestRunner extends TestCase {
     @NonUiTest
     @PerformanceTest
     public void testAsNonUiPerformance() {
+
+    }
+    
+    @EnabledTest
+    public void testEnabled() {
+
+    }
+    
+    @DisabledTest("test")
+    public void testDisabled() {
 
     }
 }
