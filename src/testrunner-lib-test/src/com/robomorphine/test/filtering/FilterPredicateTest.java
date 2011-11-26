@@ -1,5 +1,7 @@
 package com.robomorphine.test.filtering;
 
+import com.robomorphine.test.annotation.DisabledTest;
+import com.robomorphine.test.annotation.EnabledTest;
 import com.robomorphine.test.annotation.LongTest;
 import com.robomorphine.test.annotation.ManualTest;
 import com.robomorphine.test.annotation.NonUiTest;
@@ -418,4 +420,43 @@ public class FilterPredicateTest extends TestCase
         assertFalse(predicate.apply(TM_ui)); 
         assertTrue(predicate.apply(TM_nonui));
 	}
+	
+	static class MethodDisabledTestCase extends TestCase
+    {   
+        @DisabledTest("For test reasons") public void testDisabledTestMethod(){}
+        @EnabledTest public void testEnabledTestMethod(){}
+        public void testMethod(){}      
+    }
+    
+    @DisabledTest("For test reasons") 
+    static class ClassDisabledTestCase extends TestCase
+    {   
+        @DisabledTest("For test reasons") public void testDisabledTestMethod(){}
+        @EnabledTest public void testEnabledTestMethod(){}
+        public void testMethod(){}        
+    }
+	
+	public void testFilter_disabled_method()
+    {	    
+        FilterPredicate predicate = new FilterPredicate("");
+        
+        TestMethod disabled = new TestMethod("testDisabledTestMethod", MethodDisabledTestCase.class);
+        TestMethod enabled = new TestMethod("testEnabledTestMethod", MethodDisabledTestCase.class);
+        TestMethod none = new TestMethod("testMethod", MethodDisabledTestCase.class);
+        assertFalse(predicate.apply(disabled));
+        assertTrue(predicate.apply(enabled));
+        assertTrue(predicate.apply(none));
+    }
+	
+	public void testFilter_disabled_class()
+    {       
+        FilterPredicate predicate = new FilterPredicate("");
+        
+        TestMethod disabled = new TestMethod("testDisabledTestMethod", ClassDisabledTestCase.class);
+        TestMethod enabled = new TestMethod("testEnabledTestMethod", ClassDisabledTestCase.class);
+        TestMethod none = new TestMethod("testMethod", ClassDisabledTestCase.class);
+        assertFalse(predicate.apply(disabled));
+        assertTrue(predicate.apply(enabled));
+        assertFalse(predicate.apply(none));
+    }
 }

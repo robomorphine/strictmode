@@ -9,6 +9,7 @@ import com.robomorphine.test.annotation.StabilityTest;
 import com.robomorphine.test.annotation.UiTest;
 import com.robomorphine.test.filtering.FilterParser.FilterEntry;
 import com.robomorphine.test.predicate.HasAnnotation;
+import com.robomorphine.test.predicate.IsEnabled;
 import com.robomorphine.test.predicate.IsUiTest;
 import com.robomorphine.test.predicate.Predicate;
 import com.robomorphine.test.predicate.Predicates;
@@ -24,6 +25,7 @@ import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -85,7 +87,10 @@ import java.util.Map;
  *    
  * But some annotations have special meaning and a handled in a different way then all other annotations are.
  * 
- * First group of special annotation are:
+ * First special annotation is "com.robomorphine.test.annotation.DisabledTest". When test 
+ * is marked with such annotation it will not run. 
+ * 
+ * Second group of special annotation are:
  * 
  *  UiTest - com.robomorphine.test.annotation.UiTest
  *  NonUiTest - com.robomorphine.test.annotation.NonUiTest
@@ -106,7 +111,7 @@ import java.util.Map;
  * then only ui tests are filtered in. If "-ui" is specified, then only non-ui tests are filtered in.
  * If "+ui"/"-ui" is omitted from filter then both ui and non-ui tests are filtered in.
  * 
- * Second (and last) group of special annotations represent test types:
+ * Third (and last) group of special annotations represent test types:
  *  
  *   small/short - com.robomorphine.test.annotation.SmallTest/.ShortTest
  *   medium - android.test.suitebuilder.annotation.MediumTest
@@ -261,8 +266,8 @@ public class FilterPredicate implements Predicate<TestMethod> {
 
     @SuppressWarnings("all")
     private Predicate<TestMethod> createPredicate(List<FilterEntry> filterEntries) {
-        if (filterEntries == null || filterEntries.size() == 0) {
-            return TRUE_PREDICATE;
+        if (filterEntries == null) {
+            filterEntries = new LinkedList<FilterEntry>();
         }
 
         List<Predicate<TestMethod>> orPredicates = new ArrayList<Predicate<TestMethod>>(
@@ -277,6 +282,9 @@ public class FilterPredicate implements Predicate<TestMethod> {
                 addPredicate(filterEntry.action, annotation, orPredicates, andPredicates);
             }
         }
+        
+        /* skip disabled tests */
+        andPredicates.add(new IsEnabled());
 
         if (orPredicates.isEmpty())
             orPredicates.add(TRUE_PREDICATE);
