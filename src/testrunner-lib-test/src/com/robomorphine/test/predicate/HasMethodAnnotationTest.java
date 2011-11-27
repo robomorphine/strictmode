@@ -8,8 +8,7 @@ import junit.framework.TestCase;
 
 public class HasMethodAnnotationTest extends TestCase {
     
-    @SuppressWarnings("unused")
-    private static class ExampleClass extends TestCase {
+    static class ExampleClass extends TestCase {
         @ManualTest public void withAnnotation() {}        
         public void noAnnotation() {}
     }

@@ -8,14 +8,12 @@ import junit.framework.TestCase;
 
 public class HasClassAnnotationTest extends TestCase {
     
-    @SuppressWarnings("all")
     @ManualTest
-    private static class TestClassWithAnnotation extends TestCase {
+    static class TestClassWithAnnotation extends TestCase {
         public void testMethod(){}
     }
-    
-    @SuppressWarnings("all")
-    private static class TestClassNoAnnotation extends TestCase {
+        
+    static class TestClassNoAnnotation extends TestCase {
         public void testMethod(){}
     }
     
