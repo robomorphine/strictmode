@@ -1,4 +1,4 @@
-package com.robomorphine.test.filtering;
+package com.robomorphine.test.predicate;
 
 import com.robomorphine.test.predicate.Predicate;
 import com.robomorphine.test.predicate.Predicates;

@@ -1,4 +1,4 @@
-package com.robomorphine.test.filtering;
+package com.robomorphine.test.predicate;
 
 import com.robomorphine.test.annotation.LongTest;
 import com.robomorphine.test.annotation.ManualTest;
