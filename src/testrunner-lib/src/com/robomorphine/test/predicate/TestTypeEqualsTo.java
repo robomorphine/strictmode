@@ -20,6 +20,16 @@ import java.util.List;
 import java.util.Map;
 
 public class TestTypeEqualsTo implements Predicate<TestMethod> {
+      
+    public enum TestType {
+        Small,
+        Medium,
+        Large,
+        Performance,
+        Stability,
+        Manual
+    }
+    
     /*
      * Note: Order is important. If multiple annotation are used, then first
      * annotation from the list is considered the effective one. All other
@@ -81,7 +91,7 @@ public class TestTypeEqualsTo implements Predicate<TestMethod> {
         m_testType = dealias(testTypeAnnotation);
     }
 
-    Class<? extends Annotation> getTestType(TestMethod t) {
+    static Class<? extends Annotation> getTestTypeAnnotation(TestMethod t) {
         // Determine test type
 
         // 1. Use test method annotations.
@@ -99,11 +109,29 @@ public class TestTypeEqualsTo implements Predicate<TestMethod> {
         // 3. So no test type annotations on method or class? Default to
         // SmallTest.
         return SmallTest.class;
-    }
+    }    
+    
+    public static TestType getTestType(TestMethod t) {
+        Class<? extends Annotation> annotation = getTestTypeAnnotation(t);
+        if(annotation == SmallTest.class) {
+            return TestType.Small;
+        } else if(annotation == MediumTest.class) {
+            return TestType.Medium;
+        } else if(annotation == LargeTest.class) {
+            return TestType.Large;
+        } else if(annotation == PerformanceTest.class) {
+            return TestType.Performance;
+        } else if(annotation == StabilityTest.class) {
+            return TestType.Stability;
+        } else if(annotation == ManualTest.class) {
+            return TestType.Manual;
+        }
+        throw new IllegalArgumentException();
+    }    
 
     @Override
     public boolean apply(TestMethod t) {
-        return getTestType(t).equals(m_testType);
+        return getTestTypeAnnotation(t).equals(m_testType);
     }
     
     @Override

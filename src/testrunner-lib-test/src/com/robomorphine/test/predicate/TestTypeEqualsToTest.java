@@ -6,6 +6,7 @@ import com.robomorphine.test.annotation.PerformanceTest;
 import com.robomorphine.test.annotation.ShortTest;
 import com.robomorphine.test.annotation.StabilityTest;
 import com.robomorphine.test.predicate.TestTypeEqualsTo;
+import com.robomorphine.test.predicate.TestTypeEqualsTo.TestType;
 
 import android.test.suitebuilder.TestMethod;
 import android.test.suitebuilder.annotation.LargeTest;
@@ -31,7 +32,7 @@ public class TestTypeEqualsToTest extends TestCase
 				
 		@LongTest   public void testLongTestMethod(){}
 		@LargeTest 	public void testLargeTestMethod(){}
-		@android.test.suitebuilder.annotation.LargeTest    public void testAndroidLargeTestMethod(){}
+		@android.test.suitebuilder.annotation.LargeTest public void testAndroidLargeTestMethod(){}
 		
 		@PerformanceTest public void testPerformanceTestMethod(){}		
 		@StabilityTest public void testStabilityTestMethod(){}
@@ -270,5 +271,46 @@ public class TestTypeEqualsToTest extends TestCase
 		
 		method = new TestMethod("testNoAnnotationsTestMethod", Annotations0TestCase.class);
 		assertTrue(typeEquals(method, SmallTest.class));
+	}
+	
+	public void testTestType() {
+
+        TestMethod method;
+        
+        method = new TestMethod("testShortTestMethod", NoAnnotationsTestCase.class);
+        assertEquals(TestType.Small, TestTypeEqualsTo.getTestType(method));
+        
+        method = new TestMethod("testSmallTestMethod", NoAnnotationsTestCase.class);
+        assertEquals(TestType.Small, TestTypeEqualsTo.getTestType(method));
+        
+        method = new TestMethod("testAndroidSmallTestMethod", NoAnnotationsTestCase.class);
+        assertEquals(TestType.Small, TestTypeEqualsTo.getTestType(method));
+        
+        method = new TestMethod("testMediumTestMethod", NoAnnotationsTestCase.class);
+        assertEquals(TestType.Medium, TestTypeEqualsTo.getTestType(method));
+
+        method = new TestMethod("testAndroidMediumTestMethod", NoAnnotationsTestCase.class);
+        assertEquals(TestType.Medium, TestTypeEqualsTo.getTestType(method));
+        
+        method = new TestMethod("testAndroidMediumTestMethod", NoAnnotationsTestCase.class);
+        assertEquals(TestType.Medium, TestTypeEqualsTo.getTestType(method));
+        
+        method = new TestMethod("testLongTestMethod", NoAnnotationsTestCase.class);
+        assertEquals(TestType.Large, TestTypeEqualsTo.getTestType(method));
+        
+        method = new TestMethod("testLargeTestMethod", NoAnnotationsTestCase.class);
+        assertEquals(TestType.Large, TestTypeEqualsTo.getTestType(method));
+        
+        method = new TestMethod("testAndroidLargeTestMethod", NoAnnotationsTestCase.class);
+        assertEquals(TestType.Large, TestTypeEqualsTo.getTestType(method));
+        
+        method = new TestMethod("testPerformanceTestMethod", NoAnnotationsTestCase.class);
+        assertEquals(TestType.Performance, TestTypeEqualsTo.getTestType(method));
+        
+        method = new TestMethod("testStabilityTestMethod", NoAnnotationsTestCase.class);
+        assertEquals(TestType.Stability, TestTypeEqualsTo.getTestType(method));
+        
+        method = new TestMethod("testManualTestMethod", NoAnnotationsTestCase.class);
+        assertEquals(TestType.Manual, TestTypeEqualsTo.getTestType(method));
 	}
 }
