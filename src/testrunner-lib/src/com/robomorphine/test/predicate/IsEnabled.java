@@ -5,43 +5,52 @@ import com.robomorphine.test.annotation.EnabledTest;
 
 import android.test.suitebuilder.TestMethod;
 
-public class IsEnabled implements Predicate<TestMethod>{
+import java.lang.annotation.Annotation;
+
+public class IsEnabled extends BoolAnnotation {
     
-    private final HasMethodAnnotation mMethodDisabledAnnotation;
-    private final HasMethodAnnotation mMethodEnabledAnnotation;
-    private final HasClassAnnotation mClassHasDisabledAnnotation;
-    private final HasClassAnnotation mClassHasEnabledAnnotation;
-        
+    static private IsEnabled sEnabled = new IsEnabled();
+    
     public IsEnabled() {
-        mMethodDisabledAnnotation = new HasMethodAnnotation(DisabledTest.class);
-        mMethodEnabledAnnotation = new HasMethodAnnotation(EnabledTest.class);        
-        mClassHasDisabledAnnotation = new HasClassAnnotation(DisabledTest.class);
-        mClassHasEnabledAnnotation = new HasClassAnnotation(EnabledTest.class);
+        super(EnabledTest.class, DisabledTest.class);        
     }
     
     @Override
-    public boolean apply(TestMethod t) {
-        if(mMethodDisabledAnnotation.apply(t)) {
-            return false;
-        }
-        
-        if(mMethodEnabledAnnotation.apply(t)) {
-            return true;
-        }
-        
-        if(mClassHasDisabledAnnotation.apply(t)) {
-            return false;
-        }
-        
-        if(mClassHasEnabledAnnotation.apply(t)) {
-            return true;
-        }       
-        
+    protected boolean negativeHasPriority() {
         return true;
+    }
+    
+    @Override
+    protected Class<? extends Annotation> calculateDefaultAnnotation(TestMethod method) {
+        return getPositive();
     }
     
     @Override
     public String toString() {
         return "[is-enabled]";
+    }
+    
+    /**
+     * Returns null if test is enabled, returns reasons if test is disabled.
+     */
+    public static String getDisabledReason(TestMethod method) {
+        IsEnabled enabled = new IsEnabled();
+        if(enabled.apply(method)) {
+            return null;
+        }
+        
+        DisabledTest annotation = method.getAnnotation(DisabledTest.class);
+        if(annotation == null) {
+            annotation = method.getEnclosingClass().getAnnotation(DisabledTest.class);
+        }
+        
+        if(annotation != null) {
+            return annotation.value();
+        }        
+        return null;
+    }
+    
+    public static boolean isEnabled(TestMethod method) {
+        return sEnabled.apply(method);
     }
 }
