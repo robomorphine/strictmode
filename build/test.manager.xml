@@ -61,26 +61,6 @@
                         <echo>Found direct target candidate: ${target.apk}</echo>
                     </then>
                </if>
-                            
-               <for param="file">
-                  <fileset dir="${drop.build.mode.dir}" 
-                           includes="${target.file.base}*.apk" 
-                           excludes="*.test.apk" />
-                  <sequential>
-                      <if>
-                        <condition>
-                            <isset property="target.apk" />
-                        </condition>
-                        <then>
-                              <echo level="error" >Ignored possible target candidate: @{file}</echo>
-                        </then>
-                          <else>
-                              <property name="target.apk" location="@{file}" />
-                            <echo>Found target candidate: @{file}</echo>
-                        </else>
-                    </if>
-                  </sequential>
-              </for>
     
               <echo>#################################################</echo>
               <echo></echo>

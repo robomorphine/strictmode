@@ -1,5 +1,5 @@
 package com.robomorphine.test.testrunner;
 
-public class RobomorphineTestRunner {
-
+public class RobomorphineTestRunner extends JUnitReportTestRunner {
+    
 }

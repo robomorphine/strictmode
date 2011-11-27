@@ -65,7 +65,7 @@ import android.util.Log;
  * {@code adb shell am instrument -w -e reportFile my-report-file.xml}
  * </pre>
  */
-public class JUnitReportTestRunner extends FilterTestRunner 
+public class JUnitReportTestRunner extends InstrumentationTestRunner 
 {
 	/**
      * Name of the report file(s) to write, may contain $(suite) in multiFile mode.

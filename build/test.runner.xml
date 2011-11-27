@@ -38,7 +38,7 @@
                       Filter that is used to select tests for run (f.e. "s+m+l", see FilterTestRunner)
     tester.report.dir  - optional, default to current directory. Directory where report file is placed.
     tester.report.file - optional, defaults to [teseter.apk: *.apk -> *.xml]. Filename for report.
-    tester.runner   - optional, default to android.test.JUnitReportTestRunner. Determines which runner is used to run tests.
+    tester.runner   - optional, default to com.robomorphine.test.testrunner.RobomorphineTestRunner. Determines which runner is used to run tests.
     tester.listonly - optional, defaults to false. If set to true then tests are just listed in report but they never run.
     tester.args     - optional, defaults to empty string. Extra options that are passed to adb during test launch.
                       Normally this is list of "-e <name> <value>".
@@ -111,7 +111,7 @@
     </sequential>
 
     <!-- default tester.runner to  report runner -->
-    <property name="tester.runner" value="android.test.JUnitReportTestRunner" />
+    <property name="tester.runner" value="com.robomorphine.test.testrunner.RobomorphineTestRunner" />
 
     <!-- default tester.listonly to false -->
     <property name="tester.listonly" value="false" />

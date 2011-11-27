@@ -8,7 +8,7 @@ import android.test.InstrumentationTestRunner;
 import android.test.suitebuilder.TestMethod;
 
 import com.robomorphine.test.filtering.FilterPredicate;
-import com.robomorphine.test.predicate.Predicate;
+import com.android.internal.util.Predicate;
 
 /**
  * This class will deprecate "size" argument and add "filter" argument instead.
@@ -41,7 +41,12 @@ public class FilterTestRunner extends InstrumentationTestRunner
 	List<Predicate<TestMethod>> getBuilderRequirements() 
 	{			
 		List<Predicate<TestMethod>> list = new ArrayList<Predicate<TestMethod>>();
-		list.add(m_filter);
+		list.add(new Predicate<TestMethod>() {            
+            @Override
+            public boolean apply(TestMethod t) {         
+                return m_filter.apply(t);
+            }
+        });
 		return list;
 	}
 }
