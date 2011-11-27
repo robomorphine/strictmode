@@ -1,26 +1,31 @@
 package com.robomorphine.test.predicate;
 
-import com.robomorphine.test.annotation.ManualTest;
-
 import android.test.suitebuilder.TestMethod;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 import junit.framework.TestCase;
 
 public class HasAnnotationTest extends TestCase {
     
-    @ManualTest
+    @Retention(RetentionPolicy.RUNTIME)
+    @interface SimpleAnnotation {        
+    }
+    
+    @SimpleAnnotation
     static class ClassAnnotations extends TestCase {
         public void testMethod(){}
     }
     
     static class MethodAnnotations extends TestCase {
-        @ManualTest
+        @SimpleAnnotation
         public void testMethod(){}
     }
     
-    @ManualTest
+    @SimpleAnnotation
     static class ClassAndMethodAnnotations extends TestCase {
-        @ManualTest
+        @SimpleAnnotation
         public void testMethod(){}
     }
     
@@ -34,7 +39,7 @@ public class HasAnnotationTest extends TestCase {
         TestMethod classAndMethodAnnotations = new TestMethod("testMethod", ClassAndMethodAnnotations.class);
         TestMethod noAnnotations = new TestMethod("testMethod", NoAnnotations.class);
         
-        HasAnnotation predicate = new HasAnnotation(ManualTest.class);
+        HasAnnotation predicate = new HasAnnotation(SimpleAnnotation.class);
         assertTrue(predicate.apply(classAnnotations));
         assertTrue(predicate.apply(methodAnnotations));
         assertTrue(predicate.apply(classAndMethodAnnotations));

@@ -1,21 +1,25 @@
 package com.robomorphine.test.predicate;
 
-import com.robomorphine.test.annotation.ManualTest;
-
 import android.test.suitebuilder.TestMethod;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 import junit.framework.TestCase;
 
 public class HasMethodAnnotationTest extends TestCase {
     
+    @Retention(RetentionPolicy.RUNTIME)
+    @interface SimpleAnnotation {        
+    }
+    
     static class ExampleClass extends TestCase {
-        @ManualTest public void withAnnotation() {}        
+        @SimpleAnnotation public void withAnnotation() {}        
         public void noAnnotation() {}
     }
-   
     
     public void testMethodHasAnnotation() {
-        HasMethodAnnotation predicate = new HasMethodAnnotation(ManualTest.class);
+        HasMethodAnnotation predicate = new HasMethodAnnotation(SimpleAnnotation.class);
         
         TestMethod withAnnotation = new TestMethod("withAnnotation", ExampleClass.class);
         TestMethod noAnnotation = new TestMethod("noAnnotation", ExampleClass.class);
