@@ -11,7 +11,7 @@ public class IsSubclassOf implements Predicate<TestMethod>{
     
     @Override
     public boolean apply(TestMethod t) {
-        return mSuper.isAssignableFrom(t.getClass());
+        return mSuper.isAssignableFrom(t.getEnclosingClass());
     }
     
     @Override
