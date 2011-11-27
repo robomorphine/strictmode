@@ -300,13 +300,13 @@ public class FilterPredicate implements Predicate<TestMethod> {
                     andPredicates.add(new IsUiTest());
                     break;
                 case FilterParser.EXCLUDE_ACTION:
-                    andPredicates.add(Predicates.not(new IsUiTest()));
+                    andPredicates.add(Predicates.<TestMethod>not(new IsUiTest()));
                     break;
             }
         } else if(annotation == NonUiTest.class) {        
             switch(action) {
                 case FilterParser.INCLUDE_ACTION:
-                    andPredicates.add(Predicates.not(new IsUiTest()));
+                    andPredicates.add(Predicates.<TestMethod>not(new IsUiTest()));
                     break;
                 case FilterParser.EXCLUDE_ACTION:
                     andPredicates.add(new IsUiTest());
