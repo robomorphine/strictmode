@@ -65,8 +65,7 @@ import android.util.Log;
  * {@code adb shell am instrument -w -e reportFile my-report-file.xml}
  * </pre>
  */
-public class JUnitReportTestRunner extends InstrumentationTestRunner 
-{
+public class JUnitReportTestRunner extends InstrumentationTestRunner {
 	/**
      * Name of the report file(s) to write, may contain $(suite) in multiFile mode.
      */
@@ -76,11 +75,6 @@ public class JUnitReportTestRunner extends InstrumentationTestRunner
      * written to the test application's data area.
      */
     private static final String ARG_REPORT_DIR = "reportDir";
-    /**
-     * If true, stack traces in the report will be filtered to remove common noise (e.g. framework
-     * methods).
-     */
-    private static final String ARG_FILTER_TRACES = "filterTraces";
     /**
      * If true, produce a separate file for each test suite.  By default a single report is created
      * for all suites.
@@ -98,75 +92,59 @@ public class JUnitReportTestRunner extends InstrumentationTestRunner
     private JUnitReportListener mListener;
     private String mReportFile;
     private String mReportDir;
-    private boolean mFilterTraces = true;
     private boolean mMultiFile = false;
-
-	@Override
-	public void onCreate(Bundle arguments)
-	{
-		if (arguments != null)
-		{
-			mReportFile = arguments.getString(ARG_REPORT_FILE);
-			mReportDir = arguments.getString(ARG_REPORT_DIR);
-			mFilterTraces = getBooleanArgument(arguments, ARG_FILTER_TRACES, true);
-			mMultiFile = getBooleanArgument(arguments, ARG_MULTI_FILE, false);
-		}
-
-		if (mReportFile == null)
-		{
-			mReportFile = mMultiFile ? DEFAULT_MULTI_REPORT_FILE : DEFAULT_SINGLE_REPORT_FILE;
-		}
-
-		super.onCreate(arguments);
-		checkPermission();
-	}
-	
-	private void checkPermission()
-    {
-        
-        String permission = "android.permission.WRITE_EXTERNAL_STORAGE";
-        int res = getContext().checkCallingOrSelfPermission(permission);
-        if(res != PackageManager.PERMISSION_GRANTED)
-        {
-            String msg = "Cannot use "+getClass().getName()+" without permission "+permission;
-            Log.e(getClass().getSimpleName(), msg);
-            throw new SecurityException(msg); 
-        }    
+    
+    private static boolean getBooleanArgument(Bundle arguments, String name, boolean defaultValue) {
+        String value = arguments.getString(name);
+        if (value == null) {
+            return defaultValue;
+        } else {
+            return Boolean.parseBoolean(value);
+        }
     }
 
-	private boolean getBooleanArgument(Bundle arguments, String name, boolean defaultValue)
-	{
-		String value = arguments.getString(name);
-		if (value == null)
-		{
-			return defaultValue;
-		}
-		else
-		{
-			return Boolean.parseBoolean(value);
-		}
-	}
+    @Override
+    public void onCreate(Bundle arguments) {
+        if (arguments != null) {
+            mReportFile = arguments.getString(ARG_REPORT_FILE);
+            mReportDir = arguments.getString(ARG_REPORT_DIR);
+            mMultiFile = getBooleanArgument(arguments, ARG_MULTI_FILE, false);
+        }
 
-	@Override
-	protected AndroidTestRunner getAndroidTestRunner()
-	{
-		AndroidTestRunner runner = new AndroidTestRunner();
-		mListener = new JUnitReportListener(getContext(), getTargetContext(), mReportFile,
-				mReportDir, mFilterTraces, mMultiFile);
-		runner.addTestListener(mListener);
-		return runner;
-	}
+        if (mReportFile == null) {
+            mReportFile = mMultiFile ? DEFAULT_MULTI_REPORT_FILE : DEFAULT_SINGLE_REPORT_FILE;
+        }
 
-	@Override
-	public void finish(int resultCode, Bundle results)
-	{
-		if (mListener != null)
-		{
-			mListener.close();
-		}
+        super.onCreate(arguments);
+        checkPermission();
+    }
+	
+    private void checkPermission() {
 
-		super.finish(resultCode, results);
+        String permission = "android.permission.WRITE_EXTERNAL_STORAGE";
+        int res = getContext().checkCallingOrSelfPermission(permission);
+        if (res != PackageManager.PERMISSION_GRANTED) {
+            String msg = "Cannot use " + getClass().getName() + " without permission " + permission;
+            Log.e(getClass().getSimpleName(), msg);
+            throw new SecurityException(msg);
+        }
+    }
 
-	}
+    @Override
+    protected AndroidTestRunner getAndroidTestRunner() {
+        AndroidTestRunner runner = new AndroidTestRunner();
+        mListener = new JUnitReportListener(getContext(), getTargetContext(), mReportFile,
+                mReportDir, mMultiFile);
+        runner.addTestListener(mListener);
+        return runner;
+    }
+
+    @Override
+    public void finish(int resultCode, Bundle results) {
+        if (mListener != null) {
+            mListener.close();
+        }
+        super.finish(resultCode, results);
+    }
     
 }
