@@ -3,9 +3,9 @@
     
     <property name="project.name" value="test.runner" />
                 
-    <import file="build.properties.xml" />
-    <import file="${build.dir}/ant-tasks.xml" />
-    <import file="${build.dir}/tools.xml" />
+    <import file="builder.properties.xml" />
+    <import file="${builder.dir}/ant-tasks.xml" />
+    <import file="${builder.dir}/tools.xml" />
     
     <fail unless="sdk.dir" message="SDK dir is not set." />
     

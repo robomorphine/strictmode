@@ -49,11 +49,11 @@
            <start-emulator avd="${avd}"/>
            <wait-emulator />
             
-           <subant antfile="${build.dir}/test.manager.xml"
+           <subant antfile="${builder.dir}/test.manager.xml"
                    target="create-test-report" 
                    inheritall="true">
                <property name="build.mode" value="@{build-mode}" />
-               <fileset dir="${build.dir}" includes="test.manager.xml" />
+               <fileset dir="${builder.dir}" includes="test.manager.xml" />
            </subant>
             
            <kill-emulators/>

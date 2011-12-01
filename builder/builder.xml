@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="build" >
+<project name="builder" >
 
 <!--############################################
     #                Check validity               #
@@ -44,16 +44,16 @@
     #              imports                   #
     ##########################################-->
     
-    <!-- build properties -->
-    <import file="build.properties.xml" />
+    <!-- builder properties -->
+    <import file="builder.properties.xml" />
     
     <!-- all custom and 3d-party tasks -->
-    <import file="${build.dir}/ant-tasks.xml" />
+    <import file="${builder.dir}/ant-tasks.xml" />
     <!-- import tools -->
-    <import file="${build.dir}/tools.xml" />
+    <import file="${builder.dir}/tools.xml" />
 
     <!-- import project type specific build file -->
-    <property name="build.imported" value="true" />
+    <property name="builder.imported" value="true" />
     <import file="android.${project.type}.xml"  />
     
 </project>

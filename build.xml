@@ -4,8 +4,8 @@
   
   <property name="project.name" value="builder" />
 		
-  <import file="build/build.properties.xml" />
-  <import file="${build.dir}/tools.xml" />
+  <import file="builder/builder.properties.xml" />
+  <import file="${builder.dir}/tools.xml" />
 	
   <property name="tester.filter" value="s+m+l" />
 	<property name="cc.blocks.threshold" value="90" />
@@ -60,14 +60,14 @@
   </target>
 
   <target name="test" depends="defaults" >
-    <ant antfile="${build.dir}/test.manager.xml" 
+    <ant antfile="${builder.dir}/test.manager.xml" 
     	   target="create-test-report" inheritall="true">
     	<property name="build.mode" value="${build.mode}" />    	
 	  </ant>
   </target>
 	
 	<target name="test-on-emulator" depends="defaults" >
-		<ant antfile="${build.dir}/test.manager.emulator.xml" 
+		<ant antfile="${builder.dir}/test.manager.emulator.xml" 
 			   target="test-on-emulator" inheritall="true">
       <property name="build.mode"  value="${build.mode}" />
 			<property name="test.target" value="${test.target}" />      
@@ -75,7 +75,7 @@
   </target>
 	
 	<target name="test-on-all-emulators" depends="defaults" >
-	    <ant antfile="${build.dir}/test.manager.emulator.xml" 
+	    <ant antfile="${builder.dir}/test.manager.emulator.xml" 
 	             target="test-on-all-emulators" inheritall="true" >
 	      <property name="build.mode"  value="${build.mode}" />
 	      <property name="test.targets" value="${test.targets}" />	      
@@ -89,7 +89,7 @@
 		<available file="${cc.file}" property="cc.file.exists" />
 		<fail unless="cc.file.exists" message="Code Coverage report does not exist: ${cc.file}" />
 		
-		<ant antfile="${build.dir}/tools.emulator.xml" 
+		<ant antfile="${builder.dir}/tools.emulator.xml" 
          target="check-code-coverage" inheritall="true" >			
       <property name="coverage.txt"  value="${cc.file}" />
       <property name="blocks.threshold" value="${cc.blocks.threshold}" />        
@@ -98,7 +98,7 @@
 	</target>
 	
 	<target name="check-test-report"  depends="defaults" >
-		<ant antfile="${build.dir}/test.manager.xml" 
+		<ant antfile="${builder.dir}/test.manager.xml" 
          target="check-test-report" inheritall="true" >     
 			<property name="build.mode"  value="${build.mode}" />      
     </ant>

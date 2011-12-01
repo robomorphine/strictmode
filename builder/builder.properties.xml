@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="build.properties" >
+<project name="builder.properties" >
 
 <!--###############################################################################
     #                  Properties                                                 #
     #                                                                             #
     #   project.dir - points to directory of current project                      #
-    #   build.dir   - points to build dir (.../build/)                            #
+    #   builder.dir   - points to build dir (.../builder/)                        #
     #   root.dir    - points to root dir                                          #
     #   drop.dir    - points to location where all build artifcats will be placed #
     #   prebuilt.libs.dir - points to location where all prebuild                 #
@@ -27,9 +27,9 @@
     <!-- directory of current project -->
     <dirname file="${ant.file}" property="project.dir"/>
     <!-- directory where all build scripts are located -->
-    <dirname file="${ant.file.build.properties}" property="build.dir" />
+    <dirname file="${ant.file.builder.properties}" property="builder.dir" />
     <!-- root directory -->
-    <property name="root.dir" location="${build.dir}/.."/>
+    <property name="root.dir" location="${builder.dir}/.."/>
     <!-- all final build files are dropped at this location -->
     <property name="drop.dir" location="${root.dir}/bin" />
     <!-- all prebuilt and 3rd party libs should be located here -->
@@ -41,8 +41,8 @@
     <property file="${root.dir}/local.properties" />
 
     <!-- global properties -->
-    <property file="${build.dir}/global.properties" />
+    <property file="${builder.dir}/global.properties" />
 
     <!-- only used to automate release builds without real release private key -->
-    <property file="${build.dir}/autobuild.properties" />
+    <property file="${builder.dir}/autobuild.properties" />
 </project>

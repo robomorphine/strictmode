@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="build.common" xmlns:ivy="antlib:org.apache.ivy.ant" >
+<project name="builder.common" xmlns:ivy="antlib:org.apache.ivy.ant" >
 
-    <fail unless="build.imported" 
-          message="Import build.xml in order to use ${ant.file.build.common} build file." />
+    <fail unless="builder.imported" 
+          message="Import builder.xml in order to use ${ant.file.builder.common} build file." />
 
     <!-- sets version name's revision part and then composes whole version name value -->
     <target name="set-version" >
@@ -67,7 +67,7 @@
 
 
     <target name="ivy-resolve" depends="set-version, -check-build-properties">
-        <ivy:settings file="${build.dir}/ivysettings.xml" />
+        <ivy:settings file="${builder.dir}/ivysettings.xml" />
         <ivy:retrieve pattern="libs/[artifact].[ext]" />
         <ivy:report todir="${drop.dir}/${build.mode}/ivy-reports" />
     </target>

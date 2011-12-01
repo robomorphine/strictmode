@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="build.android.jar" >
     
-    <fail unless="build.imported" 
+    <fail unless="builder.imported" 
           message="Import build.xml in order to use ${ant.file.build.android.jar} build file." />
     
     <!-- 
