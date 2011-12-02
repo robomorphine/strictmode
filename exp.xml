@@ -1,0 +1,53 @@
+<project name="exp" default="test" >
+	
+	<property name="project.name" value="builder" />
+	<import file="builder/builder.properties.xml" />
+  
+	<property name="java.drop.dir" value="${drop.dir}/builder/ant" />
+	
+	<target name="clean" >
+		<delete dir="${java.drop.dir}" />
+	</target>
+	
+	<target name="compile">
+		
+		<mkdir dir="${java.drop.dir}"/>
+    	
+    	<property name="default.java.source" value="1.6" />
+        <property name="default.java.target" value="1.6" />
+        <property name="default.java.debug"  value="true" />
+        <property name="default.java.verbose"  value="false" />
+		
+		<path id="java.classpath">
+            <fileset dir="${sdk.dir}/tools/lib" includes="*.jar" />
+        </path>
+    	
+    	<javac srcdir="${builder.dir}/java/src" 
+               destdir="${java.drop.dir}"
+               classpathref="java.classpath"
+               source="${default.java.source}" 
+               target="${default.java.target}" 
+               debug="${default.java.debug}"
+               verbose="${default.java.verbose}" 
+               includeantruntime="true"/>
+    </target>
+    
+    <target name="define">
+    	<path id="builder.classpath">
+    		<fileset dir="${sdk.dir}/tools/lib" includes="*.jar" />
+            <pathelement path="${java.drop.dir}" />
+        </path>
+        
+        <classloader name="builder.loader" classpathref="builder.classpath" />
+    	
+        <taskdef name="remote-test-runner" loaderref="builder.loader"
+                 classname="com.robomorphine.builder.ant.RemoteTestRunnerTask"
+                 classpathref="builder.classpath" />
+    	
+    </target>
+    
+    <target name="test" depends="compile, define">
+    	<remote-test-runner androidsdk="${sdk.dir}" package="com.robomorphine.test"/>
+    </target>
+	
+</project>
