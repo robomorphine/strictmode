@@ -2,75 +2,51 @@
 <project name="test.emulator.manager"  default="test-on-all-emulators" >
 
     <import file="test.manager.xml" /> 
-    <import file="tools.xml" />
-    <import file="tools.emulator.xml" />
     
     <property name="emulator.report.dir" location="${drop.build.mode.dir}/platform-test-reports" />
     <property name="emulator.tmp.dir" location="${drop.build.mode.dir}/tmp" />
         
     <macrodef name="test-on-emulator" >
-        <attribute name="test-target" default="8" />
+        <attribute name="test-target" default="andorid-14" />
         <attribute name="build-mode" default="debug" /> 
         <sequential>
-
-            <local name="avd" />
-            <property name="avd" value="avd-test-t@{test-target}" />
- 
-            <if>
-                <condition>
-                    <matches pattern="[0-9]+" string="@{test-target}" />
-                </condition>
-                <then>
-                    <echo message="Using target '@{test-target}' on emulator '${avd}'" /> 
-                </then>
-                <else>
-                    <fail message="Invalid test target: @{test-target}" />
-                </else>
-           </if>
-
-           <show-tmp-size />
-            
-               <echo>Restarting ADB...</echo>
-               <restart-adb />
-            
-           <show-tmp-size />
-            
-           <if>
-               <condition>
-                   <isfalse value="${skip.create.emulator}" />
-               </condition>
-               <then>
-                   <echo>Creating emulator...</echo>
-                   <create-emulator target="@{test-target}" />
-               </then>
-           </if>
-
-           <echo>Starting emulator...</echo>
-           <start-emulator avd="${avd}"/>
-           <wait-emulator />
-            
-           <subant antfile="${builder.dir}/test.manager.xml"
-                   target="create-test-report" 
-                   inheritall="true">
-               <property name="build.mode" value="@{build-mode}" />
-               <fileset dir="${builder.dir}" includes="test.manager.xml" />
-           </subant>
-            
-           <kill-emulators/>
-                        
-           <if>
-              <condition>
-                  <and>
-                       <isfalse value="${skip.create.emulator}" />
-                       <isfalse value="${skip.delete.emulator}" />
-                  </and>
-              </condition>
-              <then>
-                  <echo>Deleting emulator...</echo>
-                  <delete-emulator target="@{test-target}" />
-              </then>
-           </if>
-           <show-tmp-size />
+        	<local name="device-serial" />
+        	<local name="avd-name" />
+        	<local name="exception-message" />
+        		
+        	<property name="avd-name" value="tester-avd" />        	
+        	
+        	<rbm-create-avd name="${avd-name}" target="@{test-target}" force="true">
+	            <sdcard size="100M" />
+        		<hardware>
+	                <ram size="512" />
+	                <heap size="32" />
+	            </hardware>
+	        </rbm-create-avd>
+        	
+        	<rbm-start-emulator avd="${avd-name}" serialProperty="device-serial" />        	
+        	<trycatch reference="exception" property="exception-message">
+        	    <try>
+        		    <rbm-lock-device serial="${device-serial}" force="true" />
+        		    	
+        		    <!-- unlock emulator, so ui tests can run -->
+        		    <rbm-adb-shell cmd="input keyevent 82" />
+        			<ant antfile="${builder.dir}/test.manager.xml"
+		                 target="create-test-report" inheritall="true" inheritrefs="true">
+		                <property name="build.mode" value="@{build-mode}" />
+		            </ant>		            
+		            <rbm-unlock-device />
+        	    </try>
+        		<catch>
+        		    <echo level="error">Test run failed: ${exception-message}</echo>
+        		    <throw refid="exception" />
+        		</catch>
+        		<finally>
+        		    <rbm-stop-emulator serial="${device-serial}" />
+        		</finally>
+        	</trycatch>
+        	
+        	<rbm-delete-avd name="${avd-name}" />
         </sequential>
     </macrodef>
     
@@ -84,7 +60,7 @@
             </junitreport>
         </sequential>
     </macrodef>
-    
+	
     <macrodef name="test-report-all-emulators">
         <sequential>
            <delete dir="${emulator.tmp.dir}" />
@@ -129,7 +105,7 @@
               </fileset>
          </junitreport>
           
-             <!--delete dir="${emulator.tmp.dir}" /-->
+         <!--delete dir="${emulator.tmp.dir}" /-->
          </sequential>
     </macrodef>
     

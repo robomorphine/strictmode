@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="all-tasks" >
-    <typedef resource="net/sf/antcontrib/antlib.xml" format="xml">
+	<fail unless="sdk.dir" message="Android SDK dir is not set." />
+    
+	<typedef resource="net/sf/antcontrib/antlib.xml" format="xml">
       <classpath>
         <pathelement location="${prebuilt.libs.dir}/ant-contrib.jar"/>
       </classpath>
-    </typedef>    
+    </typedef>
+	
+	<import file="${builder.dir}/robomorphine-testrunner.xml" />
+    <rbm-define-tasks sdkdir="${sdk.dir}" jar="${root.dir}/libs/robomorphine.testrunner.host.ant.jar" />
+    <rbm-setup sdkdir="${sdk.dir}" lazy="true" force="false" />
     
     <!-- Override ant-contrib if task with android's if task.
          Android's if task requires <condition> element, while 
@@ -13,13 +19,12 @@
          comply with them, we are forced to use Android's if task 
          in all places 
     -->
-    <!--###########################################################-->
-    <fail unless="sdk.dir" message="Android SDK dir is not set." />
-         
+    <!--###########################################################-->     
     <path id="build.android.antlibs">
         <pathelement path="${sdk.dir}/tools/lib/anttasks.jar" />
     </path>    
-    <taskdef name="if" classname="com.android.ant.IfElseTask"
-                       classpathref="build.android.antlibs" />
+    <taskdef name="if" classname="com.android.ant.IfElseTask" classpathref="build.android.antlibs" />
     <!--###########################################################-->
+	
+	
 </project>

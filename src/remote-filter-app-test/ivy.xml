@@ -2,6 +2,6 @@
     <info organisation="com.robomorphine" module="com.robomorphine.remotefilter.test" />	
 	<dependencies>
 		<dependency org="com.robomorphine" name="com.robomorphine.remotefilter" rev="latest.integration"  />
-		<dependency org="com.robomorphine" name="com.robomorphine.testrunner" rev="latest.integration"  />
+		<dependency org="com.robomorphine.testrunner" name="robomorphine.testrunner.device" rev="latest.integration"  />
 	</dependencies>
 </ivy-module>

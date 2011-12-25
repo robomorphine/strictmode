@@ -27,10 +27,10 @@
         </condition>
     </fail>
 
-    <fail unless="version.code" message="Please specify version.code in project.properties." />
-    <fail unless="version.name.major" message="Please specify version.name.major in project.properties." />
-    <fail unless="version.name.minor" message="Please specify version.name.minor in project.properties." />
-    <fail unless="version.name.build" message="Please specify version.name.build in project.properties." />
+    <property name="version.code" value="1" />
+    <property name="version.name.major" value="1" />
+    <property name="version.name.minor" value="0" />
+    <property name="version.name.build" value="0" />
 
     <echo>###########################################################</echo>
     <echo>###########################################################</echo>
@@ -49,8 +49,6 @@
     
     <!-- all custom and 3d-party tasks -->
     <import file="${builder.dir}/ant-tasks.xml" />
-    <!-- import tools -->
-    <import file="${builder.dir}/tools.xml" />
 
     <!-- import project type specific build file -->
     <property name="builder.imported" value="true" />

@@ -260,39 +260,5 @@
             replace='versionName="${version.name}"' />
 
     </target>
-    
-    <!-- 
-    ############################################ 
-    ##              install/uninstall         ## 
-    ############################################
-    -->
-
-    <target name="-default-build-target" >
-        <property name="build.mode" value="debug" />
-    </target>
-
-    <target name="install-debug" depends="debug" >
-        <install-apk apk="${out.file}" reinstall="true" />
-    </target>
-
-    <target name="install-release" depends="release" >
-        <install-apk apk="${out.file}" reinstall="true" />
-    </target>
-
-    <target name="uninstall" depends="-set-defaults" >
-        <uninstall-apk package="${manifest.package}" />
-    </target>
-
-    <!-- 
-    Calls install-debug or install-release 
-    depending on what current build.mode is set to "debug" or "release"
-    -->
-    <target name="install" depends="-default-build-target" >
-        <antcall target="install-${build.mode}" inheritall="true" />
-    </target>
-
-    <target name="reinstall" depends="uninstall, install" />
-    <target name="reinstall-debug" depends="uninstall, install-debug" />
-    <target name="reinstall-release" depends="uninstall, install-release" />
-
+	
 </project>

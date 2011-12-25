@@ -5,8 +5,7 @@
         
     <import file="builder.properties.xml" />
     <import file="${builder.dir}/ant-tasks.xml" />
-	<import file="${builder.dir}/tools.xml" />
-    
+	    
     <fail unless="sdk.dir" message="SDK dir is not set." />
     
     <property name="build.mode" value="debug" />
@@ -62,33 +61,20 @@
                     </then>
                </if>
     
+              <property name="target.apk" location="@{tester.apk}" />
               <echo>#################################################</echo>
               <echo></echo>
               <echo>Target: ${target.apk}</echo>
               <echo>Tester: @{tester.apk}</echo>
               <echo></echo>    
               <echo>#################################################</echo>
-
-              <if>
-                  <condition>
-                      <isset property="target.apk" />
-                  </condition>
-                  <then>
-                      <subant target="run" inheritall="true" >
-                          <property name="target.apk" value="${target.apk}" />
-                          <property name="tester.apk" value="@{tester.apk}" />
-                          <property name="tester.report.dir" value="${tester.report.dir}" />
-                          <fileset dir="${builder.dir}" includes="test.runner.xml"/>
-                      </subant>
-                </then>
-                <else>
-                    <subant target="run" inheritall="true" >
-                        <property name="tester.apk" value="@{tester.apk}" />
-                        <property name="tester.report.dir" value="${tester.report.dir}" />
-                        <fileset dir="${builder.dir}" includes="test.runner.xml"/>
-                      </subant>
-                </else>
-            </if>
+              
+              <ant antfile="${builder.dir}/test.runner.xml" target="run"
+              	   inheritall="true" inheritrefs="true">
+                  <property name="target.apk" value="${target.apk}" />
+                  <property name="tester.apk" value="@{tester.apk}" />
+                  <property name="tester.report.dir" value="${tester.report.dir}" />
+              </ant>
           </sequential>
         </for>
     </target>
@@ -101,13 +87,5 @@
             <report format="frames" todir="${report.dir.html}"/>
         </junitreport>
     </target>
-    
-    <target name="check-test-report" >
-        <run-python name="check-test">
-            <args>
-                <arg value="${report.dir}/all-suites.xml" />
-            </args>
-        </run-python>
-    </target>
-
+	
 </project>

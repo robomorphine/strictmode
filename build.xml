@@ -3,113 +3,152 @@
          default="build" >
   
   <property name="project.name" value="builder" />
-		
   <import file="builder/builder.properties.xml" />
-  <import file="${builder.dir}/tools.xml" />
-	
+  <import file="builder/ant-tasks.xml" />
+
+  <!-- defaults --> 
+  <property name="test.targets" value="android-8,android-10,android-11,android-12,android-13,android-14,android-15" />
+  <property name="test.target" value="android-8" />
   <property name="tester.filter" value="s+m+l" />
-	<property name="cc.blocks.threshold" value="90" />
-	<property name="cc.lines.threshold" value="90" />
+  
+  
+  <!-- build mode -->	
 	
-  <target name="pre-build">
-  	<mkdir dir="${drop.dir}"/>
+  <target name="pre-build-mode">
+  </target>
+	
+  <target name="debug" depends="pre-build-mode" unless="build.mode">
+    <property name="build.mode" value="debug" />    
+  </target>
+
+  <target name="instrument" depends="pre-build-mode" unless="build.mode" >
+    <property name="build.mode" value="instrument" />
+    <property name="tester.coverage" value="true" />
+  </target>
+
+  <target name="release" depends="pre-build-mode" unless="build.mode" >
+    <property name="build.mode" value="release" />
   </target>
   
+  <target name="post-build-mode" >
+  	 <property name="bin.dir" location="${drop.dir}/${build.mode}" />
+  	 <property name="package.dir" location="${bin.dir}/packaged" />
+  </target>
+	
+  <target name="set-build-mode" depends="pre-build-mode, debug, post-build-mode" />
+	
+  <!-- build -->
+	  
   <target name="buildlist" > 
     <ivy:buildlist reference="all-projects">
-	    <fileset dir="src" includes="**/build.xml" />
+      <fileset dir="src" includes="**/build.xml" />
     </ivy:buildlist>
     <propertyregex property="formatted-projects" 
                    input="${toString:all-projects}" 
-    	             regexp="[;:]" 
-    	             replace="${line.separator}" 
-    	             global="true" />
-  	
+                   regexp="[;:]" 
+                   replace="${line.separator}" 
+                   global="true" />
     <echo>${formatted-projects}</echo>
   </target>
-	
-	<target name="defaults" >
-		<property name="build.mode" value="debug" />
-		<property name="test.target" value="8" />
-        <!--
-            We skip 11 & 12 b/c we had issues running 11 and b/c 11, 12, & 13 are all basically the same and have
-            less than 1% usage
-        -->
-		<property name="test.targets" value="7,8,9,10,13" />
-	</target>
 
-  <target name="device">
-    <property name="skip.restart.adb" value="false" />
+  <target name="build" depends="set-build-mode, buildlist" >
+  	<mkdir dir="${drop.dir}"/>
+    <subant target="${build.mode}" buildpathref="all-projects" />
+  </target>
+	
+  <target name="subclean" depends="buildlist" >
+    <subant target="clean" buildpathref="all-projects" />       
+  </target>
+
+  <target name="clean" depends="buildlist, subclean">    
+    <delete dir="${drop.dir}" />
+  </target>
+	
+  <!-- package & deploy -->
+  
+  <target name="package" depends="set-build-mode" >
+    
+  	<delete dir="${package.dir}" />
+    <mkdir dir="${package.dir}" />
+    
+  	<copy file="src/host-testrunner-ant-lib/ant/rbm-testrunner.xml" todir="${package.dir}"/>
+  		
+    <zip destfile="${package.dir}/rbm.testrunner.device.jar" duplicate="preserve" >
+      <archives>
+        <zips>
+          <fileset dir="${bin.dir}" includes="com.robomorphine.testrunner.device.jar" />
+          <fileset dir="${bin.dir}" includes="com.robomorphine.testrunner.common.jar" />
+        </zips>
+      </archives>
+    </zip>
+    <zip destfile="${package.dir}/rbm.testrunner.host.jar" duplicate="preserve" >
+      <archives>
+        <zips>
+          <fileset dir="${bin.dir}" includes="com.robomorphine.testrunner.host.jar" />
+          <fileset dir="${bin.dir}" includes="com.robomorphine.testrunner.common.jar" />
+        </zips>
+      </archives>
+    </zip>
+    <zip destfile="${package.dir}/rbm.testrunner.host.ant.jar" duplicate="preserve" >
+	  <archives>
+        <zips>
+          <fileset dir="${bin.dir}" includes="com.robomorphine.testrunner.host.ant.jar" />
+          <fileset dir="${bin.dir}" includes="com.robomorphine.testrunner.host.jar" />
+          <fileset dir="${bin.dir}" includes="com.robomorphine.testrunner.common.jar" />
+        </zips>
+      </archives>
+    </zip>
+  	<zip destfile="${package.dir}/rbm-testrunner-host-ant.zip" duplicate="fail" >
+  		<fileset dir="${package.dir}" >
+  			<include name="rbm.host.testrunner.ant.jar"/>
+  			<include name="rbm-testrunner.xml"/>
+  		</fileset>
+  	</zip>
+  	<zip destfile="${package.dir}/rbm-testrunner.zip" duplicate="fail" >
+        <fileset dir="${package.dir}" >
+        	<include name="rbm.testrunner.device.jar"/>
+            <include name="rbm.testrunner.host.ant.jar"/>
+        	<include name="rbm.testrunner.host.jar"/>
+            <include name="rbm-testrunner.xml"/>
+        </fileset>
+    </zip>
+  </target>
+	
+  <target name="deploy" depends="set-build-mode, package" >
+  	<copy file="${package.dir}/rbm.testrunner.host.ant.jar" todir="libs" />
+  	<copy file="${package.dir}/rbm-testrunner.xml" todir="builder" />
+  </target>
+	
+  <!-- test -->
+  <target name="kill-all" >
+    <rbm-stop-all-emulators />	
+  </target>
+	
+  <target name="test" depends="set-build-mode" >
+    <ant antfile="${builder.dir}/test.manager.xml" 
+         target="create-test-report" inheritall="true" inheritrefs="true">
+      <property name="build.mode" value="${build.mode}" />
+    </ant>
+  </target>
+
+  <target name="test-on-emulator" depends="set-build-mode">
+
+    <ant antfile="${builder.dir}/test.manager.emulator.xml" 
+         target="test-on-emulator" inheritall="true" inheritrefs="true">
+       <property name="build.mode"  value="${build.mode}" />
+       <property name="test.target" value="${test.target}" />
+    </ant>
+  </target>
+
+  <target name="test-on-all-emulators" depends="set-build-mode" >
+  
+      <ant antfile="${builder.dir}/test.manager.emulator.xml" 
+               target="test-on-all-emulators" inheritall="true" inheritrefs="true" >
+         <property name="build.mode"  value="${build.mode}" />
+         <property name="test.targets" value="${test.targets}" />
+      </ant>
   </target>
   
-  <target name="debug" >
-  	<property name="build.mode" value="debug" />  	
-  </target>
-	
-	<target name="instrument" >
-    <property name="build.mode" value="instrument" />
-		<property name="tester.coverage" value="true" />
-  </target>
-	
-	<target name="release" >
-  	<property name="build.mode" value="release" />
-  </target>
-	
-	<target name="build" depends="defaults, pre-build, buildlist" >		
-	  <subant target="${build.mode}" buildpathref="all-projects" />
-  </target>
-
-  <target name="test" depends="defaults" >
-    <ant antfile="${builder.dir}/test.manager.xml" 
-    	   target="create-test-report" inheritall="true">
-    	<property name="build.mode" value="${build.mode}" />    	
-	  </ant>
-  </target>
-	
-	<target name="test-on-emulator" depends="defaults" >
-		<ant antfile="${builder.dir}/test.manager.emulator.xml" 
-			   target="test-on-emulator" inheritall="true">
-      <property name="build.mode"  value="${build.mode}" />
-			<property name="test.target" value="${test.target}" />      
-    </ant>	    
-  </target>
-	
-	<target name="test-on-all-emulators" depends="defaults" >
-	    <ant antfile="${builder.dir}/test.manager.emulator.xml" 
-	             target="test-on-all-emulators" inheritall="true" >
-	      <property name="build.mode"  value="${build.mode}" />
-	      <property name="test.targets" value="${test.targets}" />	      
-	    </ant>     
-	</target>
-	
-	<target name="check-code-coverage" if="${tester.coverage}">
-		<!-- hardcoded path for now -->
-		<property name="cc.file" 
-			        location="${drop.dir}/${build.mode}/coverage-reports/com.okta.auth/coverage.txt" />
-		<available file="${cc.file}" property="cc.file.exists" />
-		<fail unless="cc.file.exists" message="Code Coverage report does not exist: ${cc.file}" />
-		
-		<ant antfile="${builder.dir}/tools.emulator.xml" 
-         target="check-code-coverage" inheritall="true" >			
-      <property name="coverage.txt"  value="${cc.file}" />
-      <property name="blocks.threshold" value="${cc.blocks.threshold}" />        
-			<property name="lines.threshold" value="${cc.lines.threshold}" />
-    </ant>
-	</target>
-	
-	<target name="check-test-report"  depends="defaults" >
-		<ant antfile="${builder.dir}/test.manager.xml" 
-         target="check-test-report" inheritall="true" >     
-			<property name="build.mode"  value="${build.mode}" />      
-    </ant>
-	</target>
-	
-	<target name="subclean" depends="buildlist" description="clean all projects">
-	    <subant target="clean" buildpathref="all-projects" />	    
-	</target>
-	
-  <target name="clean" depends="buildlist, subclean" description="clean all">    
-  	<delete dir="${drop.dir}" />
-  </target>
+  
   
 </project>

@@ -86,7 +86,7 @@
         <javac  encoding="${java.encoding}"
                 source="${java.source}" target="${java.target}"
                 srcdir="${src.dir}" destdir="${bin.classes.dir}"
-                debug="${debug.mode}"
+                debug="true"
                 bootclasspath="${android.jar.path}"
                 includeantruntime="false">
 
