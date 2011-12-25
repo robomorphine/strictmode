@@ -64,61 +64,6 @@
     <delete dir="${drop.dir}" />
   </target>
 	
-  <!-- package & deploy -->
-  
-  <target name="package" depends="set-build-mode" >
-    
-  	<delete dir="${package.dir}" />
-    <mkdir dir="${package.dir}" />
-    
-  	<copy file="src/host-testrunner-ant-lib/ant/rbm-testrunner.xml" todir="${package.dir}"/>
-  		
-    <zip destfile="${package.dir}/rbm.testrunner.device.jar" duplicate="preserve" >
-      <archives>
-        <zips>
-          <fileset dir="${bin.dir}" includes="com.robomorphine.testrunner.device.jar" />
-          <fileset dir="${bin.dir}" includes="com.robomorphine.testrunner.common.jar" />
-        </zips>
-      </archives>
-    </zip>
-    <zip destfile="${package.dir}/rbm.testrunner.host.jar" duplicate="preserve" >
-      <archives>
-        <zips>
-          <fileset dir="${bin.dir}" includes="com.robomorphine.testrunner.host.jar" />
-          <fileset dir="${bin.dir}" includes="com.robomorphine.testrunner.common.jar" />
-        </zips>
-      </archives>
-    </zip>
-    <zip destfile="${package.dir}/rbm.testrunner.host.ant.jar" duplicate="preserve" >
-	  <archives>
-        <zips>
-          <fileset dir="${bin.dir}" includes="com.robomorphine.testrunner.host.ant.jar" />
-          <fileset dir="${bin.dir}" includes="com.robomorphine.testrunner.host.jar" />
-          <fileset dir="${bin.dir}" includes="com.robomorphine.testrunner.common.jar" />
-        </zips>
-      </archives>
-    </zip>
-  	<zip destfile="${package.dir}/rbm-testrunner-host-ant.zip" duplicate="fail" >
-  		<fileset dir="${package.dir}" >
-  			<include name="rbm.host.testrunner.ant.jar"/>
-  			<include name="rbm-testrunner.xml"/>
-  		</fileset>
-  	</zip>
-  	<zip destfile="${package.dir}/rbm-testrunner.zip" duplicate="fail" >
-        <fileset dir="${package.dir}" >
-        	<include name="rbm.testrunner.device.jar"/>
-            <include name="rbm.testrunner.host.ant.jar"/>
-        	<include name="rbm.testrunner.host.jar"/>
-            <include name="rbm-testrunner.xml"/>
-        </fileset>
-    </zip>
-  </target>
-	
-  <target name="deploy" depends="set-build-mode, package" >
-  	<copy file="${package.dir}/rbm.testrunner.host.ant.jar" todir="libs" />
-  	<copy file="${package.dir}/rbm-testrunner.xml" todir="builder" />
-  </target>
-	
   <!-- test -->
   <target name="kill-all" >
     <rbm-stop-all-emulators />	
