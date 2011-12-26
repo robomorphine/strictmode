@@ -43,7 +43,7 @@
                 <attribute name="Built-By" value="${user.name}"/>
 
                 <!-- Information about the program itself -->
-                <attribute name="Implementation-Vendor" value="inazaruk"/>
+                <attribute name="Implementation-Vendor" value="${vendor}"/>
                 <attribute name="Implementation-Title" value="${project.name}"/>
                 <attribute name="Implementation-Version" value="${version.name}"/>
                 <attribute name="Description" value="Empty stub jar for dependcy management." />

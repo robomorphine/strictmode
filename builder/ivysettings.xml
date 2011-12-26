@@ -22,7 +22,6 @@
     </resolvers>
     <modules>
             <module organisation="com.${vendor}" name="*" resolver="internal" />
-            <module organisation="com.robomorphine" name="*" resolver="internal" />
             <module organisation="*" name="*" resolver="prebuilt" />
     </modules>
 </ivysettings>
