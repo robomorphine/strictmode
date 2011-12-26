@@ -5,8 +5,7 @@
       android:versionName="dev" >
 
     <uses-sdk android:minSdkVersion="8" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    
+
     <instrumentation android:targetPackage="com.robomorphine.test" android:name="android.test.InstrumentationTestRunner" />
     <instrumentation android:targetPackage="com.robomorphine.test" android:name="com.robomorphine.test.runner.RobomorphineTestRunner" />
     	

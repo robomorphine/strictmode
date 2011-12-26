@@ -3,8 +3,6 @@
       package="com.robomorphine.remotefilter"
       android:versionCode="1"
       android:versionName="dev" >
-	  
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <uses-sdk android:targetSdkVersion="13" android:minSdkVersion="8"/>
 
