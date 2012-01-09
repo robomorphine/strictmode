@@ -51,6 +51,10 @@
                          classname="com.robomorphine.test.ant.device.GetLockedDeviceTask" />
             <rbm-taskdef name="rbm-get-device-property" 
                          classname="com.robomorphine.test.ant.device.GetDevicePropertyTask" />
+        	<rbm-taskdef name="rbm-start-logcat" 
+        	             classname="com.robomorphine.test.ant.device.StartLogcatTask" />
+        	<rbm-taskdef name="rbm-stop-logcat" 
+        	             classname="com.robomorphine.test.ant.device.StopLogcatTask" />
             <rbm-taskdef name="rbm-get-apk-package"    
                          classname="com.robomorphine.test.ant.device.GetApkPackageTask" />
             <rbm-taskdef name="rbm-install-apk"        

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="test.emulator.manager"  default="test-on-all-emulators" >
 
-    <import file="test.manager.xml" /> 
+    <import file="test.manager.xml" />
     
-    <property name="emulator.report.dir" location="${drop.build.mode.dir}/platform-test-reports" />
-    <property name="emulator.tmp.dir" location="${drop.build.mode.dir}/tmp" />
+    <property name="emulator.report.dir" location="${testruns.dir}" />
+    <property name="emulator.tmp.dir" location="${bin.dir}/tmp" />
         
     <macrodef name="test-on-emulator" >
-        <attribute name="test-target" default="andorid-14" />
+        <attribute name="test-target" default="andorid-15" />
         <attribute name="build-mode" default="debug" /> 
         <sequential>
         	<local name="device-serial" />
@@ -49,17 +49,6 @@
         	<rbm-delete-avd name="${avd-name}" />
         </sequential>
     </macrodef>
-    
-    <macrodef name="test-report-all-emulators">
-        <sequential>
-           <echo>${emulator.report.dir}</echo>
-           <junitreport todir="${emulator.report.dir}" tofile="all-platforms.xml" >
-                <fileset dir="${emulator.report.dir}">
-                  <include name="*/original/*.xml"/>
-                </fileset>
-            </junitreport>
-        </sequential>
-    </macrodef>
 	
     <macrodef name="test-report-all-emulators">
         <sequential>
@@ -80,7 +69,7 @@
                   <mkdir dir="${cur.tmp.dir}" />
                   <copy todir="${cur.tmp.dir}">
                       <fileset dir="@{dir}">
-                          <include name="original/*.xml"/>
+                          <include name="junit/original/*.xml"/>
                       </fileset>
                   </copy>
 
@@ -93,46 +82,46 @@
                               file="@{file}"
                               flags="g"
                               match='\sname="(.*?)"' 
-                              replace=' name="\1.t${test.target}"' />
+                              replace=' name="\1.${test.target}"' />
                       </sequential>
                   </for>
              </sequential>
-         </for>
+           </for>
                    
-         <junitreport todir="${emulator.report.dir}" tofile="all-platforms.xml" >
-              <fileset dir="${emulator.tmp.dir}">
-                <include name="**/*.xml"/>
-              </fileset>
-         </junitreport>
-          
-         <!--delete dir="${emulator.tmp.dir}" /-->
-         </sequential>
+           <junitreport todir="${emulator.report.dir}" tofile="all-platforms.xml" >
+               <fileset dir="${emulator.tmp.dir}">
+                  <include name="**/*.xml"/>
+               </fileset>
+           </junitreport>
+              
+           <delete dir="${emulator.tmp.dir}" />
+        </sequential>
     </macrodef>
     
     <macrodef name="test-on-all-emulators">
-    <attribute name="test-targets" default="7,8,9,10,11,12,13" />
-    <attribute name="build-mode" default="debug" />
-    <sequential>
-        <echo>About to run tests on targets: @{test-targets} </echo>
-        <delete dir="${emulator.report.dir}"/>
-        <for list="@{test-targets}" delimiter=",;"  param="test.target">
-            <sequential>
-                <var name="drop.dir" value="${emulator.report.dir}/@{test.target}" />
-
-                <echo>##############################</echo>
-                <echo>## Running tests on target: @{test.target}</echo>
-                <echo>##############################</echo>
-                <test-on-emulator build-mode="@{build.mode}" test-target="@{test.target}" />
-                
-                <copy todir="${drop.dir}">
-                    <fileset dir="${report.dir}"/>
-              </copy>
-          </sequential>
-        </for>
-        
-        <test-report-all-emulators />
-        
-    </sequential>
+        <attribute name="test-targets" default="7,8,9,10,11,12,13" />
+        <attribute name="build-mode" default="debug" />
+        <sequential>
+            <echo>About to run tests on targets: @{test-targets} </echo>
+            <delete dir="${emulator.report.dir}"/>
+            <for list="@{test-targets}" delimiter=",;"  param="test.target">
+                <sequential>
+                    <var name="drop.dir" value="${emulator.report.dir}/@{test.target}" />
+    
+                    <echo>##############################</echo>
+                    <echo>## Running tests on target: @{test.target}</echo>
+                    <echo>##############################</echo>
+                    <test-on-emulator build-mode="@{build.mode}" test-target="@{test.target}" />
+                    
+                    <copy todir="${drop.dir}">
+                        <fileset dir="${testrun.dir}"/>
+                    </copy>
+              </sequential>
+            </for>
+            
+            <test-report-all-emulators />
+            
+        </sequential>
     </macrodef>
 
     <target name="test-on-emulator" >

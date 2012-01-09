@@ -1,31 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="test.manager"  default="run-all-tests" >
 
-    <property name="project.name" value="tools" />
-        
-    <import file="builder.properties.xml" />
-    <import file="${builder.dir}/ant-tasks.xml" />
-	    
-    <fail unless="sdk.dir" message="SDK dir is not set." />
-    
-    <property name="build.mode" value="debug" />
-    <fail unless="build.mode" message="build.mode property is not specified!" />
+	<import file="tester.properties.xml" />
     
     <property name="drop.build.mode.dir" location="${drop.dir}/${build.mode}" />
-    <property name="report.dir" location="${drop.build.mode.dir}/test-reports" />
-    <property name="report.dir.orig" location="${report.dir}/original" />
-    <property name="report.dir.html" location="${report.dir}/html" />
+	<property name="logcat.dir" location="${logcat.root.dir}" />
+    <property name="junit.dir" location="${junit.root.dir}" />
+    <property name="junit.dir.orig" location="${junit.dir}/original" />
+    <property name="junit.dir.html" location="${junit.dir}/html" />
     
-    <property name="tester.report.dir" location="${report.dir.orig}" />
+    <property name="tester.junit.dir" location="${junit.dir.orig}" />	
+	<property name="tester.logcat.dir" location="${logcat.dir}" />
 
-    <target name="-report-dirs" >
-        <delete dir="${report.dir}" />
-        <mkdir dir="${report.dir}" />
-        <mkdir dir="${report.dir.orig}" />
-        <mkdir dir="${report.dir.html}" />
+    <target name="-make-dirs" >
+    	<delete dir="${logcat.dir}" />
+    	<mkdir dir="${logcat.dir}" />
+        <delete dir="${junit.dir}" />
+        <mkdir dir="${junit.dir}" />
+        <mkdir dir="${junit.dir.orig}" />
+        <mkdir dir="${junit.dir.html}" />
     </target>
 
-    <target name="run-all-tests" depends="-report-dirs">
+    <target name="run-all-tests" depends="-make-dirs">
 
         <echo>Running tests from ${drop.build.mode.dir}</echo>
         <for param="tester.apk">
@@ -73,18 +69,18 @@
               	   inheritall="true" inheritrefs="true">
                   <property name="target.apk" value="${target.apk}" />
                   <property name="tester.apk" value="@{tester.apk}" />
-                  <property name="tester.report.dir" value="${tester.report.dir}" />
+                  <property name="tester.junit.dir" value="${tester.junit.dir}" />
               </ant>
           </sequential>
         </for>
     </target>
     
-    <target name="create-test-report" depends="-report-dirs,run-all-tests" >
-        <junitreport todir="${report.dir}" tofile="all-suites.xml" >
-              <fileset dir="${report.dir.orig}">
+    <target name="create-test-report" depends="-make-dirs,run-all-tests" >
+        <junitreport todir="${junit.dir}" tofile="all-suites.xml" >
+              <fileset dir="${junit.dir.orig}">
                 <include name="*.xml"/>
                </fileset>
-            <report format="frames" todir="${report.dir.html}"/>
+            <report format="frames" todir="${junit.dir.html}"/>
         </junitreport>
     </target>
 	
