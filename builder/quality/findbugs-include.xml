@@ -1,0 +1,13 @@
+<FindBugsFilter>
+  <Match>
+    <Or> 
+	  <Bug category="CORRECTNESS" />
+      <Bug category="BAD_PRACTICE" />
+      <Bug category="STYLE" />
+      <Bug category="MT_CORRECTNESS" />
+      <!-- Bug category="MALICIOUS_CODE" /-->
+      <Bug category="PERFORMANCE" />
+      <!--  Bug category="I18N" /-->
+    </Or>
+  </Match>
+</FindBugsFilter>

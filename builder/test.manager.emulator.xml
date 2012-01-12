@@ -112,6 +112,7 @@
                     <echo>## Running tests on target: @{test.target}</echo>
                     <echo>##############################</echo>
                     <test-on-emulator build-mode="@{build.mode}" test-target="@{test.target}" />
+					<!-- rbm-restart-adb /-->
                     
                     <copy todir="${drop.dir}">
                         <fileset dir="${testrun.dir}"/>

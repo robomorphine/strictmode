@@ -25,6 +25,9 @@
             <!-- general -->
             <rbm-taskdef name="rbm-setup"      
                          classname="com.robomorphine.test.ant.SetupTask" />
+        	
+        	<rbm-taskdef name="rbm-restart-adb"      
+                         classname="com.robomorphine.test.ant.RestartAdbTask" />
             
             <!-- avd -->
             <rbm-taskdef name="rbm-avd-config" 

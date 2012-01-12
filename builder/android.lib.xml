@@ -5,6 +5,7 @@
                   message="Import build.xml in order to use ${ant.file.build.android.lib} build file." />
     
     <import file="common.xml" />
+	<import file="android.quality.xml" />
     <import file="android.sdk.xml" />
 
     <target name="-pre-build-debug" >
@@ -71,5 +72,9 @@
         <delete dir="${libs.dir}" />
         <mkdir dir="${libs.dir}" />
     </target>
+	
+	<target name="pmd" depends="-pre-build-debug, android.quality.pmd" />
+	<target name="cpd" depends="-pre-build-debug, android.quality.cpd" />
+	<target name="findbugs" depends="debug, android.quality.findbugs" />
 
 </project>

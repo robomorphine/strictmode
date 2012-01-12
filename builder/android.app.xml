@@ -33,6 +33,7 @@
     -->
 
     <import file="common.xml" />
+    <import file="android.quality.xml" />
     <import file="android.sdk.xml" />
 
     <!--
@@ -260,5 +261,9 @@
             replace='versionName="${version.name}"' />
 
     </target>
+	
+	<target name="pmd" depends="-set-defaults-debug, android.quality.pmd" />
+	<target name="cpd" depends="-set-defaults-debug, android.quality.cpd" />
+	<target name="findbugs" depends="debug, android.quality.findbugs" />
 	
 </project>

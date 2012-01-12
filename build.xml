@@ -64,6 +64,24 @@
     <delete dir="${drop.dir}" />
   </target>
 	
+  <target name="pmd" depends="buildlist, debug">    
+  	<subant target="pmd" buildpathref="all-projects" >
+  		<property name="build.mode" value="${build.mode}" />
+  	</subant>
+  </target>
+	
+  <target name="cpd" depends="buildlist, debug">    
+    <subant target="cpd" buildpathref="all-projects" >
+        <property name="build.mode" value="${build.mode}" />
+    </subant>
+  </target>
+	
+  <target name="findbugs" depends="buildlist, debug">    
+    <subant target="findbugs" buildpathref="all-projects" >
+        <property name="build.mode" value="${build.mode}" />
+    </subant>
+  </target>
+  
   <!-- test -->
   <target name="kill-all" >
     <rbm-stop-all-emulators />	
@@ -77,7 +95,6 @@
   </target>
 
   <target name="test-on-emulator" depends="set-build-mode">
-
     <ant antfile="${builder.dir}/test.manager.emulator.xml" 
          target="test-on-emulator" inheritall="true" inheritrefs="true">
        <property name="build.mode"  value="${build.mode}" />
