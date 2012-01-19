@@ -12,7 +12,7 @@
 	<!-- robomorphine-testrunner -->
 	<import file="${builder.dir}/robomorphine-testrunner.xml" />
 	<property name="rbm.verbose" value="false" />
-    <rbm-define-tasks sdkdir="${sdk.dir}" jar="${root.dir}/libs/robomorphine.testrunner.host.ant.jar" />
+    <rbm-define-tasks sdkdir="${sdk.dir}" jar="${root.dir}/libs/robomorphine.testrunner.host.jar" />
     <rbm-setup sdkdir="${sdk.dir}" lazy="true" force="false" verbose="${rbm.verbose}" />
     
 	<!-- pmd -->

@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="rbm-testrunner" >
+<!-- 
+Helper tasks to define robormophine tasks.
+-->
+<project name="robomorphine-testrunner" >
 	
 	<!-- Internal, do not use directly. Use rbm-define-tasks macro instead. -->
 	<macrodef name="rbm-do-define-tasks">
@@ -92,7 +95,7 @@
         	<rbm-if>
         		<condition>
         		   <and>
-        		   	  <not><isset property="rbm.define.tasks.done" /></not>
+        		   	  <not><isset property="robomorphine.tasks.defined" /></not>
         		   	  <isfalse value="@{skip}"  /> 
         			  <isfalse value="@{force}" />
         		   </and>
@@ -108,7 +111,7 @@
         			<echo>Rbm tasks are not defined, because script detected that they were already defined</echo> 
         		</else>
         	</rbm-if>
-        	<property name="rbm.define.tasks.done" value="true" />
+        	<property name="robomorphine.tasks.defined" value="true" />
         	
         </sequential>
     </macrodef>
@@ -144,7 +147,7 @@
 		    	<sdcard size="100" />
                 <screen resolution="WXGA" />
                 <hardware>
-                    <ram size="1024" />
+                    <ram size="800" />
                     <heap size="48" />
                 </hardware>
 			</rbm-avd-config>
@@ -152,7 +155,7 @@
 				<sdcard size="100" />
                 <screen resolution="WXGA" />
                 <hardware>
-                    <ram size="1024" />
+                    <ram size="800" />
                     <heap size="48" />
                 </hardware>
 			</rbm-avd-config>
@@ -160,7 +163,7 @@
 				<sdcard size="100" />
                 <screen resolution="WXGA" />
                 <hardware>
-                    <ram size="1024" />
+                    <ram size="800" />
                     <heap size="48" />
                 </hardware>
 			</rbm-avd-config>
@@ -168,7 +171,7 @@
 				<sdcard size="100" />
                 <screen resolution="WVGA800" />
                 <hardware>
-                    <ram size="1024" />
+                    <ram size="800" />
                     <heap size="24" />
                 </hardware>
 			</rbm-avd-config>
@@ -176,7 +179,7 @@
                 <sdcard size="100" />
                 <screen resolution="WXGA800" />
                 <hardware>
-                    <ram size="1024" />
+                    <ram size="800" />
                     <heap size="48" />
                 </hardware>
             </rbm-avd-config>
@@ -184,7 +187,7 @@
                 <sdcard size="100" />
                 <screen resolution="WVGA800" />
                 <hardware>
-                    <ram size="1024" />
+                    <ram size="800" />
                     <heap size="24" />
                 </hardware>
             </rbm-avd-config>
@@ -192,7 +195,7 @@
                 <sdcard size="100" />
                 <screen resolution="WXGA800" />
                 <hardware>
-                    <ram size="1024" />
+                    <ram size="800" />
                     <heap size="48" />
                 </hardware>
             </rbm-avd-config>
