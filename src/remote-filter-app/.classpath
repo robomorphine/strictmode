@@ -6,5 +6,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/robomorphine-lib"/>
 	<classpathentry exported="true" kind="lib" path="/robomorphine-root/libs/android-support-v4.jar" sourcepath="/robomorphine-root/libs/android-support-v4-src.jar"/>
 	<classpathentry exported="true" kind="lib" path="/robomorphine-root/libs/guava-r09.jar" sourcepath="/robomorphine-root/libs/guava-r09-src.zip"/>
+	<classpathentry kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
