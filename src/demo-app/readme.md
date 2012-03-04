@@ -1,1 +1,1 @@
-This application uses different aspects of robomorphine-core libraries.
+This application uses different aspects of robomorphine-core library in order to demonstrate its capabilities.
