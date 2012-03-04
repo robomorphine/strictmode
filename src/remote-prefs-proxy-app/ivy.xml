@@ -1,0 +1,7 @@
+<ivy-module version="1.0">
+    <info organisation="com.robomorphine" module="com.robomorphine.remoteprefs.proxy" />	
+	<dependencies>
+		<dependency org="com.google.guava" name="guava" rev="latest.integration" />
+		<dependency org="android" name="android-support" rev="latest.integration" />
+	</dependencies>
+</ivy-module>
