@@ -14,6 +14,9 @@
     	
     	<provider android:name="com.robomorphine.log.filter.remote.RemoteFilterProvider"
     			  android:authorities="com.robomorphine.filter.remote" />
+      
+        <provider android:name="com.robomorphine.prefs.remote.RemotePrefsProvider"
+                  android:authorities="com.robomorphine.prefs.remote" />
     			  
     </application>
 	
