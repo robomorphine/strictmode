@@ -1,12 +1,12 @@
 package com.robomorphine.prefs;
 
+import com.google.common.collect.Sets;
 import com.robomorphine.log.Log;
 import com.robomorphine.log.tag.Tags;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Handler;
-import android.os.Looper;
+import android.os.FileObserver;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -15,7 +15,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
 public class InternalPreferenceManager {    
     
@@ -23,54 +22,46 @@ public class InternalPreferenceManager {
     
     private static final String CONTEXT_IMPL_CLASS_NAME = "android.app.ContextImpl";
     private static final String CONTEXT_IMPL_SHARED_PREFS_FIELD = "sSharedPrefs";
-    private static final long DEFAULT_MEMORY_UPDATE_TIMEOUT_MS = 1000;
     
     protected static final String PREFERENCES_SUBDIR = "shared_prefs";
     protected static final String PREFERENCES_EXT = ".xml".toLowerCase();
     public static final long DEFAULT_DISK_UPDATE_TIMEOUT_MS = 10 * 1000;
     
-    private static class DirFilter implements FileFilter {
+    private static class PreferenceFileFilter implements FileFilter {
         @Override
         public boolean accept(File pathname) {
             String filename = pathname.getName().toLowerCase();
             return pathname.isFile() && filename.endsWith(PREFERENCES_EXT);
         }
-    }    
+    }
     
-    private final Runnable mMemoryUpdater = new Runnable() {
-        @Override
-        public void run() {
-            refreshMemoryPrefernces();
-            mHandler.postDelayed(this, mMemoryUpdateTimeout);
+    private class PreferenceFileObserver extends FileObserver {
+        public PreferenceFileObserver(String path) {
+            super(path, FileObserver.CREATE);
         }
-    };
-    
-    private final Runnable mDiskUpdater = new Runnable() {
+        
         @Override
-        public void run() {
-            refreshDiskPreferences();
-            mHandler.postDelayed(this, mDiskUpdateTimeout);
+        public void onEvent(int event, String path) {
+            Log.d(TAG, "File " + path + " event: 0x" + Integer.toHexString(event));
+            refreshPreferences();
         }
-    };
+    }
         
     private final Map<String, ?> mContextImplSharedPrefs;
     private final Set<String> mMemoryPreferences = new HashSet<String>();
     private final Set<String> mDiskPreferences = new HashSet<String>();
-    
-    private final Handler mHandler;
+         
     private boolean mTracking = false;
-    private long mMemoryUpdateTimestamp = 0;    
-    private long mMemoryUpdateTimeout = DEFAULT_MEMORY_UPDATE_TIMEOUT_MS;
-    private long mDiskUpdateTimestamp = 0;    
-    private long mDiskUpdateTimeout = DEFAULT_DISK_UPDATE_TIMEOUT_MS;
     
-    private final FileFilter mSharedPrefFilter = new DirFilter(); 
+    private final FileFilter mSharedPrefFilter = new PreferenceFileFilter(); 
     private final File mSharedPrefDir;
+    private final FileObserver mFileObserver; 
     
     public InternalPreferenceManager(Context context) {
-        mHandler = new Handler(Looper.getMainLooper());
         mContextImplSharedPrefs = getPrefsMap();
         mSharedPrefDir = new File(context.getFilesDir().getParentFile(), PREFERENCES_SUBDIR);
+        mFileObserver = new PreferenceFileObserver(mSharedPrefDir.getAbsolutePath());
+        refreshPreferences();
     }
     
     @SuppressWarnings("unchecked")
@@ -92,60 +83,26 @@ public class InternalPreferenceManager {
         }        
         return new HashMap<String, SharedPreferences>();
     }
-    
-    /*************************/
-    /**     Timeouts        **/
-    /*************************/
-    
-    public void setMemoryUpdateTimeout(long timeout, TimeUnit unit) {
-        synchronized (this) {
-            mMemoryUpdateTimeout = unit.toMillis(timeout);
-            restartTracking();
-        }
-    }
-    
-    public long getMemoryUpdateTimeout() {
-        synchronized (this) {
-            return mMemoryUpdateTimeout;    
-        }
-    }
-    
-    public boolean isMemorySnapshotExpired() {
-        synchronized (this) {
-            return (mMemoryUpdateTimestamp + mMemoryUpdateTimeout) < System.currentTimeMillis();     
-        }
-    }
-    
-    public void setDiskUpdateTimeout(long timeout, TimeUnit unit) {
-        synchronized (this) {
-            mDiskUpdateTimeout = unit.toMillis(timeout);
-            restartTracking();
-        }
-    }
-    
-    public long getDiskUpdateTimeout() {
-        synchronized (this) {
-            return mDiskUpdateTimeout;    
-        }
-    }
-    
-    public boolean isDiskSnapshotExpired() {
-        synchronized (this) {
-            return (mDiskUpdateTimestamp + mDiskUpdateTimeout) < System.currentTimeMillis();     
-        }
-    }
+      
     
     /****************************************/
     /**   Get/Refresh memory preferences   **/
     /****************************************/
     
     public void refreshMemoryPrefernces() {
+        Log.d(TAG, "Refreshing memory preferences.");
         synchronized (this) {
             synchronized (mContextImplSharedPrefs) {
+                Set<String> newPrefs = mContextImplSharedPrefs.keySet();
+                
+                Set<String> diff = Sets.difference(newPrefs, mMemoryPreferences);                
+                if(diff.size() > 0) {
+                    Log.d(TAG, "New in-mem preferences detected: " + diff);
+                }
+            
                 mMemoryPreferences.clear();
                 mMemoryPreferences.addAll(mContextImplSharedPrefs.keySet());    
             }
-            mMemoryUpdateTimestamp = System.currentTimeMillis();
         }
     }
     
@@ -160,16 +117,24 @@ public class InternalPreferenceManager {
     /**    Get/Refresh disk preferences    **/
     /****************************************/
     
-    public void refreshDiskPreferences() {        
+    public void refreshDiskPreferences() {
+        Log.d(TAG, "Refreshing disk preferences.");
         File [] prefFiles = mSharedPrefDir.listFiles(mSharedPrefFilter);
-        synchronized (this) {            
-            mDiskPreferences.clear();
+        synchronized (this) {
+            Set<String> newPrefs = new HashSet<String>();
             if(prefFiles != null) {
                 for(File file : prefFiles) {
-                    mDiskPreferences.add(file.getName());    
+                    String prefName = file.getName().replace(PREFERENCES_EXT, "");
+                    newPrefs.add(prefName);
                 }
             }
-            mDiskUpdateTimestamp = System.currentTimeMillis();
+            
+            Set<String> diff = Sets.difference(newPrefs, mMemoryPreferences);                
+            if(diff.size() > 0) {
+                Log.d(TAG, "New in-mem preferences detected: " + diff);
+            }
+            mDiskPreferences.clear();
+            mDiskPreferences.addAll(newPrefs);
         }
     }
     
@@ -196,30 +161,25 @@ public class InternalPreferenceManager {
     
     /*************************************/
     /**       Automatic tracking        **/
-    /*************************************/
-
-    private void restartTracking() {
-        if(mTracking) {
-            stopTracking();
-            startTracking();
-        }
-    }
+    /*************************************/    
     
     public void startTracking() {
+        Log.d(TAG, "Starting tracking preferneces.");
         synchronized (this) {
             if(!mTracking) {
-                mMemoryUpdater.run();
-                mDiskUpdater.run();
+                mFileObserver.startWatching();
+                refreshDiskPreferences();
+                refreshMemoryPrefernces();
                 mTracking = true;
             }
         }
     }
     
     public void stopTracking() {
+        Log.d(TAG, "Stopped tracking preferneces.");
         synchronized (this) {
             if(mTracking) {
-                mHandler.removeCallbacks(mMemoryUpdater);
-                mHandler.removeCallbacks(mDiskUpdater);
+                mFileObserver.stopWatching();
                 mTracking = false;
             }
         }

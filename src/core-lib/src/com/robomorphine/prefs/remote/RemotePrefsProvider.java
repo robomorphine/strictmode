@@ -1,6 +1,7 @@
 package com.robomorphine.prefs.remote;
 
 import com.google.common.base.Preconditions;
+import com.robomorphine.prefs.InternalPreferenceManager;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
@@ -15,11 +16,20 @@ import java.util.List;
 
 public class RemotePrefsProvider extends ContentProvider {
         
+    InternalPreferenceManager mPreferenceManager;
+    
     @Override
     public boolean onCreate() {
+        mPreferenceManager = new InternalPreferenceManager(getContext());
+        mPreferenceManager.startTracking();
         return true;
     }
     
+    @Override
+    public void shutdown() {
+        mPreferenceManager.stopTracking();
+    }
+        
     @Override
     public String getType(Uri uri) {
         
@@ -42,6 +52,10 @@ public class RemotePrefsProvider extends ContentProvider {
         if(segments.size() == 0) {
             /* enumerate shared preferences */
             MatrixCursor cursor = new MatrixCursor(RemotePrefsContract.SharedPrefs.COLUMN_NAMES);
+            mPreferenceManager.refreshPreferences();
+            for(String name : mPreferenceManager.getPreferences()) {
+                cursor.addRow(new String[] { name });    
+            }            
             return cursor;
         } else if(segments.size() == 1) {
             /* enumerate variables in specified shared preferences */

@@ -1,5 +1,6 @@
 package com.robomorphine.prefs.remote;
 
+import com.robomorphine.prefs.InternalPreferenceManager;
 import com.robomorphine.prefs.PreferencesRemover;
 
 import android.content.Context;
@@ -63,5 +64,15 @@ public class RemotePrefsProviderTest extends ProviderTestCase2<RemotePrefsProvid
             assertNotNull(value);
         }
         cursor.close();
+    }
+    
+    public void testPrefManager() throws Exception {
+        InternalPreferenceManager manager = new InternalPreferenceManager(getContext());
+        manager.startTracking();        
+        mContext.getSharedPreferences("test1", Context.MODE_PRIVATE).edit().commit();
+        
+        Thread.sleep(1000);
+        manager.stopTracking();
+        
     }
 }
