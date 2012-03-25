@@ -5,12 +5,15 @@ import com.robomorphine.prefs.PreferencesRemover;
 
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.net.Uri.Builder;
 import android.test.ProviderTestCase2;
 
 import java.io.File;
+import java.lang.reflect.Field;
+import java.util.HashMap;
 
 public class RemotePrefsProviderTest extends ProviderTestCase2<RemotePrefsProvider>{
     
@@ -74,5 +77,18 @@ public class RemotePrefsProviderTest extends ProviderTestCase2<RemotePrefsProvid
         Thread.sleep(1000);
         manager.stopTracking();
         
+    }
+    
+    public void testStaticPrivate() throws Exception {
+        Class<?> clz = Class.forName("android.app.ContextImpl");
+        
+        Field field = clz.getDeclaredField("sSharedPrefs");
+        field.setAccessible(true);
+        HashMap<String, SharedPreferences> prefs = new HashMap<String, SharedPreferences>();
+        field.set(null, prefs);
+        
+        assertSame(prefs, field.get(null));
+        getContext().getSharedPreferences("test", 0).edit().commit();
+        assertEquals(1, prefs.size());
     }
 }
