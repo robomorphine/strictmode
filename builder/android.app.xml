@@ -33,7 +33,7 @@
     -->
 
     <import file="common.xml" />
-    <import file="android.quality.xml" />
+    <import file="android.quality.xml" as="android.quality" />
     <import file="android.sdk.xml" />
 
     <!--
