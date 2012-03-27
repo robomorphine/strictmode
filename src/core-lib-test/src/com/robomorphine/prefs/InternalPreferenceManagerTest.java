@@ -9,7 +9,7 @@ import android.test.AndroidTestCase;
 
 public class InternalPreferenceManagerTest extends AndroidTestCase {
 
-    private static final String TAG = Tags.getTag(InternalPreferenceManager.class);
+    private static final String TAG = Tags.getTag(InternalPrefsManager.class);
     
     @Override
     protected void setUp() throws Exception {
@@ -19,7 +19,7 @@ public class InternalPreferenceManagerTest extends AndroidTestCase {
     }
     
     public void testPreferences() {
-        InternalPreferenceManager prefManager = new InternalPreferenceManager(getContext());
+        InternalPrefsManager prefManager = new InternalPrefsManager(getContext());
         
         for(String name : prefManager.getMemoryPreferences()) {
             Log.e(TAG, "MEM1: " + name);

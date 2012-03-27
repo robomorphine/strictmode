@@ -3,6 +3,7 @@ package com.robomorphine.prefs;
 import com.google.common.collect.Sets;
 import com.robomorphine.log.Log;
 import com.robomorphine.log.tag.Tags;
+import com.robomorphine.prefs.SharedPrefsMap.SharedPrefsMapListener;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -16,16 +17,17 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class InternalPreferenceManager {    
+public class InternalPrefsManager implements SharedPrefsMapListener {    
     
-    private final static String TAG = Tags.getTag(InternalPreferenceManager.class);
+    private final static String TAG = Tags.getTag(InternalPrefsManager.class);
     
     private static final String CONTEXT_IMPL_CLASS_NAME = "android.app.ContextImpl";
     private static final String CONTEXT_IMPL_SHARED_PREFS_FIELD = "sSharedPrefs";
     
     protected static final String PREFERENCES_SUBDIR = "shared_prefs";
     protected static final String PREFERENCES_EXT = ".xml".toLowerCase();
-    public static final long DEFAULT_DISK_UPDATE_TIMEOUT_MS = 10 * 1000;
+    
+    private static final SharedPrefsMap sSharedPrefs = new SharedPrefsMap();
     
     private static class PreferenceFileFilter implements FileFilter {
         @Override
@@ -48,20 +50,45 @@ public class InternalPreferenceManager {
     }
         
     private final Map<String, ?> mContextImplSharedPrefs;
+    private final boolean mIsSharedPrefsObservable;
     private final Set<String> mMemoryPreferences = new HashSet<String>();
     private final Set<String> mDiskPreferences = new HashSet<String>();
-         
+     
     private boolean mTracking = false;
     
     private final FileFilter mSharedPrefFilter = new PreferenceFileFilter(); 
     private final File mSharedPrefDir;
     private final FileObserver mFileObserver; 
     
-    public InternalPreferenceManager(Context context) {
-        mContextImplSharedPrefs = getPrefsMap();
-        mSharedPrefDir = new File(context.getFilesDir().getParentFile(), PREFERENCES_SUBDIR);
-        mFileObserver = new PreferenceFileObserver(mSharedPrefDir.getAbsolutePath());
-        refreshPreferences();
+    @SuppressWarnings("unchecked")
+    protected static boolean replaceContextImplMap() {
+        try {
+            Class<?> clazz = Class.forName(CONTEXT_IMPL_CLASS_NAME);
+            Field field = clazz.getDeclaredField(CONTEXT_IMPL_SHARED_PREFS_FIELD);
+            field.setAccessible(true);
+            
+            synchronized (clazz) {
+                HashMap<String, SharedPreferences> currentMap;
+                currentMap = (HashMap<String, SharedPreferences>)field.get(null);
+                synchronized (currentMap) {
+                    if(currentMap != sSharedPrefs) {
+                        sSharedPrefs.putAll(currentMap);
+                        field.set(null, sSharedPrefs);
+                    }
+                }
+                    
+                if(sSharedPrefs == field.get(null)) {
+                    return true;
+                } else {
+                    Log.e(TAG, "Successfuly set ContextImpl.sSharedPrefs, but it didn't have effect.");
+                    return false;
+                }    
+            }
+            
+        } catch(Exception ex) {
+            Log.e(TAG, "Failed to substitute ContextImpl.sSharedPrefs with observable map.", ex);
+            return false;
+        }
     }
     
     @SuppressWarnings("unchecked")
@@ -83,13 +110,27 @@ public class InternalPreferenceManager {
         }        
         return new HashMap<String, SharedPreferences>();
     }
-      
+    
+    public InternalPrefsManager(Context context) {
+        mIsSharedPrefsObservable = replaceContextImplMap();
+                
+        mContextImplSharedPrefs = getPrefsMap();
+        mSharedPrefDir = new File(context.getFilesDir().getParentFile(), PREFERENCES_SUBDIR);
+        mFileObserver = new PreferenceFileObserver(mSharedPrefDir.getAbsolutePath());        
+    }      
+    
+    @Override
+    public void onNewSharedPrefs(String name) {
+        Log.d(TAG, "New SharedPreferneces notification: " + name);
+        mMemoryPreferences.add(name);
+        mDiskPreferences.add(name);
+    }
     
     /****************************************/
     /**   Get/Refresh memory preferences   **/
     /****************************************/
     
-    public void refreshMemoryPrefernces() {
+    public void refreshMemoryPreferences() {
         Log.d(TAG, "Refreshing memory preferences.");
         synchronized (this) {
             synchronized (mContextImplSharedPrefs) {
@@ -108,7 +149,7 @@ public class InternalPreferenceManager {
     
     public Set<String> getMemoryPreferences() {
         synchronized (this) {
-            refreshMemoryPrefernces();
+            refreshMemoryPreferences();
             return mMemoryPreferences;
         }
     }
@@ -117,7 +158,7 @@ public class InternalPreferenceManager {
     /**    Get/Refresh disk preferences    **/
     /****************************************/
     
-    public void refreshDiskPreferences() {
+    public void refreshDiskPreferences() { 
         Log.d(TAG, "Refreshing disk preferences.");
         File [] prefFiles = mSharedPrefDir.listFiles(mSharedPrefFilter);
         synchronized (this) {
@@ -131,7 +172,7 @@ public class InternalPreferenceManager {
             
             Set<String> diff = Sets.difference(newPrefs, mMemoryPreferences);                
             if(diff.size() > 0) {
-                Log.d(TAG, "New in-mem preferences detected: " + diff);
+                Log.d(TAG, "New on-disk preferences detected: " + diff);
             }
             mDiskPreferences.clear();
             mDiskPreferences.addAll(newPrefs);
@@ -145,8 +186,12 @@ public class InternalPreferenceManager {
         }
     }
     
+    /****************************************/
+    /**       Get/Refresh preferences      **/
+    /****************************************/
+        
     public void refreshPreferences() {
-        refreshMemoryPrefernces();
+        refreshMemoryPreferences();
         refreshDiskPreferences();
     }
     
@@ -167,9 +212,13 @@ public class InternalPreferenceManager {
         Log.d(TAG, "Starting tracking preferneces.");
         synchronized (this) {
             if(!mTracking) {
-                mFileObserver.startWatching();
-                refreshDiskPreferences();
-                refreshMemoryPrefernces();
+                if(mIsSharedPrefsObservable) {
+                    sSharedPrefs.addListener(this);
+                } else {
+                    mFileObserver.startWatching();
+                }
+                
+                refreshPreferences();
                 mTracking = true;
             }
         }
@@ -179,7 +228,11 @@ public class InternalPreferenceManager {
         Log.d(TAG, "Stopped tracking preferneces.");
         synchronized (this) {
             if(mTracking) {
-                mFileObserver.stopWatching();
+                if(mIsSharedPrefsObservable) {
+                    sSharedPrefs.removeListener(this);
+                } else {
+                    mFileObserver.stopWatching();
+                }
                 mTracking = false;
             }
         }
