@@ -79,5 +79,9 @@
     -->
     <!-- version-tag: 1 -->
     <import file="${sdk.dir}/tools/ant/build.xml" />
+    
+    <target name="pmd" />
+    <target name="cpd" />
+    <target name="findbugs" />
 
 </project>
