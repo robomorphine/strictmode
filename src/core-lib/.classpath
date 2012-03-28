@@ -2,7 +2,6 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
-	<classpathentry kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry exported="true" kind="lib" path="/rbm-root/libs/guava-r09.jar"/>
 	<classpathentry exported="true" kind="lib" path="/rbm-root/libs/jsr305.jar"/>
 	<classpathentry kind="output" path="bin"/>
