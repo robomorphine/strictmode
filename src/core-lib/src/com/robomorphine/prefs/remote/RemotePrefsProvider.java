@@ -1,7 +1,7 @@
 package com.robomorphine.prefs.remote;
 
 import com.google.common.base.Preconditions;
-import com.robomorphine.prefs.InternalPrefsManager;
+import com.robomorphine.prefs.DomainManager;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;

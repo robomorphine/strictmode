@@ -13,14 +13,14 @@ public class PreferencesRemover {
     }
     
     public void clear() {
-        InternalPrefsManager manager = new InternalPrefsManager(mContext);
+        DomainManager manager = new DomainManager(mContext, false);
         for(String name : manager.getPreferences()) {
             SharedPreferences prefs = mContext.getSharedPreferences(name, Context.MODE_PRIVATE);
             prefs.edit().clear().commit();
         }
         
         File dir = new File(mContext.getFilesDir().getParentFile(), 
-                            InternalPrefsManager.PREFERENCES_SUBDIR);
+                            DomainManager.PREFERENCES_SUBDIR);
         File [] files = dir.listFiles();
         if (files != null) {
             for(File file : files) {
@@ -28,6 +28,6 @@ public class PreferencesRemover {
             }
         }
         
-        InternalPrefsManager.getPrefsMap().clear();
+        DomainManager.getPrefsMap().clear();
     }
 }

@@ -1,6 +1,6 @@
 package com.robomorphine.prefs.remote;
 
-import com.robomorphine.prefs.InternalPrefsManager;
+import com.robomorphine.prefs.DomainManager;
 import com.robomorphine.prefs.PreferencesRemover;
 
 import android.content.Context;
@@ -70,7 +70,7 @@ public class RemotePrefsProviderTest extends ProviderTestCase2<RemotePrefsProvid
     }
     
     public void testPrefManager() throws Exception {
-        InternalPrefsManager manager = new InternalPrefsManager(getContext());
+        DomainManager manager = new DomainManager(getContext(), false);
         manager.startTracking();        
         mContext.getSharedPreferences("test1", Context.MODE_PRIVATE).edit().commit();
         
@@ -91,10 +91,12 @@ public class RemotePrefsProviderTest extends ProviderTestCase2<RemotePrefsProvid
         assertEquals(1, prefs.size());
     }
     
-    public void testSharedPrefsNotifications() {
-        InternalPrefsManager manager = new InternalPrefsManager(getContext());
+    public void testSharedPrefsNotifications() throws Exception {
+        DomainManager manager = new DomainManager(getContext(), false);
         manager.startTracking();
-        getContext().getSharedPreferences("zz2z", 0).edit().commit();
+        getContext().getSharedPreferences("zz2z", 0).edit().putBoolean("sd", true).commit();
+        getContext().getSharedPreferences("zz2z", 0).edit().clear().commit();
+        Thread.sleep(2000);
         manager.stopTracking();
                 
     }

@@ -3,6 +3,8 @@ package com.robomorphine.prefs;
 import android.content.SharedPreferences;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.WeakHashMap;
 
 /**
@@ -13,44 +15,44 @@ import java.util.WeakHashMap;
  * In short, this class implementation may be considered as tightly coupled with 
  * ContextImpl implementation. 
  */
-class SharedPrefsMap extends HashMap<String, SharedPreferences> {
+class DomainMap extends HashMap<String, SharedPreferences> {
     
     private static final long serialVersionUID = 1L;
         
-    public interface SharedPrefsMapListener {
-        void onNewSharedPrefs(String name);
+    public interface DomainMapObserver {
+        void onDomainAdded(String name);
     }
     
-    WeakHashMap<SharedPrefsMapListener, Void> mListeners;
+    WeakHashMap<DomainMapObserver, Void> mObservers;
     
-    public SharedPrefsMap() {
-        mListeners = new WeakHashMap<SharedPrefsMapListener, Void>();
+    public DomainMap() {
+        mObservers = new WeakHashMap<DomainMapObserver, Void>();
     }
     
     @Override
     public SharedPreferences put(String key, SharedPreferences value) {
         SharedPreferences prefs = super.put(key, value);
-        notifyListeners(key);
+        
+        Set<DomainMapObserver> observers;
+        synchronized (this) {
+            observers = new HashSet<DomainMapObserver>(mObservers.keySet());
+        }        
+        for(DomainMapObserver observer : observers) {
+            observer.onDomainAdded(key);
+        }
+        
         return prefs;
     }
-    
-    public void addListener(SharedPrefsMapListener listener) {
+  
+    public void addObserver(DomainMapObserver observer) {
         synchronized (this) {
-            mListeners.put(listener, null);
+            mObservers.put(observer, null);
         }
     }
     
-    public void removeListener(SharedPrefsMapListener listener) {
+    public void removeObserver(DomainMapObserver observer) {
         synchronized (this) {
-            mListeners.remove(listener);
+            mObservers.remove(observer);
         }
-    }
-
-    private void notifyListeners(String name) {
-        synchronized (this) {
-            for(SharedPrefsMapListener listener : mListeners.keySet()) {
-                listener.onNewSharedPrefs(name);
-            }    
-        }       
     }
 }
