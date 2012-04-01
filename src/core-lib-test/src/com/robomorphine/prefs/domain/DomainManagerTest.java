@@ -1,6 +1,7 @@
-package com.robomorphine.prefs;
+package com.robomorphine.prefs.domain;
 
 import com.robomorphine.log.tag.Tags;
+import com.robomorphine.prefs.domain.DomainManager;
 
 import android.content.SharedPreferences;
 import android.test.AndroidTestCase;

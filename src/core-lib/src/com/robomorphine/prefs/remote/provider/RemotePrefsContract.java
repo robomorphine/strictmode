@@ -1,4 +1,4 @@
-package com.robomorphine.prefs.remote;
+package com.robomorphine.prefs.remote.provider;
 
 import java.util.Set;
 

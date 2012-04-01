@@ -1,4 +1,6 @@
-package com.robomorphine.prefs;
+package com.robomorphine.prefs.domain;
+
+import com.robomorphine.prefs.domain.DomainManager;
 
 import android.content.Context;
 import android.content.SharedPreferences;

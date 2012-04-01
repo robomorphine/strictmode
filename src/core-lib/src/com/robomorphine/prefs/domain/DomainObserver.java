@@ -1,4 +1,4 @@
-package com.robomorphine.prefs;
+package com.robomorphine.prefs.domain;
 
 public interface DomainObserver {
     void onDomainAdded(String name);

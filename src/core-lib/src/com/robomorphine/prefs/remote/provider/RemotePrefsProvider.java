@@ -1,9 +1,9 @@
-package com.robomorphine.prefs.remote;
+package com.robomorphine.prefs.remote.provider;
 
 import com.google.common.base.Preconditions;
-import com.robomorphine.prefs.DomainManager;
-import com.robomorphine.prefs.remote.RemotePrefsContract.Domain;
-import com.robomorphine.prefs.remote.RemotePrefsContract.Variable;
+import com.robomorphine.prefs.domain.DomainManager;
+import com.robomorphine.prefs.remote.provider.RemotePrefsContract.Domain;
+import com.robomorphine.prefs.remote.provider.RemotePrefsContract.Variable;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;

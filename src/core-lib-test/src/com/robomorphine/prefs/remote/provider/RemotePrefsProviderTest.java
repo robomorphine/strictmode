@@ -1,7 +1,9 @@
-package com.robomorphine.prefs.remote;
+package com.robomorphine.prefs.remote.provider;
 
-import com.robomorphine.prefs.DomainManager;
-import com.robomorphine.prefs.PreferencesRemover;
+import com.robomorphine.prefs.domain.DomainManager;
+import com.robomorphine.prefs.domain.PreferencesRemover;
+import com.robomorphine.prefs.remote.provider.RemotePrefsContract;
+import com.robomorphine.prefs.remote.provider.RemotePrefsProvider;
 
 import android.content.Context;
 import android.content.ContextWrapper;
