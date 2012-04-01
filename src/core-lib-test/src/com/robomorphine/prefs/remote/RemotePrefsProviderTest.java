@@ -61,7 +61,7 @@ public class RemotePrefsProviderTest extends ProviderTestCase2<RemotePrefsProvid
         mContext.getSharedPreferences("test2", Context.MODE_PRIVATE).edit().commit();
         
         Cursor cursor = getContext().getContentResolver().query(builder.build(), null, null, null, null);
-        int nameIndex = cursor.getColumnIndex(RemotePrefsContract.SharedPrefs.NAME);
+        int nameIndex = cursor.getColumnIndex(RemotePrefsContract.Domain.NAME);
         if(cursor.moveToFirst()) {
             String value = cursor.getString(nameIndex);
             assertNotNull(value);

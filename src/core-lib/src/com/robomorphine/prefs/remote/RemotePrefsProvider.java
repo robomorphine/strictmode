@@ -2,6 +2,8 @@ package com.robomorphine.prefs.remote;
 
 import com.google.common.base.Preconditions;
 import com.robomorphine.prefs.DomainManager;
+import com.robomorphine.prefs.remote.RemotePrefsContract.Domain;
+import com.robomorphine.prefs.remote.RemotePrefsContract.Variable;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
@@ -12,22 +14,24 @@ import android.database.MatrixCursor;
 import android.net.Uri;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 
 public class RemotePrefsProvider extends ContentProvider {
         
-    //InternalPrefsManager mPreferenceManager;
+    DomainManager mPreferenceDomainManager;
     
     @Override
     public boolean onCreate() {
-        //mPreferenceManager = new InternalPrefsManager(getContext());
-        //mPreferenceManager.startTracking();
+        mPreferenceDomainManager = new DomainManager(getContext(), false);
+        mPreferenceDomainManager.startTracking();
         return true;
     }
     
     @Override
     public void shutdown() {
-        //mPreferenceManager.stopTracking();
+        mPreferenceDomainManager.stopTracking();
     }
         
     @Override
@@ -48,21 +52,34 @@ public class RemotePrefsProvider extends ContentProvider {
         Preconditions.checkArgument(selectionArgs == null, "Not supported.");
         Preconditions.checkArgument(sortOrder == null, "Not supported.");
         
+        /* Do we really want to refresh them here? */
+        mPreferenceDomainManager.refreshMemoryPreferences();
+        
         List<String> segments = uri.getPathSegments();
         if(segments.size() == 0) {
             /* enumerate shared preferences */
-            MatrixCursor cursor = new MatrixCursor(RemotePrefsContract.SharedPrefs.COLUMN_NAMES);
-//            mPreferenceManager.refreshPreferences();
-//            for(String name : mPreferenceManager.getPreferences()) {
-//                cursor.addRow(new String[] { name });    
-//            }            
+            MatrixCursor cursor = new MatrixCursor(Domain.COLUMN_NAMES);
+            for(String name : mPreferenceDomainManager.getPreferences()) {
+                cursor.addRow(new String[] { name });    
+            }             
             return cursor;
         } else if(segments.size() == 1) {
-            /* enumerate variables in specified shared preferences */
-            String name = segments.get(0);
-            SharedPreferences sharedPrefs = getContext().getSharedPreferences(name, Context.MODE_PRIVATE);
-            sharedPrefs.getAll().keySet();
-            return null;
+            /* enumerate variables in specified preference domain */
+            MatrixCursor cursor = new MatrixCursor(Variable.COLUMN_NAMES);
+            
+            String domainName = segments.get(0);
+            if(!mPreferenceDomainManager.getPreferences().contains(domainName)) {
+                /* no such domain exists */
+                return cursor;
+            }            
+            
+            SharedPreferences sharedPrefs = getContext().getSharedPreferences(domainName, Context.MODE_PRIVATE);
+            Map<String, ?> variables = sharedPrefs.getAll();
+            for(Entry<String, ?> entry : variables.entrySet()) {
+                String [] row = Variable.newRow(entry.getKey(), entry.getValue());
+                cursor.addRow(row);
+            }
+            return cursor;
         } else if(segments.size() == 2) {
             /* get values for specified variable */
             return null;
