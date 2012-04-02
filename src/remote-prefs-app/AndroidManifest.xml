@@ -20,11 +20,13 @@
         </activity>
         
         <provider android:name="com.robomorphine.prefs.remote.provider.RemotePrefsProvider" 
-                  android:authorities="com.robomorophine.remoteprefs" >
+                  android:authorities="com.robomorophine.remoteprefs" 
+                  android:enabled="false">
             
             <!-- This is the exact string that should appear in manifest 
                  in provider declaration. -->
-            <meta-data android:name="com.robomorphine.remote.preferences" />
+            <meta-data android:name="com.robomorphine.remote.preferences" 
+                       android:value="true" />
             
         </provider>
         

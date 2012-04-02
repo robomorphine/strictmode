@@ -1,14 +1,13 @@
 package com.robomorphine.remoteprefs.fragment;
 
-import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.ListFragment;
 
-public class DomainListFragment extends Fragment {
+public class DomainListFragment extends ListFragment {
     
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        
     }
     
     
