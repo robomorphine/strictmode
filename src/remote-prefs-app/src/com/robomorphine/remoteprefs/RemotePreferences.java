@@ -50,6 +50,7 @@ public final class RemotePreferences {
         
         Bitmap bitmap = Bitmap.createBitmap(width, height, Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, width, height);
         drawable.draw(canvas);
         
         /* apply grayscale transformation */
@@ -90,17 +91,15 @@ public final class RemotePreferences {
                 }
             }
             
-            if(providerInfo == null) {
-                Log.d(TAG, "Package %s: no matching providers.");
-            } else {
+            if(providerInfo != null) {
                 Drawable icon = mPackageManager.getApplicationIcon(pkg.applicationInfo);
                 if(!AndroidPackage.isEnabled(providerInfo)) {
                     icon = makeGrayscale(mContext, icon);
-                }
-                
+                }       
                 AndroidPackage androidPkg = new AndroidPackage(icon, pkg, providerInfo);
-                androidPackages.add(androidPkg);            
+                androidPackages.add(androidPkg);
             }
+            
         }
         return androidPackages;
     }

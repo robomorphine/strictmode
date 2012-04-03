@@ -2,4 +2,5 @@
 <resources>
     <string name="app_name">Remote Preferences Manager</string>
     <string name="package_list_empty">No packages with appropariate providers were found.</string>
+    <string name="provider_disabled">Provider is either disabled or not exported.</string>
 </resources>
