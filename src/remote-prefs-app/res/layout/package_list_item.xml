@@ -3,17 +3,17 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:paddingRight="@dimen/medium"
-    android:gravity="center_vertical">
-
-    <ImageView 
+    android:padding="@dimen/small"
+    android:gravity="center_vertical">
+    <ImageView
         android:id="@+id/icon"
-        android:layout_width="@dimen/app_icon_size" 
+        android:layout_width="@dimen/app_icon_size"
         android:layout_height="@dimen/app_icon_size"
-        android:layout_margin="@dimen/small"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:src="@drawable/ic_launcher" 
-        android:scaleType="center" />
+        android:layout_margin="@dimen/small"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_launcher" />
     
     <TextView
         android:id="@+id/name"
