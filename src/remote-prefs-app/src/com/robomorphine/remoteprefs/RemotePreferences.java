@@ -58,8 +58,9 @@ public final class RemotePreferences {
             for(int h = 0; h < height; h++) {
                 int pixel = bitmap.getPixel(w, h);
                 int avarage = Color.red(pixel) + Color.green(pixel) + Color.blue(pixel);
+                int alpha = Color.alpha(pixel);
                 avarage /= 3;
-                pixel = Color.argb(255, avarage, avarage, avarage);
+                pixel = Color.argb(alpha, avarage, avarage, avarage);
                 bitmap.setPixel(w, h, pixel);
             }
         }
