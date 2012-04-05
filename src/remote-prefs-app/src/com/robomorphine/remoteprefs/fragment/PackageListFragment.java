@@ -3,13 +3,18 @@ package com.robomorphine.remoteprefs.fragment;
 
 import com.robomorphine.remoteprefs.AndroidPackage;
 import com.robomorphine.remoteprefs.R;
+import com.robomorphine.remoteprefs.activity.DomainListActivity;
 import com.robomorphine.remoteprefs.adapter.PackageListAdapter;
 import com.robomorphine.remoteprefs.loader.PackageListLoader;
 
+import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
+import android.view.View;
+import android.widget.ListView;
 
 import java.util.List;
 
@@ -36,6 +41,19 @@ public class PackageListFragment extends ListFragment
                 
         getLoaderManager().initLoader(PACKAGE_LOADER_ID, null, this);        
     }
+    
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        Intent intent = new Intent(getActivity(), DomainListActivity.class);
+        PackageInfo info = mAdapter.getItem(position).getInfo();
+        intent.putExtra(DomainListActivity.EXTRA_PACKAGE, info.packageName);
+        startActivity(intent);
+    }
+    
+    /***************************/
+    /**     LoaderCallback    **/
+    /***************************/
+    
     
     @Override
     public Loader<List<AndroidPackage>> onCreateLoader(int id, Bundle args) {

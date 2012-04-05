@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:paddingRight="@dimen/medium"
     android:padding="@dimen/small"
-    android:gravity="center_vertical">
+    android:gravity="center_vertical">
     <ImageView
         android:id="@+id/icon"
         android:layout_width="@dimen/app_icon_size"
@@ -45,8 +45,8 @@
         android:gravity="center"
         android:textSize="10sp"
         android:textStyle="italic"
-        android:text="@string/provider_disabled"        
-        />
+        android:text="@string/provider_disabled"
+        android:visibility="gone" />
     
     <ImageView 
         android:id="@+id/disabled_icon"
@@ -55,6 +55,7 @@
         android:src="@android:drawable/ic_dialog_info"
         android:layout_toLeftOf="@id/disabled"
         android:layout_alignTop="@id/disabled"
-        android:layout_alignBottom="@id/disabled"/>
+        android:layout_alignBottom="@id/disabled"
+        android:visibility="gone" />
 
 </RelativeLayout>
