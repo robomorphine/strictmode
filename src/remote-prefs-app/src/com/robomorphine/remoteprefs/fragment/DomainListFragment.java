@@ -40,13 +40,12 @@ public class DomainListFragment extends ListFragment implements LoaderCallbacks<
             setListShown(false);
             
             getLoaderManager().initLoader(DOMAIN_LOADER_ID, null, this);    
-        }
+        }        
     }
     
     public void setPackage(String packageName) {
         mPackage = packageName;
     }
-  
 
     /***************************/
     /**     LoaderCallback    **/

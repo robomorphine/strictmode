@@ -4,15 +4,13 @@ import com.robomorphine.prefs.domain.DomainManager;
 import com.robomorphine.prefs.domain.DomainObserver;
 
 import android.content.Context;
-import android.support.v4.content.AsyncTaskLoader;
 
 import java.util.HashSet;
 import java.util.Set;
 
-public class DomainListLoader extends AsyncTaskLoader<Set<String>> implements DomainObserver {
+public class DomainListLoader extends AsyncLoader<Set<String>> implements DomainObserver {
     
     private final DomainManager mDomainManager;
-    private Set<String> mDomains;
 
     public DomainListLoader(Context context, String packageName) {
         super(context);
@@ -20,50 +18,26 @@ public class DomainListLoader extends AsyncTaskLoader<Set<String>> implements Do
         mDomainManager.setObserver(this);
         mDomainManager.startTracking();
     }
-    
-    @Override
-    protected void onStartLoading() {
-        super.onStartLoading();
-        if(takeContentChanged() || mDomains == null) {
-            forceLoad();
-        } else {
-            deliverResult(mDomains);
-        }
-        
-    }
-    
-    @Override
-    protected void onStopLoading() {
-        super.onStopLoading();
-        cancelLoad();
-    }
-    
+      
     @Override
     public Set<String> loadInBackground() {
         mDomainManager.refreshDiskPreferences();
         mDomainManager.refreshMemoryPreferences();
-                
-        mDomains = new HashSet<String>(mDomainManager.getPreferences());
-        return mDomains;
-    }
-   
-      
-    @Override
-    protected void onAbandon() {
-        super.onAbandon();
+        return new HashSet<String>(mDomainManager.getPreferences());
     }
     
     @Override
-    protected void onReset() {
-        super.onReset();
-        stopLoading();
-        mDomains = null;
+    protected void onRegisterObservers() {
+        super.onRegisterObservers();
+        mDomainManager.startTracking();
     }
     
     @Override
-    public void deliverResult(Set<String> data) {
-        super.deliverResult(data);
+    protected void onUnregisterObservers() {
+        super.onUnregisterObservers();
+        mDomainManager.stopTracking();
     }
+  
     
     /*******************************/
     /**        DomainObserver     **/

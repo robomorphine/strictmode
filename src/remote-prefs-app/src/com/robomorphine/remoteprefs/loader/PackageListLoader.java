@@ -19,12 +19,11 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.support.v4.content.AsyncTaskLoader;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PackageListLoader extends AsyncTaskLoader<List<AndroidPackage>> {
+public class PackageListLoader extends AsyncLoader<List<AndroidPackage>> {
     
     private static final String TAG = Tags.getTag(PackageListLoader.class);
     
@@ -35,7 +34,6 @@ public class PackageListLoader extends AsyncTaskLoader<List<AndroidPackage>> {
    
     
     private class PackageBroadcastReceiver extends BroadcastReceiver {
-        private boolean mRegistered = false;
         
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -43,32 +41,25 @@ public class PackageListLoader extends AsyncTaskLoader<List<AndroidPackage>> {
         }
         
         public void register(Context context) {
-            if(!mRegistered) {
-                IntentFilter intent = new IntentFilter();
-                intent.addAction(Intent.ACTION_PACKAGE_ADDED);
-                intent.addAction(Intent.ACTION_PACKAGE_CHANGED);
-                intent.addAction(Intent.ACTION_PACKAGE_DATA_CLEARED);
-                intent.addAction(Intent.ACTION_PACKAGE_FIRST_LAUNCH);
-                intent.addAction(Intent.ACTION_PACKAGE_INSTALL);
-                intent.addAction(Intent.ACTION_PACKAGE_REMOVED);
-                intent.addAction(Intent.ACTION_PACKAGE_REPLACED);
-                intent.addAction(Intent.ACTION_PACKAGE_RESTARTED);
-                context.registerReceiver(this, intent);
-                mRegistered = true;
-            }
+            IntentFilter intent = new IntentFilter();
+            intent.addAction(Intent.ACTION_PACKAGE_ADDED);
+            intent.addAction(Intent.ACTION_PACKAGE_CHANGED);
+            intent.addAction(Intent.ACTION_PACKAGE_DATA_CLEARED);
+            intent.addAction(Intent.ACTION_PACKAGE_FIRST_LAUNCH);
+            intent.addAction(Intent.ACTION_PACKAGE_REMOVED);
+            intent.addAction(Intent.ACTION_PACKAGE_REPLACED);
+            intent.addAction(Intent.ACTION_PACKAGE_RESTARTED);
+            intent.addDataScheme("package");
+            context.registerReceiver(this, intent);
         }
         
         public void unregister(Context context) {
-            if(mRegistered) {
-                context.unregisterReceiver(this);
-                mRegistered = false;
-            }
+            context.unregisterReceiver(this);
         }
     }    
     
     private final PackageManager mPackageManager;
     private final PackageBroadcastReceiver mReceiver = new PackageBroadcastReceiver();
-    private List<AndroidPackage> mPackages;
     
     public PackageListLoader(Context context) {
         super(context);
@@ -76,41 +67,22 @@ public class PackageListLoader extends AsyncTaskLoader<List<AndroidPackage>> {
     }
     
     @Override
-    protected void onStartLoading() {
-        super.onStartLoading();
-        if(takeContentChanged() || mPackages == null) {
-            forceLoad();
-        } else {
-            deliverResult(mPackages);
-        }
-    }
-    
-    @Override
-    protected void onStopLoading() {
-        super.onStopLoading();
-        cancelLoad();
-    }
-    
-    @Override
     public List<AndroidPackage> loadInBackground() {
-        mPackages = getPackages();
+        return getPackages();
+    }    
+    
+    @Override
+    protected void onRegisterObservers() {
+        super.onRegisterObservers();
         mReceiver.register(getContext());
-        return mPackages;
     }
     
     @Override
-    protected void onAbandon() {
-        super.onAbandon();
+    protected void onUnregisterObservers() {
+        super.onUnregisterObservers();
         mReceiver.unregister(getContext());
     }
-    
-    @Override
-    protected void onReset() {
-        super.onReset();
-        stopLoading();
-        mPackages = null;
-    } 
-    
+   
     /************************************/
     /**             Core               **/
     /************************************/
