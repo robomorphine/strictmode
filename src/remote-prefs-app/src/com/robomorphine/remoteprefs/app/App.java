@@ -6,13 +6,10 @@ import com.robomorphine.remoteprefs.BuildConfig;
 
 import android.annotation.TargetApi;
 import android.app.Application;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.os.StrictMode;
 import android.os.StrictMode.ThreadPolicy;
 import android.os.StrictMode.VmPolicy;
-import android.provider.Settings;
-import android.provider.Settings.SettingNotFoundException;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
 
@@ -29,64 +26,59 @@ public class App extends Application {
     public void onCreate() {
         sContext = this;
         
-        enableStrictMode();
+        if(BuildConfig.DEBUG) {
+            enableStrictMode();
+        }
         super.onCreate();
         
         LoaderManager.enableDebugLogging(BuildConfig.DEBUG);
         FragmentManager.enableDebugLogging(BuildConfig.DEBUG);
     }
     
-    @TargetApi(9)
-    private void enableStrictMode() {
+    private static void enableStrictMode() {
         try {
-            if (BuildConfig.DEBUG) {                
-                ThreadPolicy.Builder threadBuilder = new StrictMode.ThreadPolicy.Builder();
-                threadBuilder.detectAll()
-                             .penaltyLog()
-                             .penaltyDropBox()
-                             .penaltyDeathOnNetwork();
-                
-                penaltyFlashScreen(threadBuilder);
-                StrictMode.setThreadPolicy(threadBuilder.build());
-                
-                VmPolicy.Builder vmBuilder = new StrictMode.VmPolicy.Builder();
-                vmBuilder.detectLeakedClosableObjects()
-                         .detectLeakedSqlLiteObjects()
-                         .penaltyDropBox()
-                         .penaltyDeath();
-                
-                detectLeakingActivities(vmBuilder);
-                StrictMode.setVmPolicy(vmBuilder.build());
-            }
-        } catch(VerifyError ex) {
-            //ignore
+            doEnableStrictMode();
+        } catch (Throwable ex) {
+            Log.d(TAG, "Failed to enable StrictMode.");
         }
     }
-    
+
+    @TargetApi(9)
+    private static void doEnableStrictMode() {
+        ThreadPolicy.Builder threadBuilder;
+        VmPolicy.Builder vmBuilder;
+
+        threadBuilder = new ThreadPolicy.Builder();
+        vmBuilder = new VmPolicy.Builder();
+
+        try {
+            updateStrictModePolicies_v9(threadBuilder, vmBuilder);
+        } catch (Exception ex) {
+            Log.d(TAG, "Failed to update StrictMode policies for v9.");
+        }
+
+        try {
+            updateStrictModePolicies_v11(threadBuilder, vmBuilder);
+        } catch (Throwable ex) {
+            Log.d(TAG, "Failed to update StrictMode policies for v11.");
+        }
+
+        StrictMode.setThreadPolicy(threadBuilder.build());
+        StrictMode.setVmPolicy(vmBuilder.build());
+    }
+
+    @TargetApi(9)
+    private static void updateStrictModePolicies_v9(ThreadPolicy.Builder threadBuilder,
+            VmPolicy.Builder vmBuilder) {
+        threadBuilder.detectAll().penaltyLog();
+        vmBuilder.detectLeakedSqlLiteObjects();
+
+    }
+
     @TargetApi(11)
-    private ThreadPolicy.Builder penaltyFlashScreen(ThreadPolicy.Builder builder) {
-        try {
-            return builder.penaltyFlashScreen();
-        } catch(VerifyError ex) {
-            return builder;
-        }
-    }
-    
-    @TargetApi(9)
-    private VmPolicy.Builder detectLeakingActivities(VmPolicy.Builder builder) {
-        ContentResolver cr = getContext().getContentResolver();
-        int forceFinish = 0;
-        
-        try {
-            forceFinish = Settings.System.getInt(cr, Settings.System.ALWAYS_FINISH_ACTIVITIES);
-        } catch(SettingNotFoundException ex) {
-            Log.e(TAG, ex);
-        }
-        
-        if(forceFinish != 0) {
-            builder.detectActivityLeaks();
-        }
-        
-        return builder;
+    private static void updateStrictModePolicies_v11(ThreadPolicy.Builder threadBuilder,
+            VmPolicy.Builder vmBuilder) {
+        threadBuilder.penaltyFlashScreen().penaltyDeathOnNetwork();
+        vmBuilder.detectLeakedClosableObjects();
     }
 }
