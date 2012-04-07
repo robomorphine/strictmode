@@ -2,5 +2,10 @@
 <resources>    
     <string name="app_name">StrictMode</string>
     <string name="package_list_empty">No packages found.</string>
+    <string name="dropbox_list_empty">No StrictMode items are found in DropBox.</string>
     <string name="menu_search">Search</string>
+    <string name="menu_violate_thread_policy">Violate Thread</string>
+    <string name="menu_violate_vm_policy">Violate VM</string>
+    <string name="dropbox_item_no_entry">Failed to locate DropBox entry.</string>
+    <string name="not_available">N/A</string>
 </resources>

@@ -1,7 +1,7 @@
 package com.robomorphine.strictmode.loader;
 
 import com.robomorphine.loader.AsyncLoader;
-import com.robomorphine.strictmode.loader.PackageListLoader.AndroidPackage;
+import com.robomorphine.strictmode.entity.AndroidPackage;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -21,48 +21,6 @@ public class PackageListLoader extends AsyncLoader<List<AndroidPackage>> {
     public static final String META_DATA_NAME = "com.robomorphine.remote.preferences";
     public static final int DEFAULT_ICON_SIZE_PX = 48;
   
-    public static class AndroidPackage implements Comparable<AndroidPackage> {
-        
-        private final Drawable mPackageIcon;        
-        private final PackageInfo mPackageInfo;
-        private final String mApplicationLabel;
-        
-        private static String getApplicationLabel(PackageManager pm, PackageInfo info) {
-            if(info.applicationInfo != null) {
-                CharSequence label = pm.getApplicationLabel(info.applicationInfo);
-                if(label != null) {
-                    return label.toString();
-                }
-            }
-            return info.packageName;
-        }
-            
-        public AndroidPackage(PackageManager packageManager, Drawable icon, PackageInfo packageInfo) {
-            mPackageInfo = packageInfo;
-            mPackageIcon = icon;
-            mApplicationLabel = getApplicationLabel(packageManager, packageInfo);
-        }
-        
-        public Drawable getIcon() {
-            return mPackageIcon;
-        }
-        
-        public String getApplicationLabel() {
-            return mApplicationLabel;
-        }
-        
-        public PackageInfo getInfo() {
-            return mPackageInfo;
-        }
-        
-        @Override
-        public int compareTo(AndroidPackage another) {
-            
-            return mApplicationLabel.compareTo(another.mApplicationLabel);
-        }
-    }
-   
-    
     private class PackageBroadcastReceiver extends BroadcastReceiver {
         
         @Override

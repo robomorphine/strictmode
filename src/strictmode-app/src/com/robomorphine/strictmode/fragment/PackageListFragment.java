@@ -4,8 +4,8 @@ package com.robomorphine.strictmode.fragment;
 import com.google.common.base.Objects;
 import com.robomorphine.strictmode.R;
 import com.robomorphine.strictmode.adapter.PackageListAdapter;
+import com.robomorphine.strictmode.entity.AndroidPackage;
 import com.robomorphine.strictmode.loader.PackageListLoader;
-import com.robomorphine.strictmode.loader.PackageListLoader.AndroidPackage;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -86,8 +86,10 @@ public class PackageListFragment extends ListFragment
         setListShown(false);
         
         ListView list = getListView();
+        list.setFastScrollEnabled(true);
         list.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         list.setItemChecked(list.getCheckedItemPosition(), false);
+        
                 
         /* fetch data */
         Bundle args = new Bundle();

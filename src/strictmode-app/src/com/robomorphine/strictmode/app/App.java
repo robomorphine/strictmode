@@ -71,8 +71,8 @@ private static final String TAG = Tags.getTag(App.class);
     @TargetApi(9)
     private static void updateStrictModePolicies_v9(ThreadPolicy.Builder threadBuilder,
             VmPolicy.Builder vmBuilder) {
-        threadBuilder.detectAll().penaltyLog();
-        vmBuilder.detectLeakedSqlLiteObjects();
+        threadBuilder.detectAll().penaltyLog().penaltyDropBox();
+        vmBuilder.detectLeakedSqlLiteObjects().penaltyLog().penaltyDropBox();
 
     }
 

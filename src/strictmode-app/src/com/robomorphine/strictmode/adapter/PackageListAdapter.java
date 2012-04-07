@@ -1,11 +1,10 @@
 package com.robomorphine.strictmode.adapter;
 
 import com.robomorphine.strictmode.R;
-import com.robomorphine.strictmode.loader.PackageListLoader.AndroidPackage;
+import com.robomorphine.strictmode.entity.AndroidPackage;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,12 +18,10 @@ import java.util.List;
 public class PackageListAdapter extends BaseAdapter {
     
     private final LayoutInflater mInflator;
-    private final PackageManager mPackageManager;
     private List<AndroidPackage> mPackages = new ArrayList<AndroidPackage>();
     
     public PackageListAdapter(Context context) {
         mInflator = LayoutInflater.from(context);
-        mPackageManager = context.getPackageManager();
     }
     
     public void swap(List<AndroidPackage> packages) {
@@ -54,20 +51,7 @@ public class PackageListAdapter extends BaseAdapter {
     public long getItemId(int position) {
         return position;
     }
-    
-    private CharSequence getApplicationLabel(PackageInfo info) {
-        CharSequence applicationName = info.packageName;
-        if(info.applicationInfo != null) {
-            
-            CharSequence label = mPackageManager.getApplicationLabel(info.applicationInfo);
-            if(label != null) {
-                applicationName = label;
-            }
-            
-        }
-        return applicationName;
-    }
-    
+   
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView;
@@ -83,7 +67,7 @@ public class PackageListAdapter extends BaseAdapter {
         icon.setImageDrawable(pkg.getIcon());
         
         PackageInfo info = pkg.getInfo();
-        appLabel.setText(getApplicationLabel(info));
+        appLabel.setText(pkg.getApplicationLabel());
         appPkg.setText(info.packageName);
         
         return view;
