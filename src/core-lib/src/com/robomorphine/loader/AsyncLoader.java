@@ -1,4 +1,4 @@
-package com.robomorphine.remoteprefs.loader;
+package com.robomorphine.loader;
 
 import com.robomorphine.log.Log;
 import com.robomorphine.log.tag.Tags;
@@ -9,6 +9,9 @@ import android.support.v4.content.AsyncTaskLoader;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+/**
+ * TODO: add tests
+ */
 public abstract class AsyncLoader<D> extends AsyncTaskLoader<D> {
     private static final String TAG = Tags.getTag(AsyncLoader.class);
     private D mData;    

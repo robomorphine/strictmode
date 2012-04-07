@@ -1,5 +1,6 @@
 package com.robomorphine.remoteprefs.loader;
 
+import com.robomorphine.loader.AsyncLoader;
 import com.robomorphine.prefs.domain.DomainManager;
 import com.robomorphine.prefs.domain.DomainObserver;
 

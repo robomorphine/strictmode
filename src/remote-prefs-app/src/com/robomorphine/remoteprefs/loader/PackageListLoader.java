@@ -1,5 +1,6 @@
 package com.robomorphine.remoteprefs.loader;
 
+import com.robomorphine.loader.AsyncLoader;
 import com.robomorphine.log.Log;
 import com.robomorphine.log.tag.Tags;
 import com.robomorphine.remoteprefs.AndroidPackage;

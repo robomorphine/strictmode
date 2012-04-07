@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-
-    <string name="hello">Hello World, MainActivity!</string>
+<resources>    
     <string name="app_name">StrictMode</string>
-
+    <string name="package_list_empty">No packages found.</string>
+    <string name="menu_search">Search</string>
 </resources>
