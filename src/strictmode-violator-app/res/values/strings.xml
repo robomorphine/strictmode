@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <string name="app_name">rbm-strictmode-violator-app</string>
+    
+    <string name="shared_prefs_commit_name">SharedPreferences Commit</string>
+    <string name="shared_prefs_commit_descr">
+        Tries to edit and save SharedPreferences using Editor.commit() from main thread.
+    </string>
+    
+    <string name="disk_read_name">DiskRead</string>
+    <string name="disk_read_descr">
+        Open and read some file on disk from main thread.
+    </string>
+    
+    <string name="disk_write_name">DiskWrite</string>
+    <string name="disk_write_descr">
+        Open and write to some file on disk from main thread.
+    </string>
+    
+    <string name="fake_slow_call_name">Fake SlowCall</string>
+    <string name="fake_slow_call_descr">
+        Immitates slow call by calling StrictMode.noteSlowCall()
+    </string>
+
+</resources>
