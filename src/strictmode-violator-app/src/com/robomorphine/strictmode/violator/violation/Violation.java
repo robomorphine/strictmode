@@ -1,21 +1,31 @@
 package com.robomorphine.strictmode.violator.violation;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 
 public abstract class Violation {
     
     private final Context mContext;
+    private final Drawable mIcon;
     private final String mName;
     private final String mDescr;
     
-    public Violation(Context context, String name, String descr) {
+    public Violation(Context context, Drawable icon, String name, String descr) {
         mContext = context.getApplicationContext();
+        mIcon = icon;
         mName = name;
         mDescr = descr;
     }
     
-    public Violation(Context context, int name, int descr) {
-        this(context, context.getString(name), context.getString(descr));
+    public Violation(Context context, int icon, int name, int descr) {
+        this(context,
+             context.getResources().getDrawable(icon),
+             context.getString(name), 
+             context.getString(descr));
+    }
+    
+    public Drawable getIcon() {
+        return mIcon;
     }
     
     public String getName() {

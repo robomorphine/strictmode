@@ -12,7 +12,10 @@ public class SharedPreferencesCommitViolation extends ThreadViolation {
     private Random mRandom = new Random();
     
     public SharedPreferencesCommitViolation(Context context) {
-        super(context, R.string.shared_prefs_commit_name, R.string.shared_prefs_commit_descr);
+        super(context,
+              R.drawable.disk_read_write,
+              R.string.shared_prefs_commit_name, 
+              R.string.shared_prefs_commit_descr);
     }
     
     @Override

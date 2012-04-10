@@ -13,7 +13,10 @@ import java.io.OutputStreamWriter;
 public class DiskWriteViolation extends ThreadViolation {
     
     public DiskWriteViolation(Context context) {
-        super(context, R.string.disk_write_name, R.string.disk_write_descr);
+        super(context,
+              R.drawable.disk_write,
+              R.string.disk_write_name, 
+              R.string.disk_write_descr);
     }
     
     @Override

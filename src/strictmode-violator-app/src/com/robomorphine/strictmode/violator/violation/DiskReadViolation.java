@@ -13,7 +13,10 @@ import java.io.InputStreamReader;
 public class DiskReadViolation extends ThreadViolation {
     
     public DiskReadViolation(Context context) {
-        super(context, R.string.disk_read_name, R.string.disk_read_descr);
+        super(context,
+              R.drawable.disk_read,
+              R.string.disk_read_name, 
+              R.string.disk_read_descr);
     }
     
     @Override

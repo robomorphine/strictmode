@@ -8,7 +8,10 @@ import android.os.StrictMode;
 public class FakeSlowCallViolation extends ThreadViolation {
     
     public FakeSlowCallViolation(Context context) {
-        super(context, R.string.fake_slow_call_name, R.string.fake_slow_call_descr);
+        super(context, 
+              R.drawable.clock,
+              R.string.fake_slow_call_name, 
+              R.string.fake_slow_call_descr);
     }
     
     @Override
