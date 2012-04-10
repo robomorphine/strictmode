@@ -22,5 +22,15 @@
     <string name="fake_slow_call_descr">
         Immitates slow call by calling StrictMode.noteSlowCall()
     </string>
+    
+    <string name="multiple_slow_calls_name">Multiple slow calls</string>
+    <string name="multiple_slow_calls_descr">
+        Makes multiple slow calls in a row. Tests Loop-Violation-Number.
+    </string>
+    
+    <string name="broadcast_name">DiskRead from Broadcast Receiver</string>
+    <string name="broadcast_descr">
+        Reads disk from onReceive() of Broadcast Receiver.
+    </string>
 
 </resources>
