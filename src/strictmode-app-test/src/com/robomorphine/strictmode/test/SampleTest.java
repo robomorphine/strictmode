@@ -1,5 +1,9 @@
 package com.robomorphine.strictmode.test;
 
-public class SampleTest {
+import junit.framework.TestCase;
 
+public class SampleTest extends TestCase {
+    public void test() {
+        
+    }
 }
