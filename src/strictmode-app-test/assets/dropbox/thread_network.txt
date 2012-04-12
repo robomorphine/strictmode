@@ -1,0 +1,30 @@
+Process: com.android.strictmodetest
+Flags: 0xbe46
+Package: com.android.strictmodetest v1 (1.0)
+Build: google/yakju/maguro:4.0.4/IMM76D/299849:user/release-keys
+System-App: false
+Uptime-Millis: 192833482
+Loop-Violation-Number: 1
+Duration-Millis: 31
+
+android.os.StrictMode$StrictModeNetworkViolation: policy=159 violation=4
+	at android.os.StrictMode$AndroidBlockGuardPolicy.onNetwork(StrictMode.java:1105)
+	at libcore.io.BlockGuardOs.close(BlockGuardOs.java:65)
+	at libcore.io.IoBridge.closeSocket(IoBridge.java:181)
+	at java.net.PlainSocketImpl.close(PlainSocketImpl.java:162)
+	at java.net.Socket.close(Socket.java:316)
+	at com.android.strictmodetest.StrictModeActivity.closeWithLinger(StrictModeActivity.java:414)
+	at com.android.strictmodetest.StrictModeActivity.access$400(StrictModeActivity.java:76)
+	at com.android.strictmodetest.StrictModeActivity$13.onClick(StrictModeActivity.java:305)
+	at android.view.View.performClick(View.java:3511)
+	at android.view.View$PerformClick.run(View.java:14105)
+	at android.os.Handler.handleCallback(Handler.java:605)
+	at android.os.Handler.dispatchMessage(Handler.java:92)
+	at android.os.Looper.loop(Looper.java:137)
+	at android.app.ActivityThread.main(ActivityThread.java:4424)
+	at java.lang.reflect.Method.invokeNative(Native Method)
+	at java.lang.reflect.Method.invoke(Method.java:511)
+	at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:784)
+	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:551)
+	at dalvik.system.NativeStart.main(Native Method)
+

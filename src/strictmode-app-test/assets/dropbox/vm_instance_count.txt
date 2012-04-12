@@ -1,0 +1,11 @@
+Process: com.vivox.bobsled
+Flags: 0x8be46
+Package: com.vivox.bobsled v17 (2.0.4)
+Build: google/yakju/maguro:4.0.4/IMM76D/299849:user/release-keys
+System-App: false
+Uptime-Millis: 60936758
+Instance-Count: 2
+
+android.os.StrictMode$InstanceCountViolation: class com.vivox.bobsled.view.Friends; instances=2; limit=1
+	at android.os.StrictMode.setClassInstanceLimit(StrictMode.java:1)
+

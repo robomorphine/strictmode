@@ -1,0 +1,21 @@
+Process: com.vivox.bobsled
+Flags: 0x8be46
+Package: com.vivox.bobsled v17 (2.0.4)
+Build: google/yakju/maguro:4.0.4/IMM76D/299849:user/release-keys
+System-App: false
+Uptime-Millis: 60221276
+
+java.lang.Throwable: Explicit termination method 'end' not called
+	at dalvik.system.CloseGuard.open(CloseGuard.java:184)
+	at java.util.zip.Inflater.<init>(Inflater.java:82)
+	at java.util.zip.GZIPInputStream.<init>(GZIPInputStream.java:96)
+	at java.util.zip.GZIPInputStream.<init>(GZIPInputStream.java:81)
+	at libcore.net.http.HttpEngine.initContentStream(HttpEngine.java:512)
+	at libcore.net.http.HttpEngine.readResponse(HttpEngine.java:805)
+	at libcore.net.http.HttpURLConnectionImpl.getResponse(HttpURLConnectionImpl.java:274)
+	at libcore.net.http.HttpURLConnectionImpl.getInputStream(HttpURLConnectionImpl.java:168)
+	at libcore.net.http.HttpsURLConnectionImpl.getInputStream(HttpsURLConnectionImpl.java:270)
+	at com.facebook.android.fbutil.FbHttpRequest.openUrlFBFriend(FbHttpRequest.java:83)
+	at com.facebook.android.Facebook.requestFriends(Facebook.java:587)
+	at com.facebook.android.AsyncFacebookRunner$3.run(AsyncFacebookRunner.java:296)
+

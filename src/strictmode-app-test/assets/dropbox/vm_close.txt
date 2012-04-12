@@ -1,0 +1,41 @@
+Process: com.vivox.bobsled
+Flags: 0x8be46
+Package: com.vivox.bobsled v17 (2.0.4)
+Build: google/yakju/maguro:4.0.4/IMM76D/299849:user/release-keys
+System-App: false
+Uptime-Millis: 60919468
+
+java.lang.Throwable: Explicit termination method 'close' not called
+	at dalvik.system.CloseGuard.open(CloseGuard.java:184)
+	at android.content.ContentResolver$CursorWrapperInner.<init>(ContentResolver.java:1582)
+	at android.content.ContentResolver.query(ContentResolver.java:321)
+	at com.vivox.bobsled.view.Friends.onCreate(Friends.java:121)
+	at android.app.Activity.performCreate(Activity.java:4465)
+	at android.app.Instrumentation.callActivityOnCreate(Instrumentation.java:1049)
+	at android.app.ActivityThread.performLaunchActivity(ActivityThread.java:1920)
+	at android.app.ActivityThread.startActivityNow(ActivityThread.java:1797)
+	at android.app.LocalActivityManager.moveToState(LocalActivityManager.java:135)
+	at android.app.LocalActivityManager.startActivity(LocalActivityManager.java:347)
+	at com.vivox.bobsled.fragment.ActivityHostFragment.onCreateView(ActivityHostFragment.java:38)
+	at android.support.v4.app.FragmentManagerImpl.moveToState(FragmentManager.java:870)
+	at android.support.v4.app.FragmentManagerImpl.moveToState(FragmentManager.java:1080)
+	at android.support.v4.app.FragmentManagerImpl.moveToState(FragmentManager.java:1062)
+	at android.support.v4.app.FragmentManagerImpl.dispatchActivityCreated(FragmentManager.java:1810)
+	at android.support.v4.app.FragmentActivity.onStart(FragmentActivity.java:501)
+	at com.vivox.bobsled.BaseActivity.onStart(BaseActivity.java:1123)
+	at android.app.Instrumentation.callActivityOnStart(Instrumentation.java:1133)
+	at android.app.Activity.performStart(Activity.java:4475)
+	at android.app.ActivityThread.performLaunchActivity(ActivityThread.java:1929)
+	at android.app.ActivityThread.handleLaunchActivity(ActivityThread.java:1981)
+	at android.app.ActivityThread.handleRelaunchActivity(ActivityThread.java:3351)
+	at android.app.ActivityThread.access$700(ActivityThread.java:123)
+	at android.app.ActivityThread$H.handleMessage(ActivityThread.java:1151)
+	at android.os.Handler.dispatchMessage(Handler.java:99)
+	at android.os.Looper.loop(Looper.java:137)
+	at android.app.ActivityThread.main(ActivityThread.java:4424)
+	at java.lang.reflect.Method.invokeNative(Native Method)
+	at java.lang.reflect.Method.invoke(Method.java:511)
+	at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:784)
+	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:551)
+	at dalvik.system.NativeStart.main(Native Method)
+
