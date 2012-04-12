@@ -7,7 +7,6 @@ import com.robomorphine.strictmode.violator.violation.DiskWriteViolation;
 import com.robomorphine.strictmode.violator.violation.FakeSlowCallViolation;
 import com.robomorphine.strictmode.violator.violation.MultipleSlowCallsViolation;
 import com.robomorphine.strictmode.violator.violation.SharedPreferencesCommitViolation;
-import com.robomorphine.strictmode.violator.violation.StackTraceRandomizer;
 import com.robomorphine.strictmode.violator.violation.Violation;
 
 import android.app.ListFragment;
@@ -20,8 +19,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class ViolationListFragment extends ListFragment {
-
-    private StackTraceRandomizer mStackTraceRandomizer = new StackTraceRandomizer();
+    
     private ViolationListAdapter mAdapter;
     
     private static List<Violation> createViolations(Context ctx) {
@@ -50,14 +48,7 @@ public class ViolationListFragment extends ListFragment {
     
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        final Violation violation = mAdapter.getItem(position);
-        
-        mStackTraceRandomizer.call(10, new Runnable() {
-            @Override
-            public void run() {
-                violation.violate();        
-            }
-        });
-        
+        final Violation violation = mAdapter.getItem(position);       
+        violation.violate();
     }
 }

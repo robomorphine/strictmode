@@ -2,6 +2,7 @@ package com.robomorphine.strictmode.violator.app;
 
 import com.robomorphine.log.Log;
 import com.robomorphine.log.tag.Tags;
+import com.robomorphine.strictmode.StrictModeHelper;
 import com.robomorphine.strictmode.violator.BuildConfig;
 
 import android.annotation.TargetApi;
@@ -38,9 +39,10 @@ public class App extends Application {
     
     private static void enableStrictMode() {
         try {
+            StrictModeHelper.enableUniqueViolations(true);
             doEnableStrictMode();
         } catch (Throwable ex) {
-            Log.d(TAG, "Failed to enable StrictMode.");
+            Log.d(TAG, "Failed to enable StrictMode.", ex);
         }
     }
 

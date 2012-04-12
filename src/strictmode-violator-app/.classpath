@@ -8,5 +8,6 @@
 	<classpathentry exported="true" kind="lib" path="/rbm-root/libs/android-support-v4.jar" sourcepath="R:/repository/dev/bin/android-sdk/extras/android/support/v4/src/java"/>
 	<classpathentry exported="true" kind="lib" path="/rbm-root/libs/guava-r09.jar" sourcepath="/rbm-root/libs/guava-r09-src.zip"/>
 	<classpathentry exported="true" kind="lib" path="/rbm-root/libs/jsr305.jar"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/rbm-strictmode-lib"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

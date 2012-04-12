@@ -80,6 +80,12 @@
         <mkdir dir="${bin.dir}"/>
         <mkdir dir="${bin.classes.dir}"/>
         <mkdir dir="${libs.dir}"/>
+    	
+    	<property name="extra.bootclasspath" location="${android.jar.path}" />
+    	<path id="android.jar.path.ref">
+    		<pathelement path="${extra.bootclasspath}" />
+    		<pathelement location="${android.jar.path}" /> 
+    	</path>
 
         <!-- default to debug mode, if none was set -->
         <property name="debug.mode" value="true" />
@@ -88,7 +94,7 @@
                 source="${java.source}" target="${java.target}"
                 srcdir="${src.dir}" destdir="${bin.classes.dir}"
                 debug="true"
-                bootclasspath="${android.jar.path}"
+                bootclasspathref="android.jar.path.ref"
                 includeantruntime="false">
 
                 <classpath>

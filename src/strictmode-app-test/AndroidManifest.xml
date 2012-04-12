@@ -4,7 +4,7 @@
     android:versionCode="1"
     android:versionName="1.0" >
 
-    <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="15" />
+    <uses-sdk android:minSdkVersion="14" android:targetSdkVersion="15" />
         
     <instrumentation android:targetPackage="com.robomorphine.strictmode" android:name="android.test.InstrumentationTestRunner" />
     <instrumentation android:targetPackage="com.robomorphine.strictmode" android:name="com.robomorphine.test.runner.RobomorphineTestRunner" />

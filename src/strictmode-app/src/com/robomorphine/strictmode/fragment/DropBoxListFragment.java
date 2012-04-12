@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
+import java.io.IOException;
 import java.util.List;
 
 public class DropBoxListFragment extends ListFragment implements LoaderCallbacks<List<DropBoxItem>>{
@@ -51,6 +52,13 @@ public class DropBoxListFragment extends ListFragment implements LoaderCallbacks
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        
+        try {
+            Runtime.getRuntime().exec("su sh");
+            Thread.sleep(2000);
+        } catch(Exception ex) {
+            
+        }
         
         /* show menu items */
         setHasOptionsMenu(true);

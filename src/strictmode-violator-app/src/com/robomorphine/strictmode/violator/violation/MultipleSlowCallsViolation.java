@@ -16,14 +16,8 @@ public class MultipleSlowCallsViolation extends ThreadViolation {
     
     @Override
     public void violate() {
-        StackTraceRandomizer stackTraceRandomizer = new StackTraceRandomizer();
         for(int i = 0; i < 10; i++) {
-            stackTraceRandomizer.call(4, new Runnable() {
-                @Override
-                public void run() {
-                    StrictMode.noteSlowCall(MultipleSlowCallsViolation.class.getName());
-                }
-            });            
+            StrictMode.noteSlowCall(MultipleSlowCallsViolation.class.getName());          
         }
     }
 }
