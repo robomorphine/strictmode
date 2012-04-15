@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class ViolationFactoryTest extends InstrumentationTestCase {
     
@@ -592,5 +593,102 @@ public class ViolationFactoryTest extends InstrumentationTestCase {
         for(int i = 0; i < nestedElements.length; i++) {
             assertEquals(nestedElements[i], ex.getStackTrace()[i]);
         }
+    }
+    
+    public void testParseHeaders_empty() {
+        ViolationFactory factory = new ViolationFactory();
+        Map<String, String> map = factory.parseHeaders(new LinkedList<String>());
+        assertEquals(0, map.size());
+    }
+    
+    public void testParseHeaders_emptyLine() {
+        ViolationFactory factory = new ViolationFactory();
+        LinkedList<String> lines = new LinkedList<String>();        
+        lines.add("");
+        lines.add(" ");
+        lines.add(":");
+        lines.add(": ");
+        lines.add(" :");
+        lines.add(" : ");
+        
+        Map<String, String> map = factory.parseHeaders(lines);
+        assertEquals(0, map.size());
+    }
+    
+    public void testParseHeaders_noValue() {
+        ViolationFactory factory = new ViolationFactory();
+                
+        LinkedList<String> samples = new LinkedList<String>();
+        String key = "key";
+        samples.add(key);
+        samples.add(" " + key);
+        samples.add(key + " ");
+        samples.add(" " + key + " ");
+        samples.add(key + ":");
+        samples.add(key + " :");
+        samples.add(key + ": ");
+        samples.add(key + " : ");
+        
+        for(String sample : samples) {
+            LinkedList<String> lines = new LinkedList<String>();
+            lines.add(sample);
+            
+            Map<String, String> map = factory.parseHeaders(samples);
+            assertEquals(1, map.size());
+            assertTrue(map.containsKey(key));
+            assertNull(map.get(key));
+        }
+    }
+    
+    public void testParseHeaders_keyValue() {
+        ViolationFactory factory = new ViolationFactory();
+                
+        LinkedList<String> samples = new LinkedList<String>();
+        String key = "key";
+        String value = "value";
+        samples.add(key + ":" + value);
+        samples.add(key + " :" + value);
+        samples.add(key + ": " + value);
+        samples.add(key + " : " + value);
+        samples.add(" " + key + " : " + value + " ");
+        
+        for(String sample : samples) {
+            LinkedList<String> lines = new LinkedList<String>();
+            lines.add(sample);
+            
+            Map<String, String> map = factory.parseHeaders(samples);
+            assertEquals(1, map.size());
+            assertTrue(map.containsKey(key));
+            assertEquals(value, map.get(key));
+        }
+    }
+
+    public void testParseHeaders_fromAsset_thread() throws IOException {
+        ViolationFactory factory = new ViolationFactory();
+        List<String> lines = openAssetAsLines("header/thread_headers.txt");
+        Map<String, String> map = factory.parseHeaders(lines);
+        
+        assertEquals("com.android.strictmodetest", map.get("Process"));
+        assertEquals("0xbe46", map.get("Flags"));
+        assertEquals("com.android.strictmodetest v1 (1.0)", map.get("Package"));
+        assertEquals("google/yakju/maguro:4.0.4/IMM76D/299849:user/release-keys", map.get("Build"));
+        assertEquals("false", map.get("System-App"));
+        assertEquals("192722555", map.get("Uptime-Millis"));
+        assertEquals("1", map.get("Loop-Violation-Number"));
+        assertEquals("21", map.get("Duration-Millis"));
+    }
+    
+    public void testParseHeaders_fromAsset_vm() throws IOException {
+        ViolationFactory factory = new ViolationFactory();
+        List<String> lines = openAssetAsLines("header/vm_headers.txt");
+        Map<String, String> map = factory.parseHeaders(lines);
+        
+        assertEquals("com.vivox.bobsled", map.get("Process"));
+        assertEquals("0x8be46", map.get("Flags"));
+        assertEquals("com.vivox.bobsled v17 (2.0.4)", map.get("Package"));
+        assertEquals("google/yakju/maguro:4.0.4/IMM76D/299849:user/release-keys", map.get("Build"));
+        assertEquals("false", map.get("System-App"));
+        assertEquals("60936758", map.get("Uptime-Millis"));
+        assertEquals("2", map.get("Instance-Count"));
     }
 }

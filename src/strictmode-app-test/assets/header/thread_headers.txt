@@ -1,0 +1,8 @@
+Process: com.android.strictmodetest
+Flags: 0xbe46
+Package: com.android.strictmodetest v1 (1.0)
+Build: google/yakju/maguro:4.0.4/IMM76D/299849:user/release-keys
+System-App: false
+Uptime-Millis: 192722555
+Loop-Violation-Number: 1
+Duration-Millis: 21

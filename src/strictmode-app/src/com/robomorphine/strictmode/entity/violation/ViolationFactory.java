@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -46,8 +47,38 @@ public class ViolationFactory {
         return new Violation(parseHeaders(headers), parseException(stackTrace));
     }
     
-    private Map<String, String> parseHeaders(List<String> headers) {
-        return null;
+    /**
+     * Format:
+     *  header-name: header-values
+     */
+    @VisibleForTesting
+    Map<String, String> parseHeaders(List<String> headers) {
+        final Character separator = ':';
+        
+        HashMap<String, String> map = new HashMap<String, String>();
+        for(String line : headers) {
+            line = line.trim();
+            if(TextUtils.isEmpty(line) || line.equals(Character.toString(separator))) {
+                //ignore empty line or line that consists only of separator (":")
+                continue;
+            }
+            
+            int separatorIndex = line.indexOf(separator);
+            if(separatorIndex < 0) {
+                map.put(line, null);
+            } else {
+                String key = line.substring(0, separatorIndex).trim();
+                String value = null;
+                if(separatorIndex < line.length() - 1) {
+                    value = line.substring(separatorIndex + 1).trim();
+                }
+                if(TextUtils.isEmpty(value)) {
+                    value = null;
+                }
+                map.put(key, value);
+            }
+        }
+        return map;
     }
     
     /**
