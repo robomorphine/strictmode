@@ -6,6 +6,13 @@ import java.util.Map;
 
 public class Violation {    
     
+    public static final String HEADER_KEY_PROCESS = "Process";
+    public static final String HEADER_KEY_FLAGS = "Flags";
+    public static final String HEADER_KEY_PACKAGE = "Package";
+    public static final String HEADER_KEY_BUILD = "Build";
+    public static final String HEADER_KEY_SYSTEM_APP = "System-App";
+    public static final String HEADER_KEY_TIMESTAMP = "Uptime-Millis";
+    
     public static class ViolationFactory {
         /**
          * @return new instance if factory knows how to create violation from provided information,
