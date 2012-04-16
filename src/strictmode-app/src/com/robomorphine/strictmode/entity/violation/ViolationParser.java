@@ -1,28 +1,63 @@
 package com.robomorphine.strictmode.entity.violation;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.robomorphine.strictmode.entity.violation.Violation.ViolationFactory;
 
 import android.text.TextUtils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class ViolationFactory {
+public class ViolationParser {
     
     private static final String STACK_TRACE_ENTRY_PREFIX = "at";
     private static final String STACK_TRACE_COMMENT_PREFIX = "#";
     private static final String STACK_TRACE_NATIVE_METHOD = "Native Method";
     private static final String STACK_TRACE_UNKNOWN_SOURCE = "Unknown Source";
     
+    private static final List<Violation.ViolationFactory> sFactoryRegistry;
+    static {
+        List<Violation.ViolationFactory> factoryRegistry = new LinkedList<Violation.ViolationFactory>();
+        factoryRegistry.add(new DiskReadThreadViolation.DiskReadThreadViolationFactory());
+        factoryRegistry.add(new DiskWriteThreadViolation.DiskWriteThreadViolationFactory());
+        factoryRegistry.add(new NetworkThreadViolation.NetworkThreadViolationFactory());
+        factoryRegistry.add(new CustomThreadViolation.CustomThreadViolationFactory());
+        factoryRegistry.add(new ThreadViolation.ThreadViolationFactory());
+        /* TODO: add vm violations */
+        factoryRegistry.add(new Violation.ViolationFactory());
+        
+        sFactoryRegistry = Collections.unmodifiableList(factoryRegistry);
+    }
     
-    public Violation createViolation(String data) {        
+    public Violation createViolation(String data) {
         List<String> headers = new LinkedList<String>();
         List<String> stackTrace = new LinkedList<String>();
+        extractHeadersAndException(data, headers, stackTrace);
+        return createViolation(headers, stackTrace);
+    }
+    
+    @VisibleForTesting    
+    Violation createViolation(List<String> rawHeaders, List<String> stackTrace) {
+        Violation violation = null;
+        Map<String, String> headers = parseHeaders(rawHeaders);
+        ViolationException exception = parseException(stackTrace);
+        for(ViolationFactory factory : sFactoryRegistry) {
+            violation = factory.create(headers, exception);
+            if(violation != null) {
+                return violation;
+            }
+        }
+        return null;
+    }
+    
+    @VisibleForTesting
+    void extractHeadersAndException(String data, List<String> headers, List<String> stackTrace) {
         List<String> lines = headers;
         BufferedReader reader = new BufferedReader(new StringReader(data));
         
@@ -39,12 +74,6 @@ public class ViolationFactory {
         } catch(IOException ex) {
             throw new IllegalArgumentException("Failed to parse violation data", ex);
         }
-        return createViolation(headers, stackTrace);
-    }
-    
-    private Violation createViolation(List<String> headers, List<String> stackTrace) {
-        /* TODO: detect what violation we're currently dealing with */
-        return new Violation(parseHeaders(headers), parseException(stackTrace));
     }
     
     /**

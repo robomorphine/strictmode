@@ -2,19 +2,56 @@ package com.robomorphine.strictmode.entity.violation;
 
 import com.google.common.annotations.VisibleForTesting;
 
-import android.text.TextUtils;
-
 import java.util.HashMap;
 import java.util.Map;
 
 public class ThreadViolation extends Violation {
     
-    public static class ThreadViolationFactory {
+    public static final String HEADER_KEY_DURATION = "Duration-Millis";
+    
+    public static final String HEADER_KEY_POLICY = "policy";
+    public static final String HEADER_KEY_VIOLATION = "violation";
+    public static final String HEADER_KEY_MESSAGE = "msg";
+        
+    public static final int VIOLATION_DISK_WRITE = 0x01;
+    public static final int VIOLATION_DISK_READ = 0x02;
+    public static final int VIOLATION_NETWORK = 0x04;
+    public static final int VIOLATION_CUSTOM = 0x08; 
+    
+    public static class ThreadViolationFactory extends ViolationFactory {
         /**
          * @return new instance if factory knows how to create violation from provided information,
          *         or returns null if violation can not be created using provided information.
          */
-        ThreadViolation create(Map<String, String> headers, ViolationException exception) {
+        final ThreadViolation create(Map<String, String> headers, ViolationException exception) {
+            /**
+             * This is ThreadViolation if and only if: 
+             *  1) There is a header: HEADER_KEY_DURATION
+             *  2) There are headers in exception message:
+             *      a) HEADER_KEY_POLICY
+             *      b) HEADER_KEY_VIOLATION
+             */
+            headers = new HashMap<String, String>(headers);
+            String message = exception.getMessage();
+            if(message != null) {
+                headers.putAll(parseExceptionMessage(message));
+            }
+            
+            if(headers.containsKey(HEADER_KEY_DURATION) && 
+               headers.containsKey(HEADER_KEY_POLICY) && 
+               headers.containsKey(HEADER_KEY_VIOLATION)) {
+                
+                int policy = parsePolicy(headers.get(HEADER_KEY_POLICY));
+                int violation = parseViolation(headers.get(HEADER_KEY_VIOLATION));
+                if(policy >= 0 && violation >= 0) {
+                    return onCreate(headers, exception, policy, violation);
+                }
+            }
+            return null;
+        }
+        
+        ThreadViolation onCreate(Map<String, String> headers, ViolationException exception,
+                                 int policy, int violation) {
             return new ThreadViolation(headers, exception);
         }
     }
@@ -63,6 +100,32 @@ public class ThreadViolation extends Violation {
             index = separatorIndex;
         }
         return map;
+    }
+    
+    @VisibleForTesting
+    static int parsePolicy(String policy) {
+        if(policy == null) {
+            return -1;
+        }
+        
+        try {
+            return Integer.parseInt(policy);
+        } catch(NumberFormatException ex) {
+            return -1;
+        }
+    }
+    
+    @VisibleForTesting
+    static int parseViolation(String violation) {
+        if(violation == null) {
+            return -1;
+        }
+        
+        try {
+            return Integer.parseInt(violation);
+        } catch(NumberFormatException ex) {
+            return -1;
+        }
     }
     
     public ThreadViolation(Map<String, String> headers, ViolationException exception) {

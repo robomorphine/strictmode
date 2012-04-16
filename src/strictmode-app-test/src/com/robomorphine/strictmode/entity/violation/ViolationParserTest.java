@@ -1,65 +1,32 @@
 package com.robomorphine.strictmode.entity.violation;
 
-import android.content.res.AssetManager;
-import android.test.InstrumentationTestCase;
+import com.robomorphine.strictmode.entity.violation.BaseTestCase.RawViolation;
+import com.robomorphine.strictmode.entity.violation.CustomThreadViolation.CustomThreadViolationFactory;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class ViolationFactoryTest extends InstrumentationTestCase {
-    
-    private List<InputStream> mOpenedStreams = new LinkedList<InputStream>();
-    
-    @Override
-    protected void tearDown() throws Exception {
-        super.tearDown();
-        for(InputStream in : mOpenedStreams) {
-            try {
-                in.close();
-            } catch(IOException ex) {
-                //ignore;
-            }
-        }
-    }
-    
-    private InputStream openAsset(String name) throws IOException {
-        AssetManager am = getInstrumentation().getContext().getAssets();
-        InputStream in = am.open(name);
-        mOpenedStreams.add(in);
-        return in;
-    }
-    
-    private List<String> openAssetAsLines(String name) throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(openAsset(name)));
-        LinkedList<String> lines = new LinkedList<String>();
-        String line = null;
-        while((line = reader.readLine()) != null) {
-            lines.add(line);
-        }
-        return lines;
-    }
+public class ViolationParserTest extends BaseTestCase {
     
     public void testParseExceptionTitle_empty() {
-        ViolationFactory factory = new ViolationFactory();
+        ViolationParser factory = new ViolationParser();
         ViolationException ex = factory.parseExceptionTitle("", null);
         assertNull(ex.getClassName());
         assertNull(ex.getMessage()); 
     }
     
     public void testParseExceptionTitle_semicolon() {
-        ViolationFactory factory = new ViolationFactory();
+        ViolationParser factory = new ViolationParser();
         ViolationException ex = factory.parseExceptionTitle("", null);
         assertNull(ex.getClassName());
         assertNull(ex.getMessage()); 
     }
     
     public void testParseExceptionTitle_classNameOnly() {
-        ViolationFactory factory = new ViolationFactory();
+        ViolationParser factory = new ViolationParser();
         String className = "testName";
         
         ViolationException ex = factory.parseExceptionTitle(className, null);
@@ -76,7 +43,7 @@ public class ViolationFactoryTest extends InstrumentationTestCase {
     }
     
     public void testParseExceptionTitle_messageOnly() {
-        ViolationFactory factory = new ViolationFactory();
+        ViolationParser factory = new ViolationParser();
         String message = "message";
         
         ViolationException ex = factory.parseExceptionTitle(":" + message, null);
@@ -89,7 +56,7 @@ public class ViolationFactoryTest extends InstrumentationTestCase {
     }
     
     public void testParseExceptionTitle_classNameAndMessage() {
-        ViolationFactory factory = new ViolationFactory();
+        ViolationParser factory = new ViolationParser();
         String className = "className";
         String message = "message";
         
@@ -103,7 +70,7 @@ public class ViolationFactoryTest extends InstrumentationTestCase {
     }
     
     public void testParseExceptionTitle_messageWithSeveralSemicolons() {
-        ViolationFactory factory = new ViolationFactory();
+        ViolationParser factory = new ViolationParser();
         String className = "className";
         String message = "message:message:message";
         
@@ -113,7 +80,7 @@ public class ViolationFactoryTest extends InstrumentationTestCase {
     }
     
     public void testParseExceptionTitle_cuase() {
-        ViolationFactory factory = new ViolationFactory();
+        ViolationParser factory = new ViolationParser();
         String className = "className";
         String message = "message";
         Throwable cause = new Throwable("test");
@@ -125,14 +92,14 @@ public class ViolationFactoryTest extends InstrumentationTestCase {
     }
     
     public void testParseStackTrace_noEntries() {
-        ViolationFactory factory = new ViolationFactory();
+        ViolationParser factory = new ViolationParser();
         StackTraceElement [] elements = factory.parseExceptionStackTrace(new LinkedList<String>());
         assertNotNull(elements);
         assertEquals(0, elements.length);
     }
     
     public void testParseStackTrace_emptyLine() {
-        ViolationFactory factory = new ViolationFactory();
+        ViolationParser factory = new ViolationParser();
         List<String> stackTrace = new LinkedList<String>();
         stackTrace.add("");
         
@@ -146,7 +113,7 @@ public class ViolationFactoryTest extends InstrumentationTestCase {
     }
     
     public void testParseStackTrace_validEntry() {
-        ViolationFactory factory = new ViolationFactory();
+        ViolationParser factory = new ViolationParser();
         List<String> stackTrace = new LinkedList<String>();
         stackTrace.add("at com.android.strictmodetest.ServiceBase$1.doDiskWrite(ServiceBase.java:72)");
         
@@ -160,7 +127,7 @@ public class ViolationFactoryTest extends InstrumentationTestCase {
     }
     
     public void testParseStackTrace_validEntry_noAt() {
-        ViolationFactory factory = new ViolationFactory();
+        ViolationParser factory = new ViolationParser();
         List<String> stackTrace = new LinkedList<String>();
         stackTrace.add("com.android.strictmodetest.ServiceBase$1.doDiskWrite(ServiceBase.java:72)");
         
@@ -174,7 +141,7 @@ public class ViolationFactoryTest extends InstrumentationTestCase {
     }
     
     public void testParseStackTrace_noFunction() {
-        ViolationFactory factory = new ViolationFactory();
+        ViolationParser factory = new ViolationParser();
         List<String> stackTrace = new LinkedList<String>();
         //classname(file:line)
         stackTrace.add("at comandroidstrictmodetestServiceBase$1(ServiceBase.java:72)");
@@ -189,7 +156,7 @@ public class ViolationFactoryTest extends InstrumentationTestCase {
     }
     
     public void testParseStackTrace_emptyFunction() {
-        ViolationFactory factory = new ViolationFactory();
+        ViolationParser factory = new ViolationParser();
         List<String> stackTrace = new LinkedList<String>();
         //classname.(file:line)
         stackTrace.add("at com.android.strictmodetest.ServiceBase$1.(ServiceBase.java:72)");
@@ -204,7 +171,7 @@ public class ViolationFactoryTest extends InstrumentationTestCase {
     }
     
     public void testParseStackTrace_noLocation() {
-        ViolationFactory factory = new ViolationFactory();
+        ViolationParser factory = new ViolationParser();
         List<String> stackTrace = new LinkedList<String>();
         //classname.function
         stackTrace.add("at com.android.strictmodetest.ServiceBase$1.doDiskWrite");
@@ -219,7 +186,7 @@ public class ViolationFactoryTest extends InstrumentationTestCase {
     }
     
     public void testParseStackTrace_emptyLocation() {
-        ViolationFactory factory = new ViolationFactory();
+        ViolationParser factory = new ViolationParser();
         List<String> stackTrace = new LinkedList<String>();
         //classname.function()
         stackTrace.add("at com.android.strictmodetest.ServiceBase$1.doDiskWrite()");
@@ -234,7 +201,7 @@ public class ViolationFactoryTest extends InstrumentationTestCase {
     }
     
     public void testParseStackTrace_nativeMethod() {
-        ViolationFactory factory = new ViolationFactory();
+        ViolationParser factory = new ViolationParser();
         List<String> stackTrace = new LinkedList<String>();
         stackTrace.add("at com.android.strictmodetest.ServiceBase$1.doDiskWrite(Native method)");
         
@@ -248,7 +215,7 @@ public class ViolationFactoryTest extends InstrumentationTestCase {
     }
     
     public void testParseStackTrace_unknownSource() {
-        ViolationFactory factory = new ViolationFactory();
+        ViolationParser factory = new ViolationParser();
         List<String> stackTrace = new LinkedList<String>();
         stackTrace.add("at com.android.strictmodetest.ServiceBase$1.doDiskWrite(Unknown Source)");
         
@@ -262,7 +229,7 @@ public class ViolationFactoryTest extends InstrumentationTestCase {
     }
     
     public void testParseStackTrace_noLineNumber() {
-        ViolationFactory factory = new ViolationFactory();
+        ViolationParser factory = new ViolationParser();
         List<String> stackTrace = new LinkedList<String>();
         stackTrace.add("at com.android.strictmodetest.ServiceBase$1.doDiskWrite(ServiceBase.java)");
         
@@ -276,7 +243,7 @@ public class ViolationFactoryTest extends InstrumentationTestCase {
     }
     
     public void testParseStackTrace_noLineNumberWithSemicolon() {
-        ViolationFactory factory = new ViolationFactory();
+        ViolationParser factory = new ViolationParser();
         List<String> stackTrace = new LinkedList<String>();
         stackTrace.add("at com.android.strictmodetest.ServiceBase$1.doDiskWrite(ServiceBase.java:)");
         
@@ -290,7 +257,7 @@ public class ViolationFactoryTest extends InstrumentationTestCase {
     }
     
     public void testParseStackTrace_invalidLineNumber() {
-        ViolationFactory factory = new ViolationFactory();
+        ViolationParser factory = new ViolationParser();
         List<String> stackTrace = new LinkedList<String>();
         stackTrace.add("at com.android.strictmodetest.ServiceBase$1.doDiskWrite(ServiceBase.java:ABC)");
         
@@ -320,7 +287,7 @@ public class ViolationFactoryTest extends InstrumentationTestCase {
                 new StackTraceElement("class$1", "func", "file",  -2),
         };
         
-        ViolationFactory factory = new ViolationFactory();
+        ViolationParser factory = new ViolationParser();
         for(StackTraceElement in : elements) {
             List<String> stackTrace = new LinkedList<String>();
             stackTrace.add(in.toString());
@@ -352,7 +319,7 @@ public class ViolationFactoryTest extends InstrumentationTestCase {
     }
     
     public void testParseException_empty() {
-        ViolationFactory factory = new ViolationFactory();
+        ViolationParser factory = new ViolationParser();
         ViolationException ex = factory.parseException(new LinkedList<String>());
         assertNull(ex.getClassName());
         assertNull(ex.getMessage());
@@ -361,7 +328,7 @@ public class ViolationFactoryTest extends InstrumentationTestCase {
     }
     
     public void testParseException_titleOnly() {
-        ViolationFactory factory = new ViolationFactory();
+        ViolationParser factory = new ViolationParser();
         LinkedList<String> lines = new LinkedList<String>();
         String className = "class";
         String message = "message";
@@ -375,7 +342,7 @@ public class ViolationFactoryTest extends InstrumentationTestCase {
     }
     
     public void testParseException_twoTitles() {
-        ViolationFactory factory = new ViolationFactory();
+        ViolationParser factory = new ViolationParser();
         LinkedList<String> lines = new LinkedList<String>();
         String className = "class";
         String message = "message";
@@ -396,7 +363,7 @@ public class ViolationFactoryTest extends InstrumentationTestCase {
     }
     
     public void testParseException_twoTitlesAndComments() {
-        ViolationFactory factory = new ViolationFactory();
+        ViolationParser factory = new ViolationParser();
         LinkedList<String> lines = new LinkedList<String>();
         String className = "class";
         String message = "message";
@@ -420,7 +387,7 @@ public class ViolationFactoryTest extends InstrumentationTestCase {
     }
     
     public void testParseException_manyTitles() {
-        ViolationFactory factory = new ViolationFactory();
+        ViolationParser factory = new ViolationParser();
         LinkedList<String> lines = new LinkedList<String>();
         String className = "class";
         String message = "message";
@@ -442,7 +409,7 @@ public class ViolationFactoryTest extends InstrumentationTestCase {
     }
     
     public void testParseException_titleAndStackTrace() {
-        ViolationFactory factory = new ViolationFactory();
+        ViolationParser factory = new ViolationParser();
         LinkedList<String> lines = new LinkedList<String>();
         
         String className = "class";
@@ -467,7 +434,7 @@ public class ViolationFactoryTest extends InstrumentationTestCase {
     }
     
     public void testParseException_manyStackTracesAndComments() {
-        ViolationFactory factory = new ViolationFactory();
+        ViolationParser factory = new ViolationParser();
         LinkedList<String> lines = new LinkedList<String>();
         String className = "class";
         String message = "message";
@@ -531,7 +498,7 @@ public class ViolationFactoryTest extends InstrumentationTestCase {
             new StackTraceElement("dalvik.system.NativeStart", "main", null, -2),
         };
 
-        ViolationFactory factory = new ViolationFactory();
+        ViolationParser factory = new ViolationParser();
         ViolationException ex = factory.parseException(lines);
         assertEquals("android.os.StrictMode$StrictModeCustomViolation", ex.getClassName());
         assertEquals("policy=159 violation=8 msg=my example call", ex.getMessage());
@@ -575,7 +542,7 @@ public class ViolationFactoryTest extends InstrumentationTestCase {
             new StackTraceElement("dalvik.system.NativeStart", "main", null, -2),
         };
 
-        ViolationFactory factory = new ViolationFactory();
+        ViolationParser factory = new ViolationParser();
         ViolationException ex = factory.parseException(lines);
         assertEquals("android.os.StrictMode$StrictModeDiskWriteViolation", ex.getClassName());
         assertEquals("policy=415 violation=1", ex.getMessage());
@@ -596,13 +563,13 @@ public class ViolationFactoryTest extends InstrumentationTestCase {
     }
     
     public void testParseHeaders_empty() {
-        ViolationFactory factory = new ViolationFactory();
+        ViolationParser factory = new ViolationParser();
         Map<String, String> map = factory.parseHeaders(new LinkedList<String>());
         assertEquals(0, map.size());
     }
     
     public void testParseHeaders_emptyLine() {
-        ViolationFactory factory = new ViolationFactory();
+        ViolationParser factory = new ViolationParser();
         LinkedList<String> lines = new LinkedList<String>();        
         lines.add("");
         lines.add(" ");
@@ -616,7 +583,7 @@ public class ViolationFactoryTest extends InstrumentationTestCase {
     }
     
     public void testParseHeaders_noValue() {
-        ViolationFactory factory = new ViolationFactory();
+        ViolationParser factory = new ViolationParser();
                 
         LinkedList<String> samples = new LinkedList<String>();
         String key = "key";
@@ -641,7 +608,7 @@ public class ViolationFactoryTest extends InstrumentationTestCase {
     }
     
     public void testParseHeaders_keyValue() {
-        ViolationFactory factory = new ViolationFactory();
+        ViolationParser factory = new ViolationParser();
                 
         LinkedList<String> samples = new LinkedList<String>();
         String key = "key";
@@ -664,7 +631,7 @@ public class ViolationFactoryTest extends InstrumentationTestCase {
     }
 
     public void testParseHeaders_fromAsset_thread() throws IOException {
-        ViolationFactory factory = new ViolationFactory();
+        ViolationParser factory = new ViolationParser();
         List<String> lines = openAssetAsLines("header/thread_headers.txt");
         Map<String, String> map = factory.parseHeaders(lines);
         
@@ -679,7 +646,7 @@ public class ViolationFactoryTest extends InstrumentationTestCase {
     }
     
     public void testParseHeaders_fromAsset_vm() throws IOException {
-        ViolationFactory factory = new ViolationFactory();
+        ViolationParser factory = new ViolationParser();
         List<String> lines = openAssetAsLines("header/vm_headers.txt");
         Map<String, String> map = factory.parseHeaders(lines);
         
@@ -690,5 +657,27 @@ public class ViolationFactoryTest extends InstrumentationTestCase {
         assertEquals("false", map.get("System-App"));
         assertEquals("60936758", map.get("Uptime-Millis"));
         assertEquals("2", map.get("Instance-Count"));
+    }
+    
+    
+    /**
+     * Verify that all real violations can be created using ViolationFactory.
+     */
+    public void testViolationFactory() throws IOException {
+        Map<String, Class<? extends Violation>> tests = new HashMap<String, Class<? extends Violation>>();
+        tests.put("dropbox/thread_disk_read.txt", DiskReadThreadViolation.class);
+        tests.put("dropbox/thread_disk_write.txt", DiskWriteThreadViolation.class);
+        tests.put("dropbox/thread_disk_write_remote.txt", DiskWriteThreadViolation.class);
+        tests.put("dropbox/thread_network.txt", NetworkThreadViolation.class);
+        tests.put("dropbox/thread_custom.txt", CustomThreadViolation.class);
+        tests.put("dropbox/vm_close.txt", ExplicitTerminationVmViolation.class);
+        tests.put("dropbox/vm_end.txt", ExplicitTerminationVmViolation.class);
+        tests.put("dropbox/vm_instance_count.txt", InstanceCountVmViolation.class);
+        
+        ViolationParser parser = new ViolationParser();
+        for(String file : tests.keySet()) {
+            Violation violation = parser.createViolation(openAssetAsString(file));
+            assertTrue(violation.getClass().isAssignableFrom(tests.get(file)));
+        }
     }
 }
