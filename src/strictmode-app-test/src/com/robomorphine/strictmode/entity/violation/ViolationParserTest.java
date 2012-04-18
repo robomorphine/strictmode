@@ -1,8 +1,5 @@
 package com.robomorphine.strictmode.entity.violation;
 
-import com.robomorphine.strictmode.entity.violation.BaseTestCase.RawViolation;
-import com.robomorphine.strictmode.entity.violation.CustomThreadViolation.CustomThreadViolationFactory;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -83,7 +80,7 @@ public class ViolationParserTest extends BaseTestCase {
         ViolationParser factory = new ViolationParser();
         String className = "className";
         String message = "message";
-        Throwable cause = new Throwable("test");
+        ViolationException cause = new ViolationException("class", "message");
         
         ViolationException ex = factory.parseExceptionTitle(className + ":" + message, cause);
         assertEquals(className, ex.getClassName());

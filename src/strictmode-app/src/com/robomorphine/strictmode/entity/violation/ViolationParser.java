@@ -171,7 +171,7 @@ public class ViolationParser {
      *      Message: "policy=159 violation=8"
      */
     @VisibleForTesting
-    ViolationException parseExceptionTitle(String title, Throwable cause) {
+    ViolationException parseExceptionTitle(String title, ViolationException cause) {
         String className = null;
         String message = null;
         
