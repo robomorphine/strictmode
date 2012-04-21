@@ -1,7 +1,7 @@
 package com.robomorphine.strictmode.adapter;
 
 import com.robomorphine.strictmode.R;
-import com.robomorphine.strictmode.entity.DropBoxItem;
+import com.robomorphine.strictmode.violation.group.ViolationGroup;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -16,21 +16,25 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-@Deprecated
-public class DropBoxListAdapter extends BaseAdapter implements SectionIndexer {
+public class ViolationListAdapter extends BaseAdapter implements SectionIndexer {
     
     private final LayoutInflater mInflator;
-    private List<DropBoxItem> mItems = new ArrayList<DropBoxItem>();
+    private List<ViolationGroup> mItems = new ArrayList<ViolationGroup>();
     
-    public DropBoxListAdapter(Context context) {
+    private SimpleDateFormat mSectionFormat = new SimpleDateFormat("HH:mm");
+    private SimpleDateFormat mItemFormat = new SimpleDateFormat("HH:mm:ss.SSS");
+    private final Calendar mCalendar;
+    
+    public ViolationListAdapter(Context context) {
         mInflator = LayoutInflater.from(context);
+        mCalendar = Calendar.getInstance();
     }
     
-    public void swap(List<DropBoxItem> items) {
+    public void swap(List<ViolationGroup> items) {
         if(items != null) { 
             mItems = items;
         } else {
-            mItems = new ArrayList<DropBoxItem>();
+            mItems = new ArrayList<ViolationGroup>();
         }
         notifyDataSetChanged();
     }
@@ -41,7 +45,7 @@ public class DropBoxListAdapter extends BaseAdapter implements SectionIndexer {
     }
     
     @Override
-    public DropBoxItem getItem(int position) {
+    public ViolationGroup getItem(int position) {
         return mItems.get(position);
     }
    
@@ -57,12 +61,17 @@ public class DropBoxListAdapter extends BaseAdapter implements SectionIndexer {
             view = mInflator.inflate(R.layout.dropbox_list_item, parent, false);
         }
         
-        DropBoxItem item = getItem(position);
+        ViolationGroup item = getItem(position);
         TextView tagView = (TextView)view.findViewById(R.id.tag);
         TextView timestampView = (TextView)view.findViewById(R.id.timestamp);
         
-        tagView.setText(item.getTag());
-        timestampView.setText(Long.toString(item.getTimestamp()));
+        String violationName = item.getViolations().get(0).getClass().getSimpleName();
+        String title = String.format("%s [x%d]", violationName, item.getSize());                
+        tagView.setText(title);
+        
+        mCalendar.setTimeInMillis(item.getTimestamp());
+        String time = mItemFormat.format(mCalendar.getTime());
+        timestampView.setText(time);
         
         return view;
     }
@@ -88,11 +97,10 @@ public class DropBoxListAdapter extends BaseAdapter implements SectionIndexer {
     @Override
     public Object[] getSections() {
         Object [] labels = new Object[mItems.size()];
-        Calendar cal = Calendar.getInstance();
-        SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+        
         for(int i = 0; i < mItems.size(); i++) {
-            cal.setTimeInMillis(mItems.get(i).getTimestamp());
-            labels[i] = format.format(cal.getTime());
+            mCalendar.setTimeInMillis(mItems.get(i).getTimestamp());
+            labels[i] = mSectionFormat.format(mCalendar.getTime());
         }
         return labels;
     }

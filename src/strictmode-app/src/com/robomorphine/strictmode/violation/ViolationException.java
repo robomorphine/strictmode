@@ -1,4 +1,4 @@
-package com.robomorphine.strictmode.entity.violation;
+package com.robomorphine.strictmode.violation;
 
 import com.google.common.base.Objects;
 

@@ -1,4 +1,14 @@
-package com.robomorphine.strictmode.entity.violation;
+package com.robomorphine.strictmode.violation;
+
+import com.robomorphine.strictmode.violation.CustomThreadViolation;
+import com.robomorphine.strictmode.violation.DiskReadThreadViolation;
+import com.robomorphine.strictmode.violation.DiskWriteThreadViolation;
+import com.robomorphine.strictmode.violation.ExplicitTerminationVmViolation;
+import com.robomorphine.strictmode.violation.InstanceCountVmViolation;
+import com.robomorphine.strictmode.violation.NetworkThreadViolation;
+import com.robomorphine.strictmode.violation.Violation;
+import com.robomorphine.strictmode.violation.ViolationException;
+import com.robomorphine.strictmode.violation.ViolationParser;
 
 import java.io.IOException;
 import java.util.HashMap;

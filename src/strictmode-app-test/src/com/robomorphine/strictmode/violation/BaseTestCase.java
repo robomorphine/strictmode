@@ -1,4 +1,7 @@
-package com.robomorphine.strictmode.entity.violation;
+package com.robomorphine.strictmode.violation;
+
+import com.robomorphine.strictmode.violation.ViolationException;
+import com.robomorphine.strictmode.violation.ViolationParser;
 
 import android.content.res.AssetManager;
 import android.test.InstrumentationTestCase;

@@ -1,6 +1,7 @@
-package com.robomorphine.strictmode.entity.violation;
+package com.robomorphine.strictmode.violation;
 
-import com.robomorphine.strictmode.entity.violation.ThreadViolation.ThreadViolationFactory;
+import com.robomorphine.strictmode.violation.ThreadViolation;
+import com.robomorphine.strictmode.violation.ThreadViolation.ThreadViolationFactory;
 
 import java.io.IOException;
 import java.util.LinkedList;

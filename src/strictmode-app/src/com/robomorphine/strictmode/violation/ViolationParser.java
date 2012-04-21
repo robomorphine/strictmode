@@ -1,7 +1,7 @@
-package com.robomorphine.strictmode.entity.violation;
+package com.robomorphine.strictmode.violation;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.robomorphine.strictmode.entity.violation.Violation.ViolationFactory;
+import com.robomorphine.strictmode.violation.Violation.ViolationFactory;
 
 import android.text.TextUtils;
 
