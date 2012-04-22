@@ -1,13 +1,16 @@
 package com.robomorphine.strictmode.adapter;
 
 import com.robomorphine.strictmode.R;
+import com.robomorphine.strictmode.violation.Violation;
 import com.robomorphine.strictmode.violation.group.ViolationGroup;
+import com.robomorphine.strictmode.violation.icon.ViolationIconMap;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
 
@@ -17,15 +20,18 @@ import java.util.Calendar;
 import java.util.List;
 
 public class ViolationListAdapter extends BaseAdapter implements SectionIndexer {
-    
+
+    private final Context mContext;
     private final LayoutInflater mInflator;
     private List<ViolationGroup> mItems = new ArrayList<ViolationGroup>();
+    private ViolationIconMap mIconMap = new ViolationIconMap();
     
     private SimpleDateFormat mSectionFormat = new SimpleDateFormat("HH:mm");
     private SimpleDateFormat mItemFormat = new SimpleDateFormat("HH:mm:ss.SSS");
     private final Calendar mCalendar;
     
     public ViolationListAdapter(Context context) {
+        mContext = context;
         mInflator = LayoutInflater.from(context);
         mCalendar = Calendar.getInstance();
     }
@@ -58,18 +64,22 @@ public class ViolationListAdapter extends BaseAdapter implements SectionIndexer 
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView;
         if(view == null) {
-            view = mInflator.inflate(R.layout.dropbox_list_item, parent, false);
+            view = mInflator.inflate(R.layout.violation_list_item, parent, false);
         }
         
-        ViolationGroup item = getItem(position);
+        ViolationGroup group = getItem(position);
+        Violation violation = group.getViolation();
+        
+        ImageView iconView = (ImageView)view.findViewById(R.id.icon);
         TextView tagView = (TextView)view.findViewById(R.id.tag);
         TextView timestampView = (TextView)view.findViewById(R.id.timestamp);
         
-        String violationName = item.getViolations().get(0).getClass().getSimpleName();
-        String title = String.format("%s [x%d]", violationName, item.getSize());                
+        iconView.setImageDrawable(mIconMap.getIcon(mContext, violation));
+        String violationName = group.getViolations().get(0).getClass().getSimpleName();
+        String title = String.format("%s [x%d]", violationName, group.getSize());                
         tagView.setText(title);
         
-        mCalendar.setTimeInMillis(item.getTimestamp());
+        mCalendar.setTimeInMillis(group.getTimestamp());
         String time = mItemFormat.format(mCalendar.getTime());
         timestampView.setText(time);
         
@@ -104,6 +114,4 @@ public class ViolationListAdapter extends BaseAdapter implements SectionIndexer 
         }
         return labels;
     }
-    
-    
 }

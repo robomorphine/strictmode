@@ -51,7 +51,7 @@ public class ViolationGroup {
      * order changes when adding violations to group).
      */
     @Nonnull
-    private Violation getViolation() {
+    public Violation getViolation() {
         /* invariant: list of size >= 1 */
         return mViolations.get(0);
     }

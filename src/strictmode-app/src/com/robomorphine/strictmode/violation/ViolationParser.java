@@ -29,7 +29,10 @@ public class ViolationParser {
         factoryRegistry.add(new NetworkThreadViolation.NetworkThreadViolationFactory());
         factoryRegistry.add(new CustomThreadViolation.CustomThreadViolationFactory());
         factoryRegistry.add(new ThreadViolation.ThreadViolationFactory());
-        /* TODO: add vm violations */
+        
+        factoryRegistry.add(new ExplicitTerminationVmViolation.ExplicitTerminationVmViolationFactory());
+        factoryRegistry.add(new InstanceCountVmViolation.InstanceCountVmViolationFactory());
+        
         factoryRegistry.add(new Violation.ViolationFactory());
         
         sFactoryRegistry = Collections.unmodifiableList(factoryRegistry);
