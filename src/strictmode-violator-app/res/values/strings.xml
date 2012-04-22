@@ -18,6 +18,11 @@
         Open and write to some file on disk from main thread.
     </string>
     
+    <string name="network_name">Network</string>
+    <string name="network_descr">
+        Open page at http://www.google.com from main thread. 
+    </string>
+    
     <string name="fake_slow_call_name">Fake SlowCall</string>
     <string name="fake_slow_call_descr">
         Immitates slow call by calling StrictMode.noteSlowCall()

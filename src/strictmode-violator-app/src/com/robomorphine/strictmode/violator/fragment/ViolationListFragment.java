@@ -6,6 +6,7 @@ import com.robomorphine.strictmode.violator.violation.DiskReadViolation;
 import com.robomorphine.strictmode.violator.violation.DiskWriteViolation;
 import com.robomorphine.strictmode.violator.violation.FakeSlowCallViolation;
 import com.robomorphine.strictmode.violator.violation.MultipleSlowCallsViolation;
+import com.robomorphine.strictmode.violator.violation.NetworkViolation;
 import com.robomorphine.strictmode.violator.violation.SharedPreferencesCommitViolation;
 import com.robomorphine.strictmode.violator.violation.Violation;
 
@@ -24,11 +25,12 @@ public class ViolationListFragment extends ListFragment {
     
     private static List<Violation> createViolations(Context ctx) {
         LinkedList<Violation> violations = new LinkedList<Violation>();
-        violations.add(new SharedPreferencesCommitViolation(ctx));
         violations.add(new DiskReadViolation(ctx));
         violations.add(new DiskWriteViolation(ctx));
+        violations.add(new NetworkViolation(ctx));
+        violations.add(new FakeSlowCallViolation(ctx));        
+        violations.add(new SharedPreferencesCommitViolation(ctx));
         violations.add(new DiskReadReceiverViolation(ctx));
-        violations.add(new FakeSlowCallViolation(ctx));
         violations.add(new MultipleSlowCallsViolation(ctx));        
         return violations;
     }
