@@ -82,7 +82,7 @@ public class App extends Application {
     private static void updateStrictModePolicies_v11(ThreadPolicy.Builder threadBuilder,
             VmPolicy.Builder vmBuilder) {
         threadBuilder.penaltyFlashScreen();
-        vmBuilder.detectLeakedClosableObjects();
+        vmBuilder.detectLeakedClosableObjects().detectActivityLeaks();
     }
 
 }

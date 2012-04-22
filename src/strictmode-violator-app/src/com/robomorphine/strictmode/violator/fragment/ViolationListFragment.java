@@ -4,7 +4,9 @@ import com.robomorphine.strictmode.violator.adapter.ViolationListAdapter;
 import com.robomorphine.strictmode.violator.violation.DiskReadReceiverViolation;
 import com.robomorphine.strictmode.violator.violation.DiskReadViolation;
 import com.robomorphine.strictmode.violator.violation.DiskWriteViolation;
+import com.robomorphine.strictmode.violator.violation.ExplicitTerminationViolation;
 import com.robomorphine.strictmode.violator.violation.FakeSlowCallViolation;
+import com.robomorphine.strictmode.violator.violation.InstanceCountViolation;
 import com.robomorphine.strictmode.violator.violation.MultipleSlowCallsViolation;
 import com.robomorphine.strictmode.violator.violation.NetworkViolation;
 import com.robomorphine.strictmode.violator.violation.SharedPreferencesCommitViolation;
@@ -29,6 +31,8 @@ public class ViolationListFragment extends ListFragment {
         violations.add(new DiskWriteViolation(ctx));
         violations.add(new NetworkViolation(ctx));
         violations.add(new FakeSlowCallViolation(ctx));        
+        violations.add(new ExplicitTerminationViolation(ctx));
+        violations.add(new InstanceCountViolation(ctx));
         violations.add(new SharedPreferencesCommitViolation(ctx));
         violations.add(new DiskReadReceiverViolation(ctx));
         violations.add(new MultipleSlowCallsViolation(ctx));        
