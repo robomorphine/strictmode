@@ -4,6 +4,8 @@ import java.util.Map;
 
 public class ExplicitTerminationVmViolation extends VmViolation {
     
+    private static final long serialVersionUID = 1L;
+    
     private static final String VIOLATION_EXCEPTION_CLASS_NAME = Throwable.class.getName();
     private static final String VIOLATION_MESSAGE_PREFIX = "Explicit termination method '"; 
     private static final String VIOLATION_MESSAGE_POSTFIX = "' not called";

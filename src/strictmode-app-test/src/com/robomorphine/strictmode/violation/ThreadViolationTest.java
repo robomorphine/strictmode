@@ -104,4 +104,12 @@ public class ThreadViolationTest extends BaseTestCase {
             assertNull(factory.create(rawViolation.headers, rawViolation.exception));
         }
     }
+    
+    public void testParseHeaderDuration() {
+        assertEquals(123456, ThreadViolation.parseHeaderDuration("123456"));
+        assertEquals(1, ThreadViolation.parseHeaderDuration("1"));
+        assertEquals(0, ThreadViolation.parseHeaderDuration("asadfsa"));
+        assertEquals(0, ThreadViolation.parseHeaderDuration(""));
+        assertEquals(0, ThreadViolation.parseHeaderDuration(null));
+    }
 }

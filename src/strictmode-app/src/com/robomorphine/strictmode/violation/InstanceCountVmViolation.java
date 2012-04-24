@@ -4,6 +4,8 @@ import java.util.Map;
 
 public class InstanceCountVmViolation extends VmViolation {
     
+    private static final long serialVersionUID = 1L;
+    
     private final static String HEADER_KEY_INSTANCE_COUNT = "Instance-Count";
     private final static String VIOLATION_EXCEPTION_CLASS_NAME = "android.os.StrictMode$InstanceCountViolation";
     

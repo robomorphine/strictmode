@@ -3,12 +3,24 @@
     <string name="app_name">StrictMode</string>
     <string name="package_list_empty">No packages found.</string>
     <string name="dropbox_list_empty">No StrictMode items are found in DropBox.</string>
+    
     <string name="menu_search">Search</string>
     <string name="menu_violate_thread_policy">Violate Thread</string>
     <string name="menu_violate_vm_policy">Violate VM</string>
+    
     <string name="dropbox_item_no_entry">Failed to locate DropBox entry.</string>
     <string name="not_available">N/A</string>
+    <string name="na">--</string>
+    
     <string name="violation_stats_tab">Stats</string>
     <string name="violation_stacktrace_tab">Stacktrace</string>
     <string name="violation_headers_tab">Headers</string>
+    
+    <string name="thread_violation_stats_times_occurred">Times occurred</string>
+    <string name="thread_violation_stats_total_duration">Total Duration</string>
+    <string name="thread_violation_stats_min_duration">Min Duration</string>
+    <string name="thread_violation_stats_max_duration">Max Duration</string>
+    <string name="thread_violation_stats_avg_duration">Avg Duration</string>
+    <string name="thread_violation_duration_args">%d ms</string>
+    
 </resources>

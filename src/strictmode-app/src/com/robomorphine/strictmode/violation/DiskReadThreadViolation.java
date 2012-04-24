@@ -4,6 +4,8 @@ import java.util.Map;
 
 public class DiskReadThreadViolation extends ThreadViolation {
     
+    private static final long serialVersionUID = 1L;
+    
     public static class DiskReadThreadViolationFactory extends ThreadViolationFactory {
         @Override
         ThreadViolation onCreate(Map<String, String> headers,

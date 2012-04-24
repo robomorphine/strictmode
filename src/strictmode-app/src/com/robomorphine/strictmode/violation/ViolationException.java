@@ -7,6 +7,7 @@ import java.util.Arrays;
 import javax.annotation.Nullable;
 
 public class ViolationException extends Exception {
+    
     private static final long serialVersionUID = 1L;
     
     private final String mClassName;

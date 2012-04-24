@@ -7,6 +7,8 @@ import java.util.Map;
 
 public class ThreadViolation extends Violation {
     
+    private static final long serialVersionUID = 1L;
+    
     public static final String HEADER_KEY_DURATION = "Duration-Millis";
     
     public static final String HEADER_KEY_POLICY = "policy";
@@ -128,7 +130,25 @@ public class ThreadViolation extends Violation {
         }
     }
     
+    @VisibleForTesting
+    static long parseHeaderDuration(String rawDuration) {
+        long duration = 0;
+        try {
+            duration = Long.parseLong(rawDuration);
+        } catch(NumberFormatException ex) {
+            //ignore
+        }
+        return duration;
+    }
+    
+    private final long mDuration;
+        
     public ThreadViolation(Map<String, String> headers, ViolationException exception) {
         super(headers, exception);
+        mDuration = parseHeaderDuration(headers.get(HEADER_KEY_DURATION));
+    }
+    
+    public long getDuration() {
+        return mDuration;
     }
 }

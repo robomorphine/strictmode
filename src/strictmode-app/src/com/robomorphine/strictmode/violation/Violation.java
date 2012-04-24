@@ -5,11 +5,14 @@ import com.google.common.base.Objects;
 
 import android.text.TextUtils;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Violation {    
+public class Violation implements Serializable {
+    
+    private static final long serialVersionUID = 1L;
     
     public static final String HEADER_KEY_PROCESS = "Process";
     public static final String HEADER_KEY_FLAGS = "Flags";

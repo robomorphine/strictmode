@@ -3,6 +3,7 @@ package com.robomorphine.strictmode.violation.group;
 import com.google.common.base.Preconditions;
 import com.robomorphine.strictmode.violation.Violation;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
@@ -17,8 +18,10 @@ import javax.annotation.Nonnull;
  * The group has same hash code and equals to any violation it contains. So its easy to find
  * what group violations should be added to just by looking for something equal to violation. 
  */
-public class ViolationGroup {
+public class ViolationGroup implements Serializable {
     
+    private static final long serialVersionUID = 1L;
+
     public static class TimestampComparator implements Comparator<ViolationGroup> {
         @Override
         public int compare(ViolationGroup lhs, ViolationGroup rhs) {

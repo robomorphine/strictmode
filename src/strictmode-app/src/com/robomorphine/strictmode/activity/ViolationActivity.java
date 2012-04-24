@@ -1,9 +1,12 @@
 package com.robomorphine.strictmode.activity;
 
 import com.robomorphine.strictmode.R;
+import com.robomorphine.strictmode.fragment.ViolationDetailsFragment;
 import com.robomorphine.strictmode.fragment.ViolationHeadersFragment;
 import com.robomorphine.strictmode.fragment.ViolationStacktraceFragment;
-import com.robomorphine.strictmode.fragment.ViolationStatsFragment;
+import com.robomorphine.strictmode.fragment.ThreadViolationStatsFragment;
+import com.robomorphine.strictmode.violation.ThreadViolation;
+import com.robomorphine.strictmode.violation.group.ViolationGroup;
 
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
@@ -16,6 +19,11 @@ import android.support.v4.app.FragmentTransaction;
 
 public class ViolationActivity extends FragmentActivity implements TabListener {
     
+    /**
+     * Type: ViolationGroup
+     */
+    public final static String EXTRA_VIOLATION = "violation";
+    
     private final static String STATS_TAB = "stats";
     private final static String STACKTRACE_TAB = "stacktrace";
     private final static String HEADERS_TAB = "headers";
@@ -27,46 +35,55 @@ public class ViolationActivity extends FragmentActivity implements TabListener {
             this.args = args;
         }
         
-        public TabInfo(String tag, Class<? extends Fragment> clazz) {
-            this(tag, clazz, null);
-        }
-        
         final String tag;
         final Class<? extends Fragment> clazz;
         final Bundle args;
     }
+    
+    private ViolationGroup mViolationGroup;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.violation_activity);
         
+        mViolationGroup = (ViolationGroup)getIntent().getSerializableExtra(EXTRA_VIOLATION);
+        if(mViolationGroup == null) {
+            throw new IllegalArgumentException("Violation not specified.");
+        }
+        
         ActionBar actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+     
+        if(mViolationGroup.getViolation() instanceof ThreadViolation) {
+            addTab(getString(R.string.violation_stats_tab),
+                   STATS_TAB, 
+                   ThreadViolationStatsFragment.class);
+        }
         
-        Tab tab;
-        TabInfo tabInfo;
+        addTab(getString(R.string.violation_stacktrace_tab), 
+               STACKTRACE_TAB, 
+               ViolationStacktraceFragment.class);
         
-        tabInfo = new TabInfo(STATS_TAB, ViolationStatsFragment.class);
-        tab = actionBar.newTab()
-                       .setTag(tabInfo)
-                       .setTabListener(this)
-                       .setText(R.string.violation_stats_tab);                       
-        actionBar.addTab(tab);        
-        
-        tabInfo = new TabInfo(STACKTRACE_TAB, ViolationStacktraceFragment.class);
-        tab = actionBar.newTab()
-                       .setTag(tabInfo)
-                       .setTabListener(this)
-                       .setText(R.string.violation_stacktrace_tab);                       
-        actionBar.addTab(tab);
-        
-        tabInfo = new TabInfo(HEADERS_TAB, ViolationHeadersFragment.class);
-        tab = actionBar.newTab()
-                       .setTag(tabInfo)
-                       .setTabListener(this)
-                       .setText(R.string.violation_headers_tab);
-        actionBar.addTab(tab);
+        addTab(getString(R.string.violation_headers_tab), 
+               HEADERS_TAB, 
+               ViolationHeadersFragment.class);
+    }
+    
+    private void addTab(String name, String tag, Class<? extends Fragment> clazz) {
+        Bundle args = new Bundle();        
+        args.putSerializable(ViolationDetailsFragment.EXTRA_VIOLATION, mViolationGroup);
+        addTab(name, tag, clazz, args);
+    }
+    
+    private void addTab(String name, String tag, Class<? extends Fragment> clazz, Bundle args) {
+        ActionBar actionBar = getActionBar();
+        TabInfo tabInfo = new TabInfo(tag, clazz, args);
+        Tab tab = actionBar.newTab()
+                           .setTag(tabInfo)
+                           .setTabListener(this)
+                           .setText(name);                       
+        actionBar.addTab(tab);   
     }
     
     @Override
