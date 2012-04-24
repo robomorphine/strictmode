@@ -1,4 +1,6 @@
-package com.robomorphine.strictmode;
+package com.robomorphine.strictmode.activity;
+
+import com.robomorphine.strictmode.R;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;

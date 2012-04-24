@@ -1,14 +1,17 @@
 package com.robomorphine.strictmode.fragment;
 
 import com.robomorphine.strictmode.R;
+import com.robomorphine.strictmode.activity.ViolationActivity;
 import com.robomorphine.strictmode.adapter.ViolationListAdapter;
 import com.robomorphine.strictmode.loader.ViolationLoader;
 import com.robomorphine.strictmode.violation.group.ViolationGroups;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
+import android.view.View;
 import android.widget.ListView;
 
 public class ViolationListFragment extends ListFragment implements LoaderCallbacks<ViolationGroups>{
@@ -43,6 +46,11 @@ public class ViolationListFragment extends ListFragment implements LoaderCallbac
                 
         /* fetch data */
         getLoaderManager().initLoader(LOADER_ID, null, this);  
+    }
+    
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        startActivity(new Intent(getActivity(), ViolationActivity.class));
     }
         
     /***************************/
