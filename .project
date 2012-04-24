@@ -8,4 +8,15 @@
 	</buildSpec>
 	<natures>
 	</natures>
+	<filteredResources>
+		<filter>
+			<id>1335250945325</id>
+			<name></name>
+			<type>25</type>
+			<matcher>
+				<id>org.eclipse.ui.ide.multiFilter</id>
+				<arguments>1.0-name-matches-false-false-libs</arguments>
+			</matcher>
+		</filter>
+	</filteredResources>
 </projectDescription>
