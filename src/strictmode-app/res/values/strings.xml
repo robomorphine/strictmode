@@ -8,4 +8,7 @@
     <string name="menu_violate_vm_policy">Violate VM</string>
     <string name="dropbox_item_no_entry">Failed to locate DropBox entry.</string>
     <string name="not_available">N/A</string>
+    <string name="violation_stats_tab">Stats</string>
+    <string name="violation_stacktrace_tab">Stacktrace</string>
+    <string name="violation_headers_tab">Headers</string>
 </resources>
