@@ -14,7 +14,7 @@ import com.google.common.base.Preconditions;
  * Use getTag function to easily create tag. 
  */
 @ThreadSafe
-public abstract class TagsBase {
+public abstract class TagsBase { //NOPMD
     private static TagFactory sTagFactory = new DefaultTagFactory();
     private static Object sSync = new Object();
 

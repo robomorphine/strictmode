@@ -7,8 +7,7 @@ import javax.annotation.concurrent.ThreadSafe;
  * Basically a shortcut to TagsBase with no preferred prefix. 
  */
 @ThreadSafe
-public class Tags extends TagsBase
-{		
+public class Tags extends TagsBase { //NOPMD		
     public static String getTag(Class<?> clazz) {
         return getTag(null, clazz);
     }

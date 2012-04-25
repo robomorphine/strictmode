@@ -7,10 +7,7 @@ import com.google.common.collect.ForwardingList;
 
 public class MultiLogger extends ForwardingList<Logger> implements Logger {
 
-    private final LinkedList<Logger> mLoggers = new LinkedList<Logger>();
-
-    public MultiLogger() {
-    }
+    private final List<Logger> mLoggers = new LinkedList<Logger>();
        
     @Override
     protected List<Logger> delegate() {

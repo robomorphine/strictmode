@@ -12,7 +12,7 @@ import javax.annotation.Nullable;
 /**
  * TODO: add tests
  */
-public abstract class AsyncLoader<D> extends AsyncTaskLoader<D> {
+public abstract class AsyncLoader<D> extends AsyncTaskLoader<D> { //NOPMD
     private static final String TAG = Tags.getTag(AsyncLoader.class);
     private D mData;    
     private boolean mObserversRegistered = false;
@@ -57,7 +57,7 @@ public abstract class AsyncLoader<D> extends AsyncTaskLoader<D> {
         }
     }
     
-    protected void onReleaseResources(D data) {
+    protected void onReleaseResources(D data) {//NOPMD
     }
     
     
@@ -83,10 +83,10 @@ public abstract class AsyncLoader<D> extends AsyncTaskLoader<D> {
         }
     }
     
-    protected void onRegisterObservers() {
+    protected void onRegisterObservers() {//NOPMD
     }
     
-    protected void onUnregisterObservers() {
+    protected void onUnregisterObservers() {//NOPMD
     }
     
     private void registerDataObservers(D data) {
@@ -107,10 +107,10 @@ public abstract class AsyncLoader<D> extends AsyncTaskLoader<D> {
         }
     }
     
-    protected void onRegisterDataObservers(@Nonnull D data) {
+    protected void onRegisterDataObservers(@Nonnull D data) {//NOPMD
     }
     
-    protected void onUnregisterDataObservers(@Nonnull D data) {
+    protected void onUnregisterDataObservers(@Nonnull D data) {//NOPMD
     }
     
     /***************************/
@@ -121,7 +121,7 @@ public abstract class AsyncLoader<D> extends AsyncTaskLoader<D> {
     protected D onLoadInBackground() {
         D data = super.onLoadInBackground();
         D oldData = getData();
-        if(oldData == data) {
+        if(oldData == data) {//NOPMD, comparing with "==" on purpose
             Log.e(TAG, "%s: setData() is called with object that was already set. "+
                         "Note that onLoadFinished will not be called. " + 
                         "Create new object and set it using setData().",
@@ -168,7 +168,7 @@ public abstract class AsyncLoader<D> extends AsyncTaskLoader<D> {
     }
     
     @Override
-    protected void onAbandon() {
+    protected void onAbandon() {//NOPMD
         super.onAbandon();
     }
     

@@ -6,7 +6,7 @@ import com.robomorphine.log.filter.Filter;
 public class FilterLogger implements Logger {
 	
 	private Filter mFilter;
-	private Logger mLogger;
+	private Logger mLogger;//NOPMD
 	
     public FilterLogger(Logger targetLogger, Filter filter) {
         Preconditions.checkNotNull(targetLogger);

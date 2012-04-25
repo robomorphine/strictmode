@@ -21,12 +21,12 @@ public class PriorityFilter<F extends Filter> implements Filter {
             this.action = action;
         }
 
-        F filter;
-        FilterAction action;
+        protected F filter;
+        protected FilterAction action;
     }
 
     private FilterAction mDefaultAction = FilterAction.Include;
-    private List<Entry> mFilters = new LinkedList<Entry>();
+    private final List<Entry> mFilters = new LinkedList<Entry>();
 
     public PriorityFilter(FilterAction defaultAction) {
         Preconditions.checkNotNull(defaultAction);
@@ -47,7 +47,7 @@ public class PriorityFilter<F extends Filter> implements Filter {
      * Invalid option: FilterAction.Ignore
      * @param action
      */
-    public void setDefaultAction(FilterAction action) {
+    public final void setDefaultAction(FilterAction action) {
         Preconditions.checkNotNull(action);
         Preconditions.checkArgument(action == FilterAction.Include ||
                                     action == FilterAction.Exclude);
@@ -128,8 +128,9 @@ public class PriorityFilter<F extends Filter> implements Filter {
     /**  Reordering filters  **/
     /**************************/
 
-    @VisibleForTesting void swap(int x, int y) {
-        if(x == y) return;
+    @VisibleForTesting 
+    protected void swap(int x, int y) {
+        if(x == y) return; //NOPMD
         Entry xEntry = mFilters.get(x);
         mFilters.set(x, mFilters.get(y));
         mFilters.set(y, xEntry);
@@ -172,17 +173,19 @@ public class PriorityFilter<F extends Filter> implements Filter {
     @Override
     public boolean apply(int level, String tag, String msg) {
         for(Entry entry : mFilters) {
-            if(entry.action == FilterAction.Ignore) continue;
+            if(entry.action == FilterAction.Ignore) {
+                continue;
+            }
 
             if(entry.filter.apply(level, tag, msg)) {
-                switch(entry.action) {
+                switch(entry.action) {//NOPMD
                     case Exclude: return false;
                     case Include: return true;
                 }
             }
         }
 
-        switch(mDefaultAction) {
+        switch(mDefaultAction) {//NOPMD: no default on purpose
             case Exclude: return false;
             case Include: return true;
             case Ignore: throw new IllegalStateException();

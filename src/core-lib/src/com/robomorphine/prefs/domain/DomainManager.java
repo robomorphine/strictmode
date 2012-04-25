@@ -62,7 +62,7 @@ public class DomainManager {
             if(event == FileObserver.CREATE && filename != null) {
                 Log.d(TAG, "Preference file " + filename + " was created.");
                                 
-                if(filename.toLowerCase().endsWith(PREFERENCES_EXT.toLowerCase())) {
+                if(filename.toLowerCase().endsWith(PREFERENCES_EXT.toLowerCase())) { //NOPMD
                     int filenameLen = filename.length();
                     int extLen = PREFERENCES_EXT.length();
                     String name = filename.substring(0, filenameLen - extLen);
@@ -103,7 +103,7 @@ public class DomainManager {
                 HashMap<String, SharedPreferences> currentMap;
                 currentMap = (HashMap<String, SharedPreferences>)field.get(null);
                 synchronized (currentMap) {
-                    if(currentMap != sSharedPrefs) {
+                    if(currentMap != sSharedPrefs) { //NOPMD
                         sSharedPrefs.putAll(currentMap);
                         field.set(null, sSharedPrefs);
                     }

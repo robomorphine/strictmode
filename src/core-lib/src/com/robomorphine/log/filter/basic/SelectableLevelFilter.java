@@ -1,16 +1,15 @@
 package com.robomorphine.log.filter.basic;
 
-import java.util.HashMap;
-
 import com.robomorphine.log.Log;
 import com.robomorphine.log.filter.Filter;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class SelectableLevelFilter implements Filter {
 
-    private HashMap<Integer, Boolean> mLevels = new HashMap<Integer, Boolean>();
+    private final Map<Integer, Boolean> mLevels = new HashMap<Integer, Boolean>();
 
-    public SelectableLevelFilter() {
-    }
 
     public void enable(int level, boolean enable) {
         mLevels.put(level, enable);
@@ -30,11 +29,7 @@ public class SelectableLevelFilter implements Filter {
 
     public boolean apply(int level, String tag, String msg) {
         Boolean enabled = mLevels.get(level);
-        if (enabled == null || enabled) {
-            return true;
-        } else {
-            return false;
-        }
+        return (enabled == null || enabled);
     };
     
     @Override

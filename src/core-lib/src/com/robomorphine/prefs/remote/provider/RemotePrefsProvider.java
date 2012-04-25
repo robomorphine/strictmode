@@ -20,7 +20,7 @@ import java.util.Map.Entry;
 
 public class RemotePrefsProvider extends ContentProvider {
         
-    DomainManager mPreferenceDomainManager;
+    private DomainManager mPreferenceDomainManager;
     
     @Override
     public boolean onCreate() {
@@ -56,7 +56,7 @@ public class RemotePrefsProvider extends ContentProvider {
         mPreferenceDomainManager.refreshMemoryPreferences();
         
         List<String> segments = uri.getPathSegments();
-        if(segments.size() == 0) {
+        if(segments.size() == 0) {//NOPMD
             /* enumerate shared preferences */
             MatrixCursor cursor = new MatrixCursor(Domain.COLUMN_NAMES);
             for(String name : mPreferenceDomainManager.getPreferences()) {

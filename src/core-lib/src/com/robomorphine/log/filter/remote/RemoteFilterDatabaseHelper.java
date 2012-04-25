@@ -35,12 +35,6 @@ public class RemoteFilterDatabaseHelper extends SQLiteOpenHelper
 					     +  " ON CONFLICT FAIL"
 			        + ");");	   
 	}
-	
-	@Override
-	public void onOpen(SQLiteDatabase db)
-	{	
-		super.onOpen(db);
-	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)

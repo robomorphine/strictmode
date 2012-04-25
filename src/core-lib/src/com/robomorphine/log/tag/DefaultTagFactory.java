@@ -149,7 +149,7 @@ public class DefaultTagFactory implements TagFactory {
 		
 		String tag = clazz.getSimpleName();
 		if (prefix.length() > 0 ) {
-			tag = prefix + "." + tag;
+			tag = prefix + "." + tag; //NOPMD
 		}
 		
 		return tag; 

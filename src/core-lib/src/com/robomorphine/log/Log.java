@@ -1,13 +1,13 @@
 package com.robomorphine.log;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-
 import com.google.common.annotations.VisibleForTesting;
 import com.robomorphine.log.logger.AndroidLogger;
 import com.robomorphine.log.logger.Logger;
 
-public class Log { 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
+public final class Log { 
     
     /* supported log levels */
     public static final int VERBOSE = 0;
@@ -37,7 +37,8 @@ public class Log {
         "FATAL"
     };
     
-    @VisibleForTesting static final String UNKNOWN_LEVEL = "UNKNOWN";
+    @VisibleForTesting //NOPMD
+    static final String UNKNOWN_LEVEL = "UNKNOWN";
     
     public static String toString(int level) {
         if(level < 0 || level >= LEVEL_NAMES.length) {
@@ -58,7 +59,7 @@ public class Log {
     private Log() {
     }
     
-    private static Logger sLogger = new AndroidLogger();
+    private static Logger sLogger = new AndroidLogger();//NOPMD
     
     public static void setLogger(Logger logger) {
         sLogger = logger;
@@ -77,7 +78,7 @@ public class Log {
         }
     }
          
-    @VisibleForTesting
+    @VisibleForTesting  //NOPMD
     static Throwable extractThrowable(Object[] formatArgs) {
         if (formatArgs == null || formatArgs.length == 0) {
             return null;

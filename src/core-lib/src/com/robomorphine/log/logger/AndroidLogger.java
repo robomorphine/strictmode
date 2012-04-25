@@ -25,6 +25,8 @@ public class AndroidLogger implements Logger {
             case com.robomorphine.log.Log.ASSERT:
                 androidLevel = android.util.Log.ASSERT;
                 break;
+            default:
+                androidLevel = android.util.Log.ERROR;
         }
         android.util.Log.println(androidLevel, tag, msg);
     }

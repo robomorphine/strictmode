@@ -40,7 +40,7 @@ public class Wildcard
             
             if(wildcard.length() == 1) {
                 /* wildcard: "*" - means any */
-                contains = null;
+                contains = null; //NOPMD
             } else if(wildcard.length() == 2) {
                 /* wildcard: "**". Not a meaningful wildcard. */
                 throw new IllegalArgumentException("Empty contains wildcard are invalid: "+wildcard);
@@ -57,11 +57,11 @@ public class Wildcard
             prefix = wildcard.substring(0, pos);
             suffix = wildcard.substring(pos + 1);
             if (prefix.length() == 0) {
-                prefix = null;
+                prefix = null; //NOPMD
             }
 
             if (suffix.length() == 0) {
-                suffix = null;
+                suffix = null; //NOPMD
             }
         }    
 
@@ -73,22 +73,22 @@ public class Wildcard
     }
     
     @VisibleForTesting
-    String getExact() {
+    protected String getExact() {
         return mExact;
     }
 		
     @VisibleForTesting
-    String getPrefix() {
+    protected String getPrefix() {
         return mPrefix;
     }
 
     @VisibleForTesting
-    String getSuffix() {
+    protected String getSuffix() {
         return mSuffix;
     }
 
     @VisibleForTesting
-    String getContains() {
+    protected String getContains() {
         return mContains;
     }	
 	
@@ -98,22 +98,16 @@ public class Wildcard
             return value.equals(mExact);
         }
         
-        if (mPrefix != null) {
-            if (!value.startsWith(mPrefix)) {
-                return false;
-            }
+        if (mPrefix != null && !value.startsWith(mPrefix)) {
+            return false;
         }
 
-        if (mSuffix != null) {
-            if (!value.endsWith(mSuffix)) {
-                return false;
-            }
+        if (mSuffix != null && !value.endsWith(mSuffix)) {
+            return false;
         }
 
-        if (mContains != null) {
-            if (!value.contains(mContains)) {
-                return false;
-            }
+        if (mContains != null && !value.contains(mContains)) {
+            return false;
         }
 
         return true;

@@ -5,7 +5,10 @@ import com.robomorphine.log.filter.MultiFilter;
 
 public class AndFilter extends MultiFilter {
     
-    public AndFilter() {
+    /**
+     * Creates empty AndFilter.
+     */
+    public AndFilter() {//NOPMD 
     }
 
     public AndFilter(Filter... filters) {

@@ -10,7 +10,7 @@ import static com.google.common.base.Preconditions.*;
  * Note: should not be used by classes outside of robomorphine library. 
  */
 @ThreadSafe
-public class RbmTags extends TagsBase {
+public class RbmTags extends TagsBase { //NOPMD
 
     public static final String ROBOMORPHINE_TAG_PREFIX = "rbm";
     public static final String ROBOMORPHINE_PACKAGE = "com.robomorphine";

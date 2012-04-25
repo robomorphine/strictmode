@@ -1,9 +1,10 @@
 package com.robomorphine.log.filter.remote;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.Map;
+import com.google.common.annotations.VisibleForTesting;
+import com.google.common.base.Preconditions;
+import com.robomorphine.log.Log;
+import com.robomorphine.log.filter.remote.RemoteFilterContract.Filter;
+import com.robomorphine.log.tag.RbmTags;
 
 import android.content.ContentProvider;
 import android.content.ContentUris;
@@ -17,22 +18,21 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.database.sqlite.SQLiteTransactionListener;
 import android.net.Uri;
 
-import com.google.common.annotations.VisibleForTesting;
-import com.google.common.base.Preconditions;
-import com.robomorphine.log.Log;
-import com.robomorphine.log.filter.remote.RemoteFilterContract.Filter;
-import com.robomorphine.log.tag.RbmTags;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.Map;
 
-public class RemoteFilterProvider extends ContentProvider {
+public class RemoteFilterProvider extends ContentProvider { //NOPMD
     
     private final static String TAG = RbmTags.getTag(RemoteFilterProvider.class);
         
-    @VisibleForTesting final static int MATCH_FILTERS = 0;
-    @VisibleForTesting final static int MATCH_FILTERS_PACKAGE = 1;
-    @VisibleForTesting final static int MATCH_FILTERS_ITEM = 2;
+    @VisibleForTesting protected final static int MATCH_FILTERS = 0;
+    @VisibleForTesting protected final static int MATCH_FILTERS_PACKAGE = 1;
+    @VisibleForTesting protected final static int MATCH_FILTERS_ITEM = 2;
     
-    @VisibleForTesting static final UriMatcher sUriMatcher;
-    @VisibleForTesting static final Map<Integer, String> sUriContentTypes;
+    @VisibleForTesting protected static final UriMatcher sUriMatcher;
+    @VisibleForTesting protected static final Map<Integer, String> sUriContentTypes;
     
     static {
         sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
@@ -48,7 +48,7 @@ public class RemoteFilterProvider extends ContentProvider {
                            Filter.URI_SUFFIX + "/#", 
                            MATCH_FILTERS_ITEM);        
                         
-        HashMap<Integer, String> contentTypes = new HashMap<Integer, String>();
+        Map<Integer, String> contentTypes = new HashMap<Integer, String>();
         contentTypes.put(MATCH_FILTERS, Filter.CONTENT_TYPE);
         contentTypes.put(MATCH_FILTERS_PACKAGE, Filter.CONTENT_TYPE);
         contentTypes.put(MATCH_FILTERS_ITEM, Filter.CONTENT_ITEM_TYPE);
@@ -129,7 +129,7 @@ public class RemoteFilterProvider extends ContentProvider {
      * one by one.
      * @param notificationUris
      */
-    private void firePendingNotifications(String action, LinkedHashSet<Uri> notificationUris) {        
+    private void firePendingNotifications(String action, LinkedHashSet<Uri> notificationUris) { //NOPMD        
         for (Uri uri : notificationUris) {
             Log.v(TAG, "Change notification (%s) for " + uri.toString()+" is fired.", action);
             getContext().getContentResolver().notifyChange(uri, null);            
@@ -142,7 +142,7 @@ public class RemoteFilterProvider extends ContentProvider {
      *     Helpers: ContentValues checks
      ******************************************/    
     @VisibleForTesting
-    static void badValue(ContentValues values, String key) {
+    protected static void badValue(ContentValues values, String key) {
         badValue(values, key, null);
     }
     
@@ -150,7 +150,7 @@ public class RemoteFilterProvider extends ContentProvider {
      * Throws an exception with message that describes bad value in details.
      */
     @VisibleForTesting
-    static void badValue(ContentValues values, String key, String customMessage) {        
+    protected static void badValue(ContentValues values, String key, String customMessage) {        
         Object obj = values.get(key);
         String value = null;
         if (obj != null) {
@@ -170,7 +170,7 @@ public class RemoteFilterProvider extends ContentProvider {
      * Verifies all values are of valid type and within valid domains.
      */
     @VisibleForTesting
-    static void checkFilterValues(ContentValues values) {                
+    protected static void checkFilterValues(ContentValues values) { //NOPMD   
         String pkg = values.getAsString(Filter.PACKAGE); 
         if(pkg == null || pkg.length() == 0) {
             badValue(values, Filter.PACKAGE);
@@ -224,7 +224,7 @@ public class RemoteFilterProvider extends ContentProvider {
         return result;
     }    
     
-    public Uri insert(Uri uri, ContentValues values, LinkedHashSet<Uri> notify) {
+    public Uri insert(Uri uri, ContentValues values, LinkedHashSet<Uri> notify) { //NOPMD
         Preconditions.checkNotNull(uri);
         Preconditions.checkNotNull(values);
         Preconditions.checkNotNull(notify);
@@ -345,7 +345,7 @@ public class RemoteFilterProvider extends ContentProvider {
      ******************************************/
        
     @VisibleForTesting
-    void addNotificationUris(LinkedHashSet<Uri> uris, String where, String [] whereArgs) {
+    protected void addNotificationUris(LinkedHashSet<Uri> uris, String where, String [] whereArgs) { //NOPMD
         SQLiteDatabase db = mOpenHelper.getReadableDatabase();
         Cursor cursor = db.query(Filter.TABLE_NAME, new String[] { Filter.PACKAGE }, 
                                  where, whereArgs, Filter.PACKAGE, 

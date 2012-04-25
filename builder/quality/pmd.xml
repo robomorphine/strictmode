@@ -157,8 +157,7 @@
    <rule ref="rulesets/controversial.xml/NullAssignment"/>
    <rule ref="rulesets/controversial.xml/UnusedModifier"/>
    <rule ref="rulesets/controversial.xml/DontImportSun"/>
-   <rule ref="rulesets/controversial.xml/SuspiciousOctalEscape"/>
-   <rule ref="rulesets/controversial.xml/CallSuperInConstructor"/>
+   <rule ref="rulesets/controversial.xml/SuspiciousOctalEscape"/>   
    <rule ref="rulesets/controversial.xml/UnnecessaryParentheses"/>
    <rule ref="rulesets/controversial.xml/DefaultPackage"/>
    <rule ref="rulesets/controversial.xml/DataflowAnomalyAnalysis"/>

@@ -23,7 +23,7 @@ class DomainMap extends HashMap<String, SharedPreferences> {
         void onDomainAdded(String name);
     }
     
-    WeakHashMap<DomainMapObserver, Void> mObservers;
+    private final WeakHashMap<DomainMapObserver, Void> mObservers;
     
     public DomainMap() {
         mObservers = new WeakHashMap<DomainMapObserver, Void>();

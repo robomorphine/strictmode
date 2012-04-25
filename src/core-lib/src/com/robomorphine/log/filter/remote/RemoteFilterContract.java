@@ -13,17 +13,17 @@ public class RemoteFilterContract {
     public static final String AUTHORITY = "com.robomorphine.filter.remote";
     public static final Uri AUTHORITY_URI = Uri.parse("content://" + AUTHORITY);
 
-    public abstract static class Filter implements BaseColumns
+    public abstract static class Filter implements BaseColumns //NOPMD
     {
         private Filter() {}
 
-        static final String ENTITIY_NAME = "Filter"; /* used for logging */
+        public static final String ENTITIY_NAME = "Filter"; /* used for logging */
 
-        static final String TABLE_NAME = "Filter";
+        public static final String TABLE_NAME = "Filter";
 
-        static final String URI_SUFFIX = "filters";
+        public static final String URI_SUFFIX = "filters";
 
-        static final String URI_PACKAGE_SUFFIX = "filterspkg";
+        public static final String URI_PACKAGE_SUFFIX = "filterspkg";
 
         public static final Uri CONTENT_URI = Uri.withAppendedPath(AUTHORITY_URI, URI_SUFFIX);
         public static final Uri CONTENT_PKG_URI = Uri.withAppendedPath(AUTHORITY_URI, URI_PACKAGE_SUFFIX);

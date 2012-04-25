@@ -16,7 +16,7 @@ public class RemotePrefsContract {
         };
     }
     
-    public static class Variable {
+    public static class Variable {//NOPMD
         
         public enum VariableType {
             Boolean,
@@ -40,7 +40,7 @@ public class RemotePrefsContract {
             VALUE
         };
         
-        static String [] newRow(String name, Object value) {
+        protected static String [] newRow(String name, Object value) {
             VariableType type = null;
             int valueCount = 1;
             String convertedValue = null;
@@ -65,7 +65,6 @@ public class RemotePrefsContract {
                 type = VariableType.StringSet;
                 Set<?> set = (Set<?>)value;
                 valueCount = set.size();
-                convertedValue = null;
             }            
             
             String [] row = new String[COLUMN_NAMES.length];
@@ -77,9 +76,9 @@ public class RemotePrefsContract {
         }
     }
     
-    public static class Value {
+    public static class Value { 
         public static final String CONTENT_TYPE = "";        
-        public static final String VALUE = "value";
+        public static final String VALUE = "value"; //NOPMD
     }
     
     

@@ -5,13 +5,10 @@ import java.util.List;
 
 import com.google.common.collect.ForwardingList;
 
-public abstract class MultiFilter extends ForwardingList<Filter> implements Filter {
+public abstract class MultiFilter extends ForwardingList<Filter> implements Filter { //NOPMD
     
-    private final LinkedList<Filter> mFilters = new LinkedList<Filter>();
-    
-    public MultiFilter() {
-    }    
-    
+    private final List<Filter> mFilters = new LinkedList<Filter>();
+            
     @Override
     protected List<Filter> delegate() {
         return mFilters;

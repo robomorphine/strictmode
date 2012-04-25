@@ -5,7 +5,10 @@ import com.robomorphine.log.filter.MultiFilter;
 
 public class OrFilter extends MultiFilter {
         
-    public OrFilter() {
+    /**
+     * Creates empty OrFilter
+     */
+    public OrFilter() {//NOPMD
     }
 
     public OrFilter(Filter... filters) {

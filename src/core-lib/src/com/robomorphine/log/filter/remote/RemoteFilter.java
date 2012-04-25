@@ -69,6 +69,8 @@ public class RemoteFilter extends PriorityFilter<RemoteSubfilter> {
             case RemoteFilterContract.Filter.ACTION_EXCLUDE:
                 filterAction = FilterAction.Exclude;
                 break;
+            default:
+                throw new IllegalArgumentException("Unknown action: " + action);
         }
 
         add(new RemoteSubfilter(level, tag, msg), filterAction);
@@ -110,6 +112,8 @@ public class RemoteFilter extends PriorityFilter<RemoteSubfilter> {
                 case Exclude:
                     action = RemoteFilterContract.Filter.ACTION_EXCLUDE;
                     break;
+                default:
+                    throw new IllegalArgumentException("Unknown action: " + action);
             }
 
             ContentValues curValues = values[i];
