@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal" >
+
+    <include
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        layout="@layout/thread_violation_stats_table" />
+
+    <View
+        android:layout_height="fill_parent"
+        android:layout_width="@dimen/pixel"
+        android:background="#999999" />
+
+    <include
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        layout="@layout/thread_violation_stats_hist_table" />
+
+</LinearLayout>

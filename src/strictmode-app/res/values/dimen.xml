@@ -8,4 +8,7 @@
     <dimen name="medium">10dp</dimen>
     <dimen name="large">15dp</dimen>
     <dimen name="xlarge">25dp</dimen>
+    
+    <dimen name="histogram_sample_width">20dp</dimen>
+    <dimen name="histogram_sample_half_width">9dp</dimen>
 </resources>

@@ -14,4 +14,10 @@
         <item name="android:gravity">center</item>
         <item name="android:text">@string/na</item>
     </style>
+    
+    <style name="ThreadViolationStatsTableImage" parent="android:Widget.Holo.TextView">
+        <item name="android:layout_width">@dimen/histogram_sample_width</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:layout_margin">1px</item>
+    </style>
 </resources>

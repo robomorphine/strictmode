@@ -22,5 +22,12 @@
     <string name="thread_violation_stats_max_duration">Max Duration</string>
     <string name="thread_violation_stats_avg_duration">Avg Duration</string>
     <string name="thread_violation_duration_args">%d ms</string>
+    <string name="thread_violation_stats_hist_range">Histogram range</string>
+    <string name="thread_violation_stats_hist_delta">delta</string>
+    <string name="thread_violation_stats_hist_90">90%</string>
+    <string name="thread_violation_stats_hist_95">95%</string>
+    <string name="thread_violation_stats_hist_avarage">avarage</string>
+    <string name="histogram_range">[%1$d ms, %2$d ms]</string>
+    <string name="histogram_value">%d ms</string>
     
 </resources>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>    
+    <color name="histogram_90">#5000ff00</color>
+    <color name="histogram_95">#28ff0000</color>
+    <color name="histogram_max_bucket">#c80000ff</color>
+    <color name="histogram_avarage">#ee0000</color>
+    <color name="histogram_tick">#96444444</color>
+    <color name="histogram_bucket">#000000</color>
+    <color name="histogram_bg">#cccccc</color>
+</resources>
