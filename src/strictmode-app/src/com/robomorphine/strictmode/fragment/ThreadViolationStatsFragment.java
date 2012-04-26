@@ -1,5 +1,6 @@
 package com.robomorphine.strictmode.fragment;
 
+import com.robomorphine.log.Log;
 import com.robomorphine.strictmode.R;
 import com.robomorphine.strictmode.histogram.Histogram;
 import com.robomorphine.strictmode.histogram.HistogramView;
@@ -8,6 +9,7 @@ import com.robomorphine.strictmode.violation.Violation;
 import com.robomorphine.strictmode.violation.group.ViolationGroup;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +21,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 
-public class ThreadViolationStatsFragment extends ViolationDetailsFragment {
+public class ThreadViolationStatsFragment extends Fragment {
 
     private static class HistogramRange {        
         private final int min;
@@ -89,11 +91,13 @@ public class ThreadViolationStatsFragment extends ViolationDetailsFragment {
     private TextView mHistogramAvgView;
     private HistogramView mHistogramView;
     
+    private ViolationGroup mViolationGroup;
+    
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ViolationGroup violationGroup = getViolation();
-        if(!(violationGroup.getViolation() instanceof ThreadViolation)) {
+        mViolationGroup = ViolationFragmentHelper.getViolationGroup(getArguments());
+        if(!(mViolationGroup.getViolation() instanceof ThreadViolation)) {
             throw new IllegalArgumentException("Only ThreadViolations are acceptable.");
         }
     }
@@ -123,8 +127,7 @@ public class ThreadViolationStatsFragment extends ViolationDetailsFragment {
     }
     
     private void updateStats() {
-        ViolationGroup group = getViolation();
-        List<Violation> violations = group.getViolations();
+        List<Violation> violations = mViolationGroup.getViolations();
                 
         long total = 0;
         long min = 0;
