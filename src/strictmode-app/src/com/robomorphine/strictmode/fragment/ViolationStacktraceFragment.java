@@ -35,6 +35,7 @@ public class ViolationStacktraceFragment extends ListFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setListAdapter(mAdapter);
+        getListView().setFastScrollEnabled(true);
     }
     
     @Override
