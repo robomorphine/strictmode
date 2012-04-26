@@ -154,7 +154,6 @@
    <rule ref="rulesets/junit.xml/UseAssertNullInsteadOfAssertTrue"/>
    <rule ref="rulesets/junit.xml/SimplifyBooleanAssertion"/>
    <rule ref="rulesets/controversial.xml/UnnecessaryConstructor"/>
-   <rule ref="rulesets/controversial.xml/NullAssignment"/>
    <rule ref="rulesets/controversial.xml/UnusedModifier"/>
    <rule ref="rulesets/controversial.xml/DontImportSun"/>
    <rule ref="rulesets/controversial.xml/SuspiciousOctalEscape"/>   
@@ -168,7 +167,6 @@
    <rule ref="rulesets/controversial.xml/AvoidAccessibilityAlteration"/>
    <rule ref="rulesets/controversial.xml/DoNotCallGarbageCollectionExplicitly"/>
    <rule ref="rulesets/naming.xml/ClassNamingConventions"/>
-   <rule ref="rulesets/naming.xml/AbstractNaming"/>
    <rule ref="rulesets/naming.xml/AvoidDollarSigns"/>
    <rule ref="rulesets/naming.xml/MethodWithSameNameAsEnclosingClass"/>
    <rule ref="rulesets/naming.xml/SuspiciousHashcodeMethodName"/>

@@ -35,9 +35,9 @@ public class ViolationActivity extends FragmentActivity implements TabListener {
             this.args = args;
         }
         
-        final String tag;
-        final Class<? extends Fragment> clazz;
-        final Bundle args;
+        public final String tag;
+        public final Class<? extends Fragment> clazz;
+        public final Bundle args;
     }
     
     private ViolationGroup mViolationGroup;

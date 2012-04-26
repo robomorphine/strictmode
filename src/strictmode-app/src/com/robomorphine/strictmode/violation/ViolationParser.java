@@ -14,7 +14,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class ViolationParser {
+public class ViolationParser { //NOPMD
     
     private static final String STACK_TRACE_ENTRY_PREFIX = "at";
     private static final String STACK_TRACE_COMMENT_PREFIX = "#";
@@ -46,7 +46,7 @@ public class ViolationParser {
     }
     
     @VisibleForTesting    
-    Violation createViolation(List<String> rawHeaders, List<String> stackTrace) {
+    protected Violation createViolation(List<String> rawHeaders, List<String> stackTrace) {
         Violation violation = null;
         Map<String, String> headers = parseHeaders(rawHeaders);
         ViolationException exception = parseException(stackTrace);
@@ -60,7 +60,8 @@ public class ViolationParser {
     }
     
     @VisibleForTesting
-    void extractHeadersAndException(String data, List<String> headers, List<String> stackTrace) {
+    protected void extractHeadersAndException(String data, List<String> headers, 
+                                              List<String> stackTrace) {
         List<String> lines = headers;
         BufferedReader reader = new BufferedReader(new StringReader(data));
         
@@ -84,8 +85,8 @@ public class ViolationParser {
      *  header-name: header-values
      */
     @VisibleForTesting
-    Map<String, String> parseHeaders(List<String> headers) {
-        final Character separator = ':';
+    protected Map<String, String> parseHeaders(List<String> headers) {
+        final Character separator = ':'; //NOPMD
         
         HashMap<String, String> map = new HashMap<String, String>();
         for(String line : headers) {
@@ -140,14 +141,14 @@ public class ViolationParser {
      * will be stored as "cause" exception. It can be retrieved via "getCause()" function.
      */
     @VisibleForTesting
-    ViolationException parseException(List<String> stackTrace) {        
+    protected ViolationException parseException(List<String> stackTrace) {        
         ViolationException exception = null;
         
         LinkedList<String> exceptionStackTrace = new LinkedList<String>();
         for(int i = stackTrace.size() - 1; i >= 0; i--) {               
             String line = stackTrace.get(i).trim();
-            if(line.startsWith(STACK_TRACE_COMMENT_PREFIX)) {
-                //comment, ignore
+            if(line.startsWith(STACK_TRACE_COMMENT_PREFIX)) { //NOPMD
+                //just a comment, do nothing
             } else if(line.startsWith(STACK_TRACE_ENTRY_PREFIX)) {
                 exceptionStackTrace.push(line);
             } else {
@@ -174,7 +175,7 @@ public class ViolationParser {
      *      Message: "policy=159 violation=8"
      */
     @VisibleForTesting
-    ViolationException parseExceptionTitle(String title, ViolationException cause) {
+    protected ViolationException parseExceptionTitle(String title, ViolationException cause) {
         String className = null;
         String message = null;
         
@@ -213,7 +214,7 @@ public class ViolationParser {
      *      
      * File name or line number might not be available. 
      */
-    protected StackTraceElement[] parseExceptionStackTrace(List<String> stackTrace) {
+    protected StackTraceElement[] parseExceptionStackTrace(List<String> stackTrace) { //NOPMD
         StackTraceElement [] elements = new StackTraceElement[stackTrace.size()]; 
         for(int i = 0; i < stackTrace.size(); i++) {
             String line = stackTrace.get(i).trim();
@@ -259,7 +260,7 @@ public class ViolationParser {
                     if(locationParts.length > 1) {
                         try {
                             locationLine = Integer.parseInt(locationParts[1]);
-                        } catch(NumberFormatException ex) {
+                        } catch(NumberFormatException ex) { //NOPMD
                             //ignore
                         }
                     }

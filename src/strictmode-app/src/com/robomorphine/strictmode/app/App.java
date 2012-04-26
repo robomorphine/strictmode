@@ -39,7 +39,7 @@ private static final String TAG = Tags.getTag(App.class);
     private static void enableStrictMode() {
         try {
             doEnableStrictMode();
-        } catch (Throwable ex) {
+        } catch (Throwable ex) { //NOPMD
             Log.d(TAG, "Failed to enable StrictMode.");
         }
     }
@@ -54,13 +54,13 @@ private static final String TAG = Tags.getTag(App.class);
 
         try {
             updateStrictModePolicies_v9(threadBuilder, vmBuilder);
-        } catch (Exception ex) {
+        } catch (Throwable ex) { //NOPMD
             Log.d(TAG, "Failed to update StrictMode policies for v9.");
         }
 
         try {
             updateStrictModePolicies_v11(threadBuilder, vmBuilder);
-        } catch (Throwable ex) {
+        } catch (Throwable ex) { //NOPMD
             Log.d(TAG, "Failed to update StrictMode policies for v11.");
         }
 

@@ -47,9 +47,9 @@ public class ViolationLoader extends AsyncLoader<ViolationGroups> {
     @Override
     public ViolationGroups loadInBackground() {
         fetchNewDropBoxItems();
-        ViolationGroups groups = mViolationGroups.clone();
+        ViolationGroups groups = ViolationGroups.clone(mViolationGroups);
         groups.sort();
-        return groups.clone();
+        return groups;
     }    
     
     @Override

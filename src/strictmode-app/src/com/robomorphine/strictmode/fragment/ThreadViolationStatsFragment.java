@@ -130,7 +130,7 @@ public class ThreadViolationStatsFragment extends ViolationDetailsFragment {
         long min = 0;
         long max = 0;
         
-        if(violations.size() > 0) {
+        if(!violations.isEmpty()) {
             ThreadViolation threadViolation = (ThreadViolation)violations.get(0);
             min = threadViolation.getDuration();
             max = threadViolation.getDuration();

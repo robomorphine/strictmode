@@ -6,8 +6,8 @@ public class VmViolation extends Violation {
     
     private static final long serialVersionUID = 1L;
     
-    public static abstract class VmViolationFactory extends ViolationFactory {
-        VmViolation create(Map<String, String> headers, ViolationException exception) {
+    static abstract class VmViolationFactory extends ViolationFactory {
+        public VmViolation create(Map<String, String> headers, ViolationException exception) {
             return new VmViolation(headers, exception);
         }
     }

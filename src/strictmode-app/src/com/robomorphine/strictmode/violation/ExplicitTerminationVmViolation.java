@@ -11,7 +11,9 @@ public class ExplicitTerminationVmViolation extends VmViolation {
     private static final String VIOLATION_MESSAGE_POSTFIX = "' not called";
         
     static class ExplicitTerminationVmViolationFactory extends VmViolationFactory {
-        ExplicitTerminationVmViolation create(Map<String, String> headers, ViolationException exception) {
+        public ExplicitTerminationVmViolation create(Map<String, String> headers, 
+                                                     ViolationException exception) {
+            
             String message = exception.getMessage();
             if(VIOLATION_EXCEPTION_CLASS_NAME.equalsIgnoreCase(exception.getClassName()) &&
                message != null && 

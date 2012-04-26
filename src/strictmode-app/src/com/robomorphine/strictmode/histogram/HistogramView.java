@@ -17,18 +17,21 @@ import java.util.Observer;
 public class HistogramView extends View implements Observer {
     
     /**
-     * Default histogram for previews.
+     * Returns histogram that can be used for preview.
      */
-    private Histogram mHistogram = new Histogram(0, 300, 5);
-    {
-        int middleIndex = mHistogram.getBucketCount() / 2;
-        for(int i = 0; i < mHistogram.getBucketCount(); i++) {
+    private static Histogram createPreviewHistogram() {
+        Histogram hist = new Histogram(0, 300, 5);
+        int middleIndex = hist.getBucketCount() / 2;
+        for(int i = 0; i < hist.getBucketCount(); i++) {
             int hits = middleIndex - Math.abs(i - middleIndex);
             for(int c = 0; c <= hits; c++ ) {
-                mHistogram.add(mHistogram.getBucketMin(i));
+                hist.add(hist.getBucketMin(i));
             }
-        }    
+        }
+        return hist;
     }
+    
+    private Histogram mHistogram = createPreviewHistogram();
     
     private float mCoverage = 0.9f;
     private float mExtendedCoverage = 0.95f;

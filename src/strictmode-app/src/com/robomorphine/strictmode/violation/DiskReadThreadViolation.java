@@ -6,11 +6,11 @@ public class DiskReadThreadViolation extends ThreadViolation {
     
     private static final long serialVersionUID = 1L;
     
-    public static class DiskReadThreadViolationFactory extends ThreadViolationFactory {
+    static class DiskReadThreadViolationFactory extends ThreadViolationFactory {
         @Override
-        ThreadViolation onCreate(Map<String, String> headers,
-                                 ViolationException exception,
-                                 int policy, int violation) {
+        protected ThreadViolation onCreate(Map<String, String> headers,
+                                           ViolationException exception,
+                                           int policy, int violation) {
             
             if(violation == VIOLATION_DISK_READ) {
                 return new DiskReadThreadViolation(headers, exception);

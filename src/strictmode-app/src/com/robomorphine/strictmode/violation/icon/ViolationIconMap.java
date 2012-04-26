@@ -20,7 +20,7 @@ import java.util.Map;
 
 public class ViolationIconMap {
     
-    private Map<Class<? extends Violation>, Integer> mIconMap;
+    private final Map<Class<? extends Violation>, Integer> mIconMap;
     
     public ViolationIconMap() {
         mIconMap = new HashMap<Class<? extends Violation>, Integer>();

@@ -4,9 +4,9 @@ import android.os.Bundle;
 
 public class DropBoxItem {
     
-    private static String BUNDLE_TAG = "tag";
-    private static String BUNDLE_TIMESTAMPE = "timestamp";
-    private static String BUNDLE_DATA = "data";
+    private static final String BUNDLE_TAG = "tag";
+    private static final String BUNDLE_TIMESTAMPE = "timestamp";
+    private static final String BUNDLE_DATA = "data";
     
     private final String mTag;
     private final long mTimestamp;

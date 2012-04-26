@@ -6,11 +6,11 @@ public class DiskWriteThreadViolation extends ThreadViolation {
     
     private static final long serialVersionUID = 1L;
     
-    public static class DiskWriteThreadViolationFactory extends ThreadViolationFactory {
+    static class DiskWriteThreadViolationFactory extends ThreadViolationFactory {
         @Override
-        ThreadViolation onCreate(Map<String, String> headers,
-                                 ViolationException exception,
-                                 int policy, int violation) {
+        protected ThreadViolation onCreate(Map<String, String> headers,
+                                           ViolationException exception,
+                                           int policy, int violation) {
             
             if(violation == VIOLATION_DISK_WRITE) {
                 return new DiskWriteThreadViolation(headers, exception);

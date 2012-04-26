@@ -15,6 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 @Deprecated
 public class DropBoxListAdapter extends BaseAdapter implements SectionIndexer {
@@ -89,7 +90,7 @@ public class DropBoxListAdapter extends BaseAdapter implements SectionIndexer {
     public Object[] getSections() {
         Object [] labels = new Object[mItems.size()];
         Calendar cal = Calendar.getInstance();
-        SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+        SimpleDateFormat format = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
         for(int i = 0; i < mItems.size(); i++) {
             cal.setTimeInMillis(mItems.get(i).getTimestamp());
             labels[i] = format.format(cal.getTime());

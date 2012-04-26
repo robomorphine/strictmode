@@ -21,12 +21,12 @@ public class Violation implements Serializable {
     public static final String HEADER_KEY_SYSTEM_APP = "System-App";
     public static final String HEADER_KEY_TIMESTAMP = "Uptime-Millis";
     
-    public static class ViolationFactory {
+    static class ViolationFactory {
         /**
          * @return new instance if factory knows how to create violation from provided information,
          *         or returns null if violation can not be created using provided information.
          */
-        Violation create(Map<String, String> headers, ViolationException exception) {
+        public Violation create(Map<String, String> headers, ViolationException exception) {
             return new Violation(headers, exception);
         }
     }
@@ -35,7 +35,7 @@ public class Violation implements Serializable {
      * Example: 0x8325
      */
     @VisibleForTesting
-    static int parseHeaderFlags(String rawFlags) {
+    protected static int parseHeaderFlags(String rawFlags) {
         int flags = 0;
         if(rawFlags == null) {
             return flags;
@@ -47,7 +47,7 @@ public class Violation implements Serializable {
         }
         try {
             flags = Integer.parseInt(rawFlags, 16);
-        } catch(NumberFormatException ex) {
+        } catch(NumberFormatException ex) { //NOPMD
             //ignore
         }
         return flags;
@@ -57,7 +57,7 @@ public class Violation implements Serializable {
      * Example: com.android.strictmodetest v1 (1.0)
      */
     @VisibleForTesting
-    static String parseHeaderPackage(String rawPackage) {       
+    protected static String parseHeaderPackage(String rawPackage) {       
         String pkg = null;
         
         if(rawPackage == null) {
@@ -78,7 +78,7 @@ public class Violation implements Serializable {
      * Example: com.android.strictmodetest v1 (1.0)
      */
     @VisibleForTesting
-    static int parseHeaderPackageVersionCode(String rawPackage) {
+    protected static int parseHeaderPackageVersionCode(String rawPackage) {
         int versionCode = 0;
         if(rawPackage == null) {
             return versionCode;
@@ -93,7 +93,7 @@ public class Violation implements Serializable {
             }
             try {
                 versionCode = Integer.parseInt(rawVersion);
-            } catch(NumberFormatException ex) {
+            } catch(NumberFormatException ex) { //NOPMD
                 //ignore
             }
         }
@@ -104,7 +104,7 @@ public class Violation implements Serializable {
      * Example: com.android.strictmodetest v1 (1.0)
      */
     @VisibleForTesting
-    static String parseHeaderPackageVersionName(String rawPackage) {
+    protected static String parseHeaderPackageVersionName(String rawPackage) {
         String versionName = null;
         
         if(rawPackage == null) {
@@ -129,11 +129,11 @@ public class Violation implements Serializable {
     }
     
     @VisibleForTesting
-    static long parseHeaderTimestamp(String rawTimestamp) {
+    protected static long parseHeaderTimestamp(String rawTimestamp) {
         long timestamp = 0;
         try {
             timestamp = Long.parseLong(rawTimestamp);
-        } catch(NumberFormatException ex) {
+        } catch(NumberFormatException ex) { //NOPMD
             //ignore
         }
         return timestamp;

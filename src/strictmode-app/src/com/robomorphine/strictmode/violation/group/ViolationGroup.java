@@ -60,7 +60,7 @@ public class ViolationGroup implements Serializable {
     }
     
     public boolean canAdd(Violation violation) {
-        return (violation != null && getViolation().equals(violation));
+        return (violation != null && violation.equals(getViolation()));
     }
     
     public void add(Violation violation) {

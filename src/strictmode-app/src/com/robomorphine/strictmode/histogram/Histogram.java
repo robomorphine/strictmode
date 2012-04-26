@@ -8,10 +8,10 @@ import java.util.Observable;
 //TODO: unit-test this
 public class Histogram extends Observable {
     
-    private int mMin;
-    private int mMax;
-    private int mBucketDelta;
-    private int [] mCounts;    
+    private final int mMin;
+    private final int mMax;
+    private final int mBucketDelta;
+    private final int [] mCounts;    
     
     public Histogram(int min, int max, int bucketSize) {
         int delta = max - min;

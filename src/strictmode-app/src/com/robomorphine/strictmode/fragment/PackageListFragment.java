@@ -28,7 +28,7 @@ public class PackageListFragment extends ListFragment
                                             LoaderCallbacks<List<AndroidPackage>> {
     
     public interface PackageSelectionListener {
-        public void onPackageSelected(String packageName);
+        void onPackageSelected(String packageName);
     }
     
     private final static int PACKAGE_LOADER_ID = 1;

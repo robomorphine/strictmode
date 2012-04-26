@@ -11,7 +11,9 @@ public class InstanceCountVmViolation extends VmViolation {
     
     
     static class InstanceCountVmViolationFactory extends VmViolationFactory {
-        InstanceCountVmViolation create(Map<String, String> headers, ViolationException exception) {
+        public InstanceCountVmViolation create(Map<String, String> headers, 
+                                               ViolationException exception) {
+            
             if(VIOLATION_EXCEPTION_CLASS_NAME.equals(exception.getClassName()) && 
                headers.containsKey(HEADER_KEY_INSTANCE_COUNT)) {
                 return new InstanceCountVmViolation(headers, exception);

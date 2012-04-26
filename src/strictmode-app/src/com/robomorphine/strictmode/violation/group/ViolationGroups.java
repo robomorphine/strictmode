@@ -12,23 +12,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ViolationGroups implements Cloneable {
+public class ViolationGroups {
 
-    private Map<Violation, ViolationGroup> mGroups = new HashMap<Violation, ViolationGroup>();
+    private final Map<Violation, ViolationGroup> mGroups = new HashMap<Violation, ViolationGroup>();
     
-    private Comparator<ViolationGroup> mGroupComparator = new TimestampComparator();
-    private List<ViolationGroup> mSortedGroups = new ArrayList<ViolationGroup>();
+    private final Comparator<ViolationGroup> mGroupComparator = new TimestampComparator();
+    private final List<ViolationGroup> mSortedGroups = new ArrayList<ViolationGroup>();
     private boolean mNeedsSorting = false;
     
     private long mLatestTimestamp = 0;
-    
-    public ViolationGroups() {
-    }
-    
-    @Override
-    public ViolationGroups clone() {
+        
+    public static ViolationGroups clone(ViolationGroups from) {
         ViolationGroups groups = new ViolationGroups();
-        for(ViolationGroup group : mSortedGroups) {
+        for(ViolationGroup group : from.mSortedGroups) {
             for(Violation violation : group.getViolations()) {
                 groups.add(violation);
             }

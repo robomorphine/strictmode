@@ -18,16 +18,17 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 public class ViolationListAdapter extends BaseAdapter implements SectionIndexer {
 
     private final Context mContext;
     private final LayoutInflater mInflator;
     private List<ViolationGroup> mItems = new ArrayList<ViolationGroup>();
-    private ViolationIconMap mIconMap = new ViolationIconMap();
+    private final ViolationIconMap mIconMap = new ViolationIconMap();
     
-    private SimpleDateFormat mSectionFormat = new SimpleDateFormat("HH:mm");
-    private SimpleDateFormat mItemFormat = new SimpleDateFormat("HH:mm:ss.SSS");
+    private final SimpleDateFormat mSectionFormat = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
+    private final SimpleDateFormat mItemFormat = new SimpleDateFormat("HH:mm:ss.SSS", Locale.ENGLISH);
     private final Calendar mCalendar;
     
     public ViolationListAdapter(Context context) {

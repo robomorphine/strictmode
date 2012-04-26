@@ -20,12 +20,12 @@ public class ThreadViolation extends Violation {
     public static final int VIOLATION_NETWORK = 0x04;
     public static final int VIOLATION_CUSTOM = 0x08; 
     
-    public static class ThreadViolationFactory extends ViolationFactory {
+    static class ThreadViolationFactory extends ViolationFactory {
         /**
          * @return new instance if factory knows how to create violation from provided information,
          *         or returns null if violation can not be created using provided information.
          */
-        final ThreadViolation create(Map<String, String> headers, ViolationException exception) {
+        public final ThreadViolation create(Map<String, String> headers, ViolationException exception) {
             /**
              * This is ThreadViolation if and only if: 
              *  1) There is a header: HEADER_KEY_DURATION
@@ -52,8 +52,8 @@ public class ThreadViolation extends Violation {
             return null;
         }
         
-        ThreadViolation onCreate(Map<String, String> headers, ViolationException exception,
-                                 int policy, int violation) {
+        protected ThreadViolation onCreate(Map<String, String> headers, ViolationException exception,
+                                           int policy, int violation) {
             return new ThreadViolation(headers, exception);
         }
     }
@@ -66,9 +66,9 @@ public class ThreadViolation extends Violation {
      *      key1=value1 with spaces key2=value2 with spaces key3=value3 with spaces
      */
     @VisibleForTesting
-    static Map<String, String> parseExceptionMessage(String message) {
-        final Character assigner = '=';
-        final Character separator = ' ';
+    protected static Map<String, String> parseExceptionMessage(String message) {
+        final Character assigner = '='; //NOPMD
+        final Character separator = ' '; //NOPMD
         
         Map<String, String> map = new HashMap<String, String>();
                 
@@ -105,7 +105,7 @@ public class ThreadViolation extends Violation {
     }
     
     @VisibleForTesting
-    static int parsePolicy(String policy) {
+    protected static int parsePolicy(String policy) {
         if(policy == null) {
             return -1;
         }
@@ -118,7 +118,7 @@ public class ThreadViolation extends Violation {
     }
     
     @VisibleForTesting
-    static int parseViolation(String violation) {
+    protected static int parseViolation(String violation) {
         if(violation == null) {
             return -1;
         }
@@ -131,11 +131,11 @@ public class ThreadViolation extends Violation {
     }
     
     @VisibleForTesting
-    static long parseHeaderDuration(String rawDuration) {
+    protected static long parseHeaderDuration(String rawDuration) {
         long duration = 0;
         try {
             duration = Long.parseLong(rawDuration);
-        } catch(NumberFormatException ex) {
+        } catch(NumberFormatException ex) { //NOPMD
             //ignore
         }
         return duration;

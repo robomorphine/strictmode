@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 public class DropBoxItemFragment extends Fragment {
     
-    public static String EXTRA_DROPBOX_ITEM = "item";
+    public static final String EXTRA_DROPBOX_ITEM = "item";
     
     public static DropBoxItemFragment newInstance(DropBoxItem item) {
         DropBoxItemFragment fragment = new DropBoxItemFragment();

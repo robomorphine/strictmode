@@ -6,11 +6,11 @@ public class CustomThreadViolation extends ThreadViolation {
     
     private static final long serialVersionUID = 1L;
     
-    public static class CustomThreadViolationFactory extends ThreadViolationFactory {
+    static class CustomThreadViolationFactory extends ThreadViolationFactory {
         @Override
-        ThreadViolation onCreate(Map<String, String> headers,
-                                 ViolationException exception,
-                                 int policy, int violation) {
+        protected ThreadViolation onCreate(Map<String, String> headers,
+                                           ViolationException exception,
+                                           int policy, int violation) {
             
             if(violation == VIOLATION_CUSTOM) {
                 return new CustomThreadViolation(headers, exception);
