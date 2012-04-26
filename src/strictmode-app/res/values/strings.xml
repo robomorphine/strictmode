@@ -29,5 +29,11 @@
     <string name="thread_violation_stats_hist_avarage">avarage</string>
     <string name="histogram_range">[%1$d ms, %2$d ms]</string>
     <string name="histogram_value">%d ms</string>
+    <string name="violation_stacktrace_menu_print_to_logcat">print to logcat</string>
+    <string name="violation_stacktrace_fragment_native_code">Native code</string>
+    <string name="violation_stacktrace_fragment_unknown_source">Unknown source</string>
+    <string name="violation_stacktrace_fragment_location">at %1$s:%2$d</string>
+    <string name="violation_stacktrace_logcat_message">Printing violation exception stacktrace.</string>
+    <string name="violation_stacktrace_printed_to_logcat">Printed to logcat.</string>
     
 </resources>

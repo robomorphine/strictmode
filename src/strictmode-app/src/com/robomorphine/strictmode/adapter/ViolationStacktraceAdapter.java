@@ -19,10 +19,12 @@ public class ViolationStacktraceAdapter extends BaseAdapter {
     private final static int STACKTRACE_ELEMENT_TYPE = 1;
     private final static int VIEW_TYPE_COUNT = 2;
     
+    private final Context mContext;
     private final LayoutInflater mInflater;
     private List<Object> mItems;
      
     public ViolationStacktraceAdapter(Context context, ViolationException exception) {
+        mContext = context;
         mInflater = LayoutInflater.from(context);
         setException(exception);
     }
@@ -124,15 +126,13 @@ public class ViolationStacktraceAdapter extends BaseAdapter {
         
         int line = element.getLineNumber();
         if(line == -2) {
-            location.setText("Native code");    
+            location.setText(R.string.violation_stacktrace_fragment_native_code);    
         } else if(line == -1) {
-            location.setText("Unknown source");
+            location.setText(R.string.violation_stacktrace_fragment_unknown_source);
         } else {
-            location.setText("at " + element.getFileName() + ":" + element.getLineNumber());
+            String text = mContext.getString(R.string.violation_stacktrace_fragment_location, 
+                                             element.getFileName(), element.getLineNumber());
+            location.setText(text);
         }
-        
     }
-    
-    
-
 }

@@ -1,6 +1,5 @@
 package com.robomorphine.strictmode.fragment;
 
-import com.robomorphine.log.Log;
 import com.robomorphine.strictmode.R;
 import com.robomorphine.strictmode.histogram.Histogram;
 import com.robomorphine.strictmode.histogram.HistogramView;
