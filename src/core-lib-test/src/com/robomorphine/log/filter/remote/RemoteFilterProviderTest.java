@@ -1083,7 +1083,7 @@ public class RemoteFilterProviderTest extends ProviderTestCase<RemoteFilterProvi
         REVERSED_SORT_ORDER_COMPARATOR = new Comparator<ContentValues>() {
             @Override
             public int compare(ContentValues object1, ContentValues object2) {                
-                return -DEFAULT_SORT_ORDER_COMPARATOR.compare(object1, object2);
+                return DEFAULT_SORT_ORDER_COMPARATOR.compare(object2, object1);
             }
         };
     }

@@ -5,6 +5,8 @@ import com.robomorphine.log.tag.Tags;
 import com.robomorphine.strictmode.StrictModeHelper;
 import com.robomorphine.strictmode.violator.BuildConfig;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 import android.annotation.TargetApi;
 import android.app.Application;
 import android.content.Context;
@@ -14,6 +16,7 @@ import android.os.StrictMode.VmPolicy;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
 
+@SuppressFBWarnings(justification="Android pattern", value = "ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD")
 public class App extends Application {
     
     private final static String TAG = Tags.getTag(App.class);

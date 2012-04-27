@@ -174,39 +174,47 @@ public class RemoteFilterProvider extends ContentProvider { //NOPMD
         String pkg = values.getAsString(Filter.PACKAGE); 
         if(pkg == null || pkg.length() == 0) {
             badValue(values, Filter.PACKAGE);
+            return;
         }       
     
         Integer priority = values.getAsInteger(Filter.PRIORITY); 
         if(priority == null || priority < 0) {
             badValue(values, Filter.PRIORITY);
+            return;
         }
         
         Integer action = values.getAsInteger(Filter.ACTION); 
         if(action == null) {
             badValue(values, Filter.ACTION);
+            return;
         }
         
         if(action != 0 && action != 1 && action != 2) {
             badValue(values, Filter.ACTION, "Invalid action value.");
-        }
+            return;
+        }        
         
         Integer level = values.getAsInteger(Filter.LEVEL);
         if(level == null) {
             badValue(values, Filter.LEVEL);
+            return;
         }
                 
         if(!Log.isValidLevel(level)) {
             badValue(values, Filter.LEVEL, "Invalid log level.");
+            return;
         }
         
         String tag = values.getAsString(Filter.TAG); 
         if(tag == null) {
             badValue(values, Filter.TAG);
+            return;
         }
         
         String msg = values.getAsString(Filter.MSG);
         if(msg == null) {
             badValue(values, Filter.MSG);
+            return;
         }
     }
     

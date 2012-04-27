@@ -2,7 +2,7 @@
     <info organisation="com.robomorphine" module="com.robomorphine" />
 	<dependencies>
 		<dependency org="com.google.guava" name="guava" rev="latest.integration" />
-		<dependency org="javax" name="jsr305" rev="latest.integration" />
         <dependency org="android" name="android-support" rev="latest.integration" />
+        <dependency org="findbugs" name="findbugs-annotations" rev="latest.integration" />
 	</dependencies>
 </ivy-module>

@@ -65,7 +65,9 @@ public class RemotePrefsContract {
                 type = VariableType.StringSet;
                 Set<?> set = (Set<?>)value;
                 valueCount = set.size();
-            }            
+            } else {
+                throw new IllegalArgumentException("Unkown argument type");
+            }
             
             String [] row = new String[COLUMN_NAMES.length];
             row[0] = name;

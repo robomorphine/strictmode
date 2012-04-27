@@ -6,7 +6,7 @@
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry exported="true" kind="lib" path="/rbm-root/libs/android-support-v4.jar" sourcepath="/rbm-root/libs/android-support-v4-src.jar"/>
 	<classpathentry exported="true" kind="lib" path="/rbm-root/libs/guava-r09.jar" sourcepath="/rbm-root/libs/guava-r09-src.zip"/>
-	<classpathentry exported="true" kind="lib" path="/rbm-root/libs/jsr305.jar"/>
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/rbm-core-lib"/>
+	<classpathentry kind="lib" path="/rbm-root/libs/findbugs-annotations.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
