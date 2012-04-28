@@ -6,6 +6,7 @@ import com.robomorphine.strictmode.adapter.ViolationStacktraceAdapter;
 import com.robomorphine.strictmode.violation.ViolationException;
 import com.robomorphine.strictmode.violation.group.ViolationGroup;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.Menu;
@@ -19,6 +20,10 @@ public class ViolationStacktraceFragment extends ListFragment {
     private ViolationGroup mViolationGroup;
     private ViolationStacktraceAdapter mAdapter;
     
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+    }
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,5 +61,5 @@ public class ViolationStacktraceFragment extends ListFragment {
         }
         return super.onOptionsItemSelected(item);
     }
-    
+       
 }

@@ -3,7 +3,7 @@ package com.robomorphine.strictmode.activity;
 import com.robomorphine.strictmode.R;
 import com.robomorphine.strictmode.fragment.ThreadViolationStatsFragment;
 import com.robomorphine.strictmode.fragment.ViolationFragmentHelper;
-import com.robomorphine.strictmode.fragment.ViolationHeadersFragment;
+import com.robomorphine.strictmode.fragment.ViolationHeadersPagerFragment;
 import com.robomorphine.strictmode.fragment.ViolationStacktraceFragment;
 import com.robomorphine.strictmode.violation.ThreadViolation;
 import com.robomorphine.strictmode.violation.group.ViolationGroup;
@@ -27,7 +27,7 @@ public class ViolationActivity extends FragmentActivity implements TabListener {
     /**
      * Type: ViolationGroup
      */
-    public final static String EXTRA_VIOLATION = "violation";
+    public final static String EXTRA_VIOLATION_GROUP = "violation_group";
     
     private final static String STATS_TAB = "stats";
     private final static String STACKTRACE_TAB = "stacktrace";
@@ -53,7 +53,7 @@ public class ViolationActivity extends FragmentActivity implements TabListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        mViolationGroup = (ViolationGroup)getIntent().getSerializableExtra(EXTRA_VIOLATION);
+        mViolationGroup = (ViolationGroup)getIntent().getSerializableExtra(EXTRA_VIOLATION_GROUP);
         if(mViolationGroup == null) {
             throw new IllegalArgumentException("Violation not specified.");
         }
@@ -73,7 +73,7 @@ public class ViolationActivity extends FragmentActivity implements TabListener {
         
         addTab(getString(R.string.violation_headers_tab), 
                          HEADERS_TAB, 
-                         ViolationHeadersFragment.class);
+                         ViolationHeadersPagerFragment.class);
     }
     
     @Override
@@ -101,7 +101,7 @@ public class ViolationActivity extends FragmentActivity implements TabListener {
     
     private void addTab(String name, String tag, Class<? extends Fragment> clazz) {
         Bundle args = new Bundle();        
-        args.putSerializable(ViolationFragmentHelper.EXTRA_VIOLATION, mViolationGroup);
+        args.putSerializable(ViolationFragmentHelper.EXTRA_VIOLATION_GROUP, mViolationGroup);
         addTab(name, tag, clazz, args);
     }
     

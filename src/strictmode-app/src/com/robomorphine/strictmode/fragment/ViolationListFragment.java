@@ -51,7 +51,7 @@ public class ViolationListFragment extends ListFragment implements LoaderCallbac
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         Intent intent = new Intent(getActivity(), ViolationActivity.class);
-        intent.putExtra(ViolationActivity.EXTRA_VIOLATION, mAdapter.getItem(position));
+        intent.putExtra(ViolationActivity.EXTRA_VIOLATION_GROUP, mAdapter.getItem(position));
         startActivity(intent);
     }
         

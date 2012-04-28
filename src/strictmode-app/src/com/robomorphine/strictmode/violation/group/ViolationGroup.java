@@ -59,6 +59,11 @@ public class ViolationGroup implements Serializable {
         return mViolations.get(0);
     }
     
+    @Nonnull
+    public Violation getViolation(int position) {
+        return mViolations.get(position);
+    }
+    
     public boolean canAdd(Violation violation) {
         return (violation != null && violation.equals(getViolation()));
     }

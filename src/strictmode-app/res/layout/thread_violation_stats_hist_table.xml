@@ -6,74 +6,74 @@
     
        <TableRow>
 
-        <ImageView style="@style/ThreadViolationStatsTableImage" />
+        <ImageView style="@style/TableImage" />
 
         <TextView
-            style="@style/ThreadViolationStatsTableKey"
+            style="@style/TableKey"
             android:text="@string/thread_violation_stats_hist_range" />
 
         <TextView
             android:id="@+id/hist_range"
-            style="@style/ThreadViolationStatsTableValue" />
+            style="@style/TableValue" />
     </TableRow>
 
     <TableRow>
 
-        <ImageView style="@style/ThreadViolationStatsTableImage" />
+        <ImageView style="@style/TableImage" />
 
         <TextView
-            style="@style/ThreadViolationStatsTableKey"
+            style="@style/TableKey"
             android:text="@string/thread_violation_stats_hist_delta" />
 
         <TextView
             android:id="@+id/hist_delta"
-            style="@style/ThreadViolationStatsTableValue" />
+            style="@style/TableValue" />
     </TableRow>
     
     <TableRow>
 
         <ImageView
-            style="@style/ThreadViolationStatsTableImage"
+            style="@style/TableImage"
             android:src="@drawable/histogram_avg" />
 
         <TextView
-            style="@style/ThreadViolationStatsTableKey"
+            style="@style/TableKey"
             android:text="@string/thread_violation_stats_hist_avarage" />
 
         <TextView
             android:id="@+id/hist_avg"
-            style="@style/ThreadViolationStatsTableValue" />
+            style="@style/TableValue" />
     </TableRow>
     
 
     <TableRow>
 
         <ImageView
-            style="@style/ThreadViolationStatsTableImage"
+            style="@style/TableImage"
             android:src="@drawable/histogram_90" />
 
         <TextView
-            style="@style/ThreadViolationStatsTableKey"
+            style="@style/TableKey"
             android:text="@string/thread_violation_stats_hist_90" />
 
         <TextView
             android:id="@+id/hist_90"
-            style="@style/ThreadViolationStatsTableValue" />
+            style="@style/TableValue" />
     </TableRow>
 
     <TableRow>
 
         <ImageView
-            style="@style/ThreadViolationStatsTableImage"
+            style="@style/TableImage"
             android:src="@drawable/histogram_95" />
 
         <TextView
-            style="@style/ThreadViolationStatsTableKey"
+            style="@style/TableKey"
             android:text="@string/thread_violation_stats_hist_95" />
 
         <TextView
             android:id="@+id/hist_95"
-            style="@style/ThreadViolationStatsTableValue" />
+            style="@style/TableValue" />
     </TableRow>
 
    

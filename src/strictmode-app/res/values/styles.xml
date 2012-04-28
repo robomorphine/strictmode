@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
-    <style name="ThreadViolationStatsTableKey" parent="android:Widget.Holo.TextView">
+    <style name="TableKey" parent="android:Widget.Holo.TextView">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_weight">2</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">center_vertical|right</item>
         <item name="android:textStyle">bold</item>
     </style>
-    <style name="ThreadViolationStatsTableValue" parent="android:Widget.Holo.TextView">
+    <style name="TableValue" parent="android:Widget.Holo.TextView">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_weight">3</item>
         <item name="android:layout_height">wrap_content</item>
@@ -15,7 +15,7 @@
         <item name="android:text">@string/na</item>
     </style>
     
-    <style name="ThreadViolationStatsTableImage" parent="android:Widget.Holo.TextView">
+    <style name="TableImage" parent="android:Widget.Holo.TextView">
         <item name="android:layout_width">@dimen/histogram_sample_width</item>
         <item name="android:layout_height">fill_parent</item>
         <item name="android:layout_margin">1px</item>

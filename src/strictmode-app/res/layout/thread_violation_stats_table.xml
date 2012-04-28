@@ -7,56 +7,56 @@
     <TableRow>
 
         <TextView
-            style="@style/ThreadViolationStatsTableKey"
+            style="@style/TableKey"
             android:text="@string/thread_violation_stats_times_occurred" />
 
         <TextView
             android:id="@+id/size"
-            style="@style/ThreadViolationStatsTableValue" />
+            style="@style/TableValue" />
     </TableRow>
 
     <TableRow>
 
         <TextView
-            style="@style/ThreadViolationStatsTableKey"
+            style="@style/TableKey"
             android:text="@string/thread_violation_stats_total_duration" />
 
         <TextView
             android:id="@+id/total_duration"
-            style="@style/ThreadViolationStatsTableValue" />
+            style="@style/TableValue" />
     </TableRow>
 
     <TableRow>
 
         <TextView
-            style="@style/ThreadViolationStatsTableKey"
+            style="@style/TableKey"
             android:text="@string/thread_violation_stats_min_duration" />
 
         <TextView
             android:id="@+id/min_duration"
-            style="@style/ThreadViolationStatsTableValue" />
+            style="@style/TableValue" />
     </TableRow>
 
     <TableRow>
 
         <TextView
-            style="@style/ThreadViolationStatsTableKey"
+            style="@style/TableKey"
             android:text="@string/thread_violation_stats_max_duration" />
 
         <TextView
             android:id="@+id/max_duration"
-            style="@style/ThreadViolationStatsTableValue" />
+            style="@style/TableValue" />
     </TableRow>
 
     <TableRow>
 
         <TextView
-            style="@style/ThreadViolationStatsTableKey"
+            style="@style/TableKey"
             android:text="@string/thread_violation_stats_avg_duration" />
 
         <TextView
             android:id="@+id/avg_duration"
-            style="@style/ThreadViolationStatsTableValue" />
+            style="@style/TableValue" />
     </TableRow>
 
 </TableLayout>
