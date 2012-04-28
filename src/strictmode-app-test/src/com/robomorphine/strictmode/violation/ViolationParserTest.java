@@ -1,15 +1,5 @@
 package com.robomorphine.strictmode.violation;
 
-import com.robomorphine.strictmode.violation.CustomThreadViolation;
-import com.robomorphine.strictmode.violation.DiskReadThreadViolation;
-import com.robomorphine.strictmode.violation.DiskWriteThreadViolation;
-import com.robomorphine.strictmode.violation.ExplicitTerminationVmViolation;
-import com.robomorphine.strictmode.violation.InstanceCountVmViolation;
-import com.robomorphine.strictmode.violation.NetworkThreadViolation;
-import com.robomorphine.strictmode.violation.Violation;
-import com.robomorphine.strictmode.violation.ViolationException;
-import com.robomorphine.strictmode.violation.ViolationParser;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -17,6 +7,35 @@ import java.util.List;
 import java.util.Map;
 
 public class ViolationParserTest extends BaseTestCase {
+    
+    public void testFastSplit() {
+        /* empty string */
+        assertTrue(ViolationParser.fastSplit("").size() == 1);
+        assertTrue(ViolationParser.fastSplit("", ';',';').size() == 1);
+        
+        /* no separators found */
+        assertTrue(ViolationParser.fastSplit("test").size() == 1);
+        
+        /* one separator */
+        assertTrue(ViolationParser.fastSplit("test;test", ';').size() == 2);
+        assertTrue(ViolationParser.fastSplit("test;test;", ';').size() == 3);
+        assertTrue(ViolationParser.fastSplit("test;test;test", ';').size() == 3);
+        assertTrue(ViolationParser.fastSplit(";test;test;test;", ';').size() == 5);
+        
+        /* several separators */
+        assertTrue(ViolationParser.fastSplit("test:test;test?test", ':', ';','?').size() == 4);
+        
+        /* verify strings are separated correctly */
+        List<String> parts = ViolationParser.fastSplit(";test1:test2;test3?test4;", ':', ';','?');
+        assertEquals(6, parts.size());
+        assertEquals("", parts.get(0));
+        assertEquals("test1", parts.get(1));
+        assertEquals("test2", parts.get(2));
+        assertEquals("test3", parts.get(3));
+        assertEquals("test4", parts.get(4));
+        assertEquals("", parts.get(5));
+        
+    }
     
     public void testParseExceptionTitle_empty() {
         ViolationParser factory = new ViolationParser();

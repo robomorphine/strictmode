@@ -205,6 +205,30 @@ public class ViolationParser { //NOPMD
         return new ViolationException(className, message, cause);
     }
     
+    @VisibleForTesting
+    protected static List<String> fastSplit(String str, char...separators) {
+        LinkedList<String> parts = new LinkedList<String>();
+        int lastSeparatorIndex = -1;
+        int length = str.length();
+        for(int i = 0; i < length; i++) {
+            boolean separator = false;
+            char symbol = str.charAt(i);
+            for(int separatorIndex = 0; separatorIndex < separators.length; separatorIndex++) {
+                if(separators[separatorIndex] == symbol) {
+                    separator = true;
+                    break;
+                }
+            }
+            if(separator) {
+                parts.add(str.substring(lastSeparatorIndex + 1, i));
+                lastSeparatorIndex=i;
+            }
+        }
+        
+        parts.add(str.substring(lastSeparatorIndex + 1));
+        return parts;
+    }
+    
     /**
      * Stack trace has next format:
      *      at android.os.Handler.handleCallback(Handler.java:605)
@@ -223,14 +247,14 @@ public class ViolationParser { //NOPMD
                 line = line.trim();
             }
             /* format: package.name.className.func(file:line) */
-            String [] parts = line.split("[\\(\\)]");
+            List<String> parts = fastSplit(line, '(', ')');
             String className = "";//default is an empty class name
             String method = "";//default is an empty function name
             String locationFileName = null;
             int locationLine = -1;
             
-            if(parts.length > 0) {
-                String fullName = parts[0].trim();
+            if(parts.size() > 0) { //NOPMD
+                String fullName = parts.get(0).trim();
                 int separator = fullName.lastIndexOf('.');
                 if(separator < 0) {
                     /* no method name */
@@ -244,8 +268,8 @@ public class ViolationParser { //NOPMD
                 }
             }
             
-            if(parts.length > 1) {
-                String fullLocation = parts[1].trim();
+            if(parts.size() > 1) {
+                String fullLocation = parts.get(1).trim();
                 if(fullLocation.equalsIgnoreCase(STACK_TRACE_NATIVE_METHOD)) {
                     locationLine = -2;//as mentioned in documentation
                 } else if(fullLocation.equalsIgnoreCase(STACK_TRACE_UNKNOWN_SOURCE)) {
@@ -253,13 +277,13 @@ public class ViolationParser { //NOPMD
                     locationLine = -1;
                 } else {
                     /* extract file and line number */
-                    String [] locationParts = fullLocation.split("\\:");
-                    if(locationParts.length > 0) {
-                        locationFileName = locationParts[0];
+                    List<String> locationParts = fastSplit(fullLocation, ':');
+                    if(locationParts.size() > 0) {
+                        locationFileName = locationParts.get(0);
                     }
-                    if(locationParts.length > 1) {
+                    if(locationParts.size() > 1) {
                         try {
-                            locationLine = Integer.parseInt(locationParts[1]);
+                            locationLine = Integer.parseInt(locationParts.get(1));
                         } catch(NumberFormatException ex) { //NOPMD
                             //ignore
                         }
