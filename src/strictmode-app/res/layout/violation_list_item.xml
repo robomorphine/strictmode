@@ -28,12 +28,25 @@
         android:singleLine="true" />
     
     <TextView
-        android:id="@+id/timestamp"
+        android:id="@+id/count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/tag"
         android:layout_toRightOf="@+id/icon"
         android:layout_alignLeft="@+id/tag"
+        android:layout_alignBottom="@+id/icon"
+        android:layout_marginRight="@dimen/large"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
+        android:textStyle="bold" />
+    
+    <TextView
+        android:id="@+id/timestamp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tag"
+        android:layout_toRightOf="@+id/count"
+        android:layout_alignRight="@+id/tag"
         android:layout_alignBottom="@+id/icon"
         android:scrollHorizontally="true"
         android:singleLine="true"/>

@@ -74,15 +74,18 @@ public class ViolationListAdapter extends BaseAdapter implements SectionIndexer 
         ImageView iconView = (ImageView)view.findViewById(R.id.icon);
         TextView tagView = (TextView)view.findViewById(R.id.tag);
         TextView timestampView = (TextView)view.findViewById(R.id.timestamp);
+        TextView countView = (TextView)view.findViewById(R.id.count);
         
         iconView.setImageDrawable(mIconMap.getIcon(mContext, violation));
         String violationName = group.getViolations().get(0).getClass().getSimpleName();
-        String title = String.format("%s [x%d]", violationName, group.getSize());                
+        String title = violationName;
+         
         tagView.setText(title);
+        countView.setText(mContext.getString(R.string.violation_count, group.getSize()));
         
         mCalendar.setTimeInMillis(group.getTimestamp());
         String time = mItemFormat.format(mCalendar.getTime());
-        timestampView.setText(time);
+        timestampView.setText(mContext.getString(R.string.violation_timestamp,time));
         
         return view;
     }
