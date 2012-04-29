@@ -270,7 +270,10 @@ public class ViolationParser { //NOPMD
             
             if(parts.size() > 1) {
                 String fullLocation = parts.get(1).trim();
-                if(fullLocation.equalsIgnoreCase(STACK_TRACE_NATIVE_METHOD)) {
+                if(TextUtils.isEmpty(fullLocation)) {
+                    locationFileName = null;
+                    locationLine = -1;
+                } else if(fullLocation.equalsIgnoreCase(STACK_TRACE_NATIVE_METHOD)) {
                     locationLine = -2;//as mentioned in documentation
                 } else if(fullLocation.equalsIgnoreCase(STACK_TRACE_UNKNOWN_SOURCE)) {
                     locationFileName = null;
