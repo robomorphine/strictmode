@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -37,6 +38,14 @@ public class ViolationParser { //NOPMD
         
         sFactoryRegistry = Collections.unmodifiableList(factoryRegistry);
     }
+    
+    private HashMap<List<String>, StackTraceElement[]> mStacktraceCache;
+    
+    
+    public ViolationParser() {
+        mStacktraceCache = new HashMap<List<String>, StackTraceElement[]>();
+    }
+    
     
     public Violation createViolation(String data) {
         List<String> headers = new LinkedList<String>();
@@ -141,7 +150,7 @@ public class ViolationParser { //NOPMD
      * will be stored as "cause" exception. It can be retrieved via "getCause()" function.
      */
     @VisibleForTesting
-    protected ViolationException parseException(List<String> stackTrace) {        
+    protected ViolationException parseException(List<String> stackTrace) {
         ViolationException exception = null;
         
         LinkedList<String> exceptionStackTrace = new LinkedList<String>();
@@ -239,7 +248,16 @@ public class ViolationParser { //NOPMD
      * File name or line number might not be available. 
      */
     protected StackTraceElement[] parseExceptionStackTrace(List<String> stackTrace) { //NOPMD
-        StackTraceElement [] elements = new StackTraceElement[stackTrace.size()]; 
+        StackTraceElement [] elements = mStacktraceCache.get(stackTrace);
+        if(elements != null) {
+            return elements.clone();
+        }
+        
+        /* make a local copy of stack trace to prevent modifications and store it in cache*/
+        stackTrace = new ArrayList<String>(stackTrace);
+        stackTrace = Collections.unmodifiableList(stackTrace);
+        
+        elements = new StackTraceElement[stackTrace.size()]; 
         for(int i = 0; i < stackTrace.size(); i++) {
             String line = stackTrace.get(i).trim();
             if(line.startsWith(STACK_TRACE_ENTRY_PREFIX)) {
@@ -295,6 +313,8 @@ public class ViolationParser { //NOPMD
             }            
             elements[i] = new StackTraceElement(className, method, locationFileName, locationLine);                        
         }
+        
+        mStacktraceCache.put(stackTrace, elements.clone());
         return elements;
     }
 }
