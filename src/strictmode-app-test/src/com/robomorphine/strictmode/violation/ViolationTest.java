@@ -96,11 +96,9 @@ public class ViolationTest extends BaseTestCase {
         
         Map<String, String> headers1 = new HashMap<String, String>();
         headers1.put(Violation.HEADER_KEY_PACKAGE, pkg1);
-        headers1.put(Violation.HEADER_KEY_TIMESTAMP, "0");
         
         Map<String, String> headers2 = new HashMap<String, String>();
         headers2.put(Violation.HEADER_KEY_PACKAGE, pkg1);
-        headers2.put(Violation.HEADER_KEY_TIMESTAMP, "1");
         
         ViolationException ex1 = new ViolationException(className1, msg1);
         ViolationException ex2 = new ViolationException(className1, msg1);
@@ -108,6 +106,8 @@ public class ViolationTest extends BaseTestCase {
         /* exceptions and headers are the same, so must be violations */
         Violation v1 = new Violation(headers1, ex1);
         Violation v2 = new Violation(headers2, ex2);
+        v1.setTimestamp(0);
+        v2.setTimestamp(1);
         assertTrue(v1.hashCode() == v2.hashCode());
         
         /* exceptions are different */
@@ -116,6 +116,8 @@ public class ViolationTest extends BaseTestCase {
         
         v1 = new Violation(headers1, ex1);
         v2 = new Violation(headers2, ex2);
+        v1.setTimestamp(0);
+        v2.setTimestamp(1);
         assertTrue(v1.hashCode() != v2.hashCode());
         
         /* headers are different */
@@ -126,6 +128,8 @@ public class ViolationTest extends BaseTestCase {
         
         v1 = new Violation(headers1, ex1);
         v2 = new Violation(headers2, ex2);
+        v1.setTimestamp(0);
+        v2.setTimestamp(1);
         assertTrue(v1.hashCode() != v2.hashCode());
     }
     
@@ -139,11 +143,9 @@ public class ViolationTest extends BaseTestCase {
         
         Map<String, String> headers1 = new HashMap<String, String>();
         headers1.put(Violation.HEADER_KEY_PACKAGE, pkg1);
-        headers1.put(Violation.HEADER_KEY_TIMESTAMP, "0");
         
         Map<String, String> headers2 = new HashMap<String, String>();
         headers2.put(Violation.HEADER_KEY_PACKAGE, pkg1);
-        headers2.put(Violation.HEADER_KEY_TIMESTAMP, "1");
         
         ViolationException ex1 = new ViolationException(className1, msg1);
         ViolationException ex2 = new ViolationException(className1, msg1);
@@ -151,6 +153,8 @@ public class ViolationTest extends BaseTestCase {
         /* exceptions and headers are the same, so must be violations */
         Violation v1 = new Violation(headers1, ex1);
         Violation v2 = new Violation(headers2, ex2);
+        v1.setTimestamp(0);
+        v2.setTimestamp(1);
         assertTrue(v1.equals(v2));
         
         /* exceptions are different */
@@ -159,6 +163,8 @@ public class ViolationTest extends BaseTestCase {
         
         v1 = new Violation(headers1, ex1);
         v2 = new Violation(headers2, ex2);
+        v1.setTimestamp(0);
+        v2.setTimestamp(1);
         assertFalse(v1.equals(v2));
         
         /* headers are different */
@@ -169,6 +175,8 @@ public class ViolationTest extends BaseTestCase {
         
         v1 = new Violation(headers1, ex1);
         v2 = new Violation(headers2, ex2);
+        v1.setTimestamp(0);
+        v2.setTimestamp(1);
         assertFalse(v1.equals(v2));
     }
 }

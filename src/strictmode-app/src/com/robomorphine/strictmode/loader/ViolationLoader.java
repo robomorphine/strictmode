@@ -1,6 +1,7 @@
 package com.robomorphine.strictmode.loader;
 
 import com.robomorphine.loader.AsyncLoader;
+import com.robomorphine.strictmode.violation.Violation;
 import com.robomorphine.strictmode.violation.ViolationParser;
 import com.robomorphine.strictmode.violation.group.ViolationGroups;
 
@@ -83,15 +84,17 @@ public class ViolationLoader extends AsyncLoader<ViolationGroups> {
             mTimestamp = dbEntry.getTimeMillis();
             
             if(tag != null && data != null) {
-                onNewDropBoxItem(data);
+                onNewDropBoxItem(data, mTimestamp);
             }
             dbEntry.close();
         }
     }
         
-    private void onNewDropBoxItem(String data) {
+    private void onNewDropBoxItem(String data, long timestamp) {
         try {
-            mViolationGroups.add(mViolationParser.createViolation(data));
+            Violation violation = mViolationParser.createViolation(data);
+            violation.setTimestamp(timestamp);
+            mViolationGroups.add(violation);
         } catch(Exception ex) {
             //TODO: save information about exception to some file to report it later.
             throw new IllegalStateException(ex);

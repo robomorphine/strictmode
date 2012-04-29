@@ -19,8 +19,7 @@ public class Violation implements Serializable {
     public static final String HEADER_KEY_PACKAGE = "Package";
     public static final String HEADER_KEY_BUILD = "Build";
     public static final String HEADER_KEY_SYSTEM_APP = "System-App";
-    public static final String HEADER_KEY_TIMESTAMP = "Uptime-Millis";
-    
+        
     static class ViolationFactory {
         /**
          * @return new instance if factory knows how to create violation from provided information,
@@ -148,7 +147,7 @@ public class Violation implements Serializable {
     private final String mPackage;    
     private final int mVersionCode;
     private final String mVersionName;    
-    private final long mTimestamp;
+    private long mTimestamp;
     
     public Violation(Map<String, String> headers, ViolationException exception) {
         mHeaders = Collections.unmodifiableMap(new HashMap<String, String>(headers));
@@ -158,7 +157,6 @@ public class Violation implements Serializable {
         mPackage = parseHeaderPackage(headers.get(HEADER_KEY_PACKAGE));       
         mVersionCode = parseHeaderPackageVersionCode(headers.get(HEADER_KEY_PACKAGE));
         mVersionName = parseHeaderPackageVersionName(headers.get(HEADER_KEY_PACKAGE));
-        mTimestamp = parseHeaderTimestamp(headers.get(HEADER_KEY_TIMESTAMP));
     }
     
     @Override
@@ -174,6 +172,10 @@ public class Violation implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hashCode(mPackage, mException);
+    }
+    
+    public void setTimestamp(long timestamp) {
+        mTimestamp = timestamp;
     }
     
     public Map<String, String> getHeaders() {
