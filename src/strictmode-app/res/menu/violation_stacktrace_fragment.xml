@@ -3,5 +3,5 @@
     <item android:id="@+id/logcat"
           android:icon="@drawable/logcat"
           android:title="@string/violation_stacktrace_menu_print_to_logcat"
-          android:showAsAction="ifRoom|withText" />    
+          android:showAsAction="ifRoom" />    
 </menu>
