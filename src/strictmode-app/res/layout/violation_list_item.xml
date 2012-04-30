@@ -15,6 +15,18 @@
         android:layout_margin="@dimen/small"
         android:scaleType="centerInside"
         android:src="@drawable/ic_launcher" />
+    
+    <ImageView
+        android:id="@+id/appicon"
+        android:layout_width="@dimen/subicon_size"
+        android:layout_height="@dimen/subicon_size"
+        android:layout_alignTop="@id/icon"
+        android:layout_alignLeft="@id/icon"
+        android:layout_margin="@dimen/small"
+        android:paddingRight="@dimen/small"
+        android:paddingBottom="@dimen/small"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_launcher" />
         
     <TextView
         android:id="@+id/tag"
@@ -46,8 +58,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/tag"
         android:layout_toRightOf="@+id/count"
-        android:layout_alignRight="@+id/tag"
+        android:layout_alignParentRight="@+id/tag"
         android:layout_alignBottom="@+id/icon"
+        android:layout_marginRight="@dimen/medium"
         android:scrollHorizontally="true"
         android:singleLine="true"/>
     

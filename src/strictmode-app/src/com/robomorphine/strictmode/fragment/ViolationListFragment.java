@@ -1,5 +1,6 @@
 package com.robomorphine.strictmode.fragment;
 
+import com.google.common.base.Objects;
 import com.robomorphine.strictmode.R;
 import com.robomorphine.strictmode.activity.ViolationActivity;
 import com.robomorphine.strictmode.adapter.ViolationListAdapter;
@@ -20,13 +21,21 @@ public class ViolationListFragment extends ListFragment implements LoaderCallbac
 
     private final static long LOADER_THROTTLE_TIMEOUT_MS = 500;
     
+    private final static String STATE_PACKAGE_FILTER = "packageFilter";
+    
     private ViolationListAdapter mAdapter;
+    private String mPackageFilter;
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        
+        super.onCreate(savedInstanceState);        
         mAdapter = new ViolationListAdapter(getActivity());
+        mAdapter.setAllApplicationsMode(mPackageFilter == null);
+        
+        /* restore filter */
+        if(savedInstanceState != null) {
+            mPackageFilter = savedInstanceState.getString(STATE_PACKAGE_FILTER);
+        }
     }
     
     @Override
@@ -54,6 +63,26 @@ public class ViolationListFragment extends ListFragment implements LoaderCallbac
         intent.putExtra(ViolationActivity.EXTRA_VIOLATION_GROUP, mAdapter.getItem(position));
         startActivity(intent);
     }
+    
+    public void setFilter(String packageFilter) {
+        if(!Objects.equal(mPackageFilter, packageFilter)) {
+            mPackageFilter = packageFilter;
+            Loader<?> loader = getLoaderManager().getLoader(LOADER_ID);
+            if(loader != null) {
+                ViolationLoader violationLoader = (ViolationLoader)loader;
+                violationLoader.setFilter(mPackageFilter);
+            }
+            if(mAdapter != null) {
+                mAdapter.setAllApplicationsMode(mPackageFilter == null);
+            }
+        }
+    }
+    
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(STATE_PACKAGE_FILTER, mPackageFilter);
+    }
         
     /***************************/
     /**     LoaderCallback    **/
@@ -63,6 +92,7 @@ public class ViolationListFragment extends ListFragment implements LoaderCallbac
     public Loader<ViolationGroups> onCreateLoader(int id, Bundle args) {
         ViolationLoader loader = new ViolationLoader(getActivity());
         loader.setUpdateThrottle(LOADER_THROTTLE_TIMEOUT_MS);
+        loader.setFilter(mPackageFilter);
         return loader;
     }
     

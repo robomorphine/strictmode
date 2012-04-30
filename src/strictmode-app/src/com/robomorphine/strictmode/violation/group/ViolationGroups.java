@@ -22,11 +22,13 @@ public class ViolationGroups {
     
     private long mLatestTimestamp = 0;
         
-    public static ViolationGroups clone(ViolationGroups from) {
+    public static ViolationGroups clone(ViolationGroups from, String packageFilter) {
         ViolationGroups groups = new ViolationGroups();
         for(ViolationGroup group : from.mSortedGroups) {
             for(Violation violation : group.getViolations()) {
-                groups.add(violation);
+                if(packageFilter == null || packageFilter.equals(violation.getPackage())) {
+                    groups.add(violation);
+                }
             }
         }
         return groups;

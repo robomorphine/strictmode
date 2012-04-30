@@ -41,4 +41,7 @@
     
     <string name="page_position">%1$d out of %2$d</string>
     
+    
+    <string name="show_violations_for_title">Show violations for:</string>
+    
 </resources>

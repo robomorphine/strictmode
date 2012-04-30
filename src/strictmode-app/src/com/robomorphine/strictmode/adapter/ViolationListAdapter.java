@@ -6,6 +6,11 @@ import com.robomorphine.strictmode.violation.group.ViolationGroup;
 import com.robomorphine.strictmode.violation.icon.ViolationIconMap;
 
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.graphics.drawable.Drawable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,10 +36,19 @@ public class ViolationListAdapter extends BaseAdapter implements SectionIndexer 
     private final SimpleDateFormat mItemFormat = new SimpleDateFormat("HH:mm:ss.SSS", Locale.ENGLISH);
     private final Calendar mCalendar;
     
+    private boolean mAllApplicationsMode = false;
+    
     public ViolationListAdapter(Context context) {
         mContext = context;
         mInflator = LayoutInflater.from(context);
         mCalendar = Calendar.getInstance();
+    }
+    
+    public void setAllApplicationsMode(boolean allAppsMode) {
+        if(mAllApplicationsMode != allAppsMode) {
+            mAllApplicationsMode = allAppsMode;
+            notifyDataSetChanged();
+        }
     }
     
     public void swap(List<ViolationGroup> items) {
@@ -72,15 +86,38 @@ public class ViolationListAdapter extends BaseAdapter implements SectionIndexer 
         Violation violation = group.getViolation();
         
         ImageView iconView = (ImageView)view.findViewById(R.id.icon);
+        ImageView appIconView = (ImageView)view.findViewById(R.id.appicon);
         TextView tagView = (TextView)view.findViewById(R.id.tag);
         TextView timestampView = (TextView)view.findViewById(R.id.timestamp);
         TextView countView = (TextView)view.findViewById(R.id.count);
-        
+                 
+        String tag = null;
+        if(mAllApplicationsMode) {
+            Drawable appIcon = null;
+            appIconView.setVisibility(View.VISIBLE);
+            PackageManager pm = mContext.getPackageManager();
+            try {
+                ApplicationInfo info = pm.getApplicationInfo(violation.getPackage(), 0);
+                appIcon = pm.getApplicationIcon(info);
+                tag = pm.getApplicationLabel(info).toString();
+            } catch(NameNotFoundException ex) {
+                //do nothing
+            }
+            if(appIcon == null) {
+                appIcon = mContext.getResources().getDrawable(R.drawable.ic_launcher);
+            }
+            appIconView.setImageDrawable(appIcon);
+                        
+            if(TextUtils.isEmpty(tag)) {
+                tag = violation.getPackage();
+            } 
+        } else {
+            appIconView.setVisibility(View.GONE);
+            tag = group.getViolations().get(0).getClass().getSimpleName();
+        }
+            
         iconView.setImageDrawable(mIconMap.getIcon(mContext, violation));
-        String violationName = group.getViolations().get(0).getClass().getSimpleName();
-        String title = violationName;
-         
-        tagView.setText(title);
+        tagView.setText(tag);
         countView.setText(mContext.getString(R.string.violation_count, group.getSize()));
         
         mCalendar.setTimeInMillis(group.getTimestamp());

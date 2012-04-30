@@ -16,6 +16,27 @@
         android:name="com.robomorphine.strictmode.fragment.DropBoxListFragment"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" /-->
+    
+    <TextView 
+        style="@android:style/TextAppearance.StatusBar.Title"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/medium"
+        android:background="#333333"
+        android:textAppearance="@android:style/TextAppearance.Holo.Medium"
+        android:text="@string/show_violations_for_title"
+        />
+        
+    <fragment
+        android:id="@+id/violation_list_filter"
+        android:name="com.robomorphine.strictmode.fragment.ViolationListFilterFragment"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+    
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/xsmall" 
+        android:background="#888888"/>
         
     <fragment
         android:id="@+id/violation_list"

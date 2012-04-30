@@ -24,7 +24,8 @@
         android:layout_alignParentTop="true"
         android:layout_margin="@dimen/small"
         android:scaleType="centerInside"
-        android:src="@drawable/checkbox" />
+        android:src="@drawable/checkbox" 
+        android:visibility="gone"/>
     
     <TextView
         android:id="@+id/name"
