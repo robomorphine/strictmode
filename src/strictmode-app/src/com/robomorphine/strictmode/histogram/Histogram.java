@@ -27,7 +27,7 @@ public class Histogram extends Observable {
     }
     
     public boolean add(int value) {
-        if(value < mMin || value > mMax) {
+        if(value < mMin || value >= mMax) {
             return false;
         }        
         mCounts[(value - mMin) / mBucketDelta]++;

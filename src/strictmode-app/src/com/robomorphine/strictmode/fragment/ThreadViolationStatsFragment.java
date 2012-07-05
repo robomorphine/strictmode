@@ -34,7 +34,7 @@ public class ThreadViolationStatsFragment extends Fragment {
         }  
         
         public boolean matches(int min, int max) {
-            return this.min <= min && max <= this.max;
+            return this.min <= min && max < this.max;
         }
         
         public Histogram createHistogram() {
