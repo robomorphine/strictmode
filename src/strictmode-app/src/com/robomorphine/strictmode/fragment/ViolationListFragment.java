@@ -5,6 +5,7 @@ import com.robomorphine.strictmode.R;
 import com.robomorphine.strictmode.activity.ViolationActivity;
 import com.robomorphine.strictmode.adapter.ViolationListAdapter;
 import com.robomorphine.strictmode.loader.ViolationLoader;
+import com.robomorphine.strictmode.violation.group.ViolationGroup;
 import com.robomorphine.strictmode.violation.group.ViolationGroups;
 
 import android.content.Intent;
@@ -12,8 +13,12 @@ import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 public class ViolationListFragment extends ListFragment implements LoaderCallbacks<ViolationGroups>{
 
@@ -25,6 +30,8 @@ public class ViolationListFragment extends ListFragment implements LoaderCallbac
     
     private ViolationListAdapter mAdapter;
     private String mPackageFilter;
+    private TextView mViolationCount;
+    private TextView mViolationGroupCount;
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -36,6 +43,19 @@ public class ViolationListFragment extends ListFragment implements LoaderCallbac
         if(savedInstanceState != null) {
             mPackageFilter = savedInstanceState.getString(STATE_PACKAGE_FILTER);
         }
+    }
+    
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.violation_list_fragment, container, false);
+        LinearLayout listContainer = (LinearLayout)view.findViewById(R.id.container);
+        mViolationCount = (TextView)view.findViewById(R.id.violation_count);
+        mViolationGroupCount = (TextView)view.findViewById(R.id.violation_group_count);
+        
+        View listLayout = super.onCreateView(inflater, listContainer, savedInstanceState);
+        listContainer.addView(listLayout);
+        
+        return view;
     }
     
     @Override
@@ -104,7 +124,15 @@ public class ViolationListFragment extends ListFragment implements LoaderCallbac
     @Override
     public void onLoadFinished(Loader<ViolationGroups> loader, ViolationGroups data) {        
         setListShown(true);
-        mAdapter.swap(data.getSortedGroups());      
+        mAdapter.swap(data.getSortedGroups());
+        
+        int violationCount = 0;
+        for (ViolationGroup group : data.getSortedGroups()) {
+            violationCount += group.getSize();
+        }
+        
+        mViolationCount.setText(Integer.toString(violationCount));
+        mViolationGroupCount.setText(Integer.toString(data.getSortedGroups().size()));
     }
 }
 

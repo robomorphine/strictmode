@@ -44,4 +44,13 @@
     
     <string name="show_violations_for_title">Show violations for:</string>
     
+    
+    <string name="unique_violation_title">unique:</string>
+    
+    
+    <string name="total_violations_title">total:</string>
+    
+    
+    <string name="unknown">\?</string>
+    
 </resources>

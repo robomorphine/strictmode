@@ -4,18 +4,6 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
-
-    <!--  fragment
-        android:id="@+id/package_list"
-        android:name="com.robomorphine.strictmode.fragment.PackageListFragment"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" /-->
-        
-    <!-- fragment
-        android:id="@+id/drop_box_list"
-        android:name="com.robomorphine.strictmode.fragment.DropBoxListFragment"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" /-->
     
     <TextView 
         style="@android:style/TextAppearance.StatusBar.Title"
