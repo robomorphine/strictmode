@@ -1,21 +1,31 @@
 package com.robomorphine.strictmode.activity;
 
+import android.app.ActionBar;
+import android.app.ActionBar.Tab;
+import android.app.ActionBar.TabListener;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.graphics.drawable.Drawable;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
 import com.robomorphine.strictmode.R;
 import com.robomorphine.strictmode.fragment.ThreadViolationStatsFragment;
 import com.robomorphine.strictmode.fragment.ViolationFragmentHelper;
 import com.robomorphine.strictmode.fragment.ViolationHeadersPagerFragment;
 import com.robomorphine.strictmode.fragment.ViolationStacktraceFragment;
 import com.robomorphine.strictmode.violation.ThreadViolation;
+import com.robomorphine.strictmode.violation.Violation;
 import com.robomorphine.strictmode.violation.group.ViolationGroup;
-
-import android.app.ActionBar;
-import android.app.ActionBar.Tab;
-import android.app.ActionBar.TabListener;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+import com.robomorphine.strictmode.violation.icon.ViolationIconMap;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -53,14 +63,18 @@ public class ViolationActivity extends FragmentActivity implements TabListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
+        setContentView(R.layout.violation_activity);
+        
+        ActionBar actionBar = getActionBar();
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        
         mViolationGroup = (ViolationGroup)getIntent().getSerializableExtra(EXTRA_VIOLATION_GROUP);
         if(mViolationGroup == null) {
             throw new IllegalArgumentException("Violation not specified.");
         }
         
-        ActionBar actionBar = getActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-     
+        initViolationInfo(mViolationGroup);
+        
         if(mViolationGroup.getViolation() instanceof ThreadViolation) {
             addTab(getString(R.string.violation_stats_tab),
                              STATS_TAB, 
@@ -99,6 +113,40 @@ public class ViolationActivity extends FragmentActivity implements TabListener {
         }
     }
     
+    private void initViolationInfo(ViolationGroup violationGroup) {
+        Violation violation = violationGroup.getViolation();
+        
+        ImageView violationIconView = (ImageView)findViewById(R.id.violation_icon);
+        ImageView appIconView = (ImageView)findViewById(R.id.application_icon);
+        TextView appView = (TextView)findViewById(R.id.application);
+        TextView violationView = (TextView)findViewById(R.id.violation);
+            
+        String appName = null;
+        Drawable appIcon = null;
+        appIconView.setVisibility(View.VISIBLE);
+        PackageManager pm = getPackageManager();
+        try {
+            ApplicationInfo info = pm.getApplicationInfo(violation.getPackage(), 0);
+            appIcon = pm.getApplicationIcon(info);
+            appName = pm.getApplicationLabel(info).toString();
+        } catch(NameNotFoundException ex) {
+            //do nothing
+        }
+        if(appIcon == null) {
+            appIcon = getResources().getDrawable(R.drawable.ic_launcher);
+        }
+        appIconView.setImageDrawable(appIcon);
+                    
+        if(TextUtils.isEmpty(appName)) {
+            appName = violation.getPackage();
+        }
+        appView.setText(appName);
+            
+        ViolationIconMap iconMap = new ViolationIconMap();
+        violationIconView.setImageDrawable(iconMap.getIcon(this, violation));
+        violationView.setText(violation.getClass().getSimpleName());
+    }
+    
     private void addTab(String name, String tag, Class<? extends Fragment> clazz) {
         Bundle args = new Bundle();        
         args.putSerializable(ViolationFragmentHelper.EXTRA_VIOLATION_GROUP, mViolationGroup);
@@ -111,7 +159,7 @@ public class ViolationActivity extends FragmentActivity implements TabListener {
         Tab tab = actionBar.newTab()
                            .setTag(tabInfo)
                            .setTabListener(this)
-                           .setText(name);                       
+                           .setText(name);
         actionBar.addTab(tab);
         mTabs.put(tag, tab);
     }
@@ -135,7 +183,7 @@ public class ViolationActivity extends FragmentActivity implements TabListener {
         Fragment fragment = fm.findFragmentByTag(info.tag);
         if(fragment == null) {
             fragment = Fragment.instantiate(this, info.clazz.getName(), info.args);            
-            ft.add(android.R.id.content, fragment, info.tag);
+            ft.add(R.id.container, fragment, info.tag);
         } else if(fragment.isDetached()) {
             ft.attach(fragment);
         }

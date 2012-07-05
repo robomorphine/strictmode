@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingRight="@dimen/medium"
+    android:padding="@dimen/small" >
+    
+    <ImageView
+        android:id="@+id/application_icon"
+        android:layout_width="@dimen/app_icon_size"
+        android:layout_height="@dimen/app_icon_size"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="@dimen/small"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_launcher"
+         />
+    
+    <ImageView
+        android:id="@+id/violation_icon"
+        android:layout_width="@dimen/app_icon_size"
+        android:layout_height="@dimen/app_icon_size"
+        android:layout_margin="@dimen/small"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_launcher" />
+    
+    <TextView
+        android:id="@+id/application"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/application_icon"
+        android:layout_toRightOf="@+id/application_icon"
+        android:layout_toLeftOf="@+id/violation_icon"
+        android:layout_marginLeft="@dimen/small"
+        android:layout_marginRight="@dimen/large"
+        android:gravity="center_vertical"
+        android:textAppearance="@android:style/TextAppearance.Medium"
+        android:scrollHorizontally="true"
+        android:singleLine="true" 
+        android:text="application title"/>
+
+    
+    <TextView
+        android:id="@+id/violation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/application"
+        android:layout_toRightOf="@+id/application_icon"
+        android:layout_toLeftOf="@+id/violation_icon"
+        android:layout_alignBottom="@+id/violation_icon"
+        android:layout_marginLeft="@dimen/large"
+        android:layout_marginRight="@dimen/small"
+        android:gravity="center_vertical|right"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
+        android:textStyle="bold"
+        android:text="violation title"/>
+    
+</RelativeLayout>
+
