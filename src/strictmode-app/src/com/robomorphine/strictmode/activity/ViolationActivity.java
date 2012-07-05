@@ -1,8 +1,19 @@
 package com.robomorphine.strictmode.activity;
 
+import com.robomorphine.strictmode.R;
+import com.robomorphine.strictmode.fragment.ThreadViolationStatsFragment;
+import com.robomorphine.strictmode.fragment.ViolationFragmentHelper;
+import com.robomorphine.strictmode.fragment.ViolationHeadersPagerFragment;
+import com.robomorphine.strictmode.fragment.ViolationStacktraceFragment;
+import com.robomorphine.strictmode.violation.ThreadViolation;
+import com.robomorphine.strictmode.violation.Violation;
+import com.robomorphine.strictmode.violation.group.ViolationGroup;
+import com.robomorphine.strictmode.violation.icon.ViolationIconMap;
+
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.ActionBar.TabListener;
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -13,19 +24,10 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.robomorphine.strictmode.R;
-import com.robomorphine.strictmode.fragment.ThreadViolationStatsFragment;
-import com.robomorphine.strictmode.fragment.ViolationFragmentHelper;
-import com.robomorphine.strictmode.fragment.ViolationHeadersPagerFragment;
-import com.robomorphine.strictmode.fragment.ViolationStacktraceFragment;
-import com.robomorphine.strictmode.violation.ThreadViolation;
-import com.robomorphine.strictmode.violation.Violation;
-import com.robomorphine.strictmode.violation.group.ViolationGroup;
-import com.robomorphine.strictmode.violation.icon.ViolationIconMap;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -66,6 +68,7 @@ public class ViolationActivity extends FragmentActivity implements TabListener {
         setContentView(R.layout.violation_activity);
         
         ActionBar actionBar = getActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         
         mViolationGroup = (ViolationGroup)getIntent().getSerializableExtra(EXTRA_VIOLATION_GROUP);
@@ -110,6 +113,18 @@ public class ViolationActivity extends FragmentActivity implements TabListener {
         if(tab != null) {
             TabInfo info = (TabInfo)tab.getTag();
             outState.putString(STATE_SELECTED_TAB, info.tag);
+        }
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == android.R.id.home) {
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
         }
     }
     
