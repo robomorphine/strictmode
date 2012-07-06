@@ -29,8 +29,7 @@
             android:gravity="center_vertical"
             android:textAppearance="@android:style/TextAppearance.Medium"
             android:scrollHorizontally="true"
-            android:singleLine="true"
-            android:text="application name"/>
+            android:singleLine="true" />
         
     </LinearLayout>
     
@@ -57,8 +56,7 @@
             android:gravity="center_vertical"
             android:scrollHorizontally="true"
             android:singleLine="true"
-            android:textStyle="bold"
-            android:text="violation class name" />
+            android:textStyle="bold"  />
         
     </LinearLayout>
     
