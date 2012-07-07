@@ -2,6 +2,7 @@ package com.robomorphine.strictmode.violation.group;
 
 import com.google.common.base.Preconditions;
 import com.robomorphine.strictmode.violation.Violation;
+import com.robomorphine.strictmode.violation.filter.ViolationFilter;
 import com.robomorphine.strictmode.violation.group.ViolationGroup.TimestampComparator;
 
 import java.util.ArrayList;
@@ -22,17 +23,18 @@ public class ViolationGroups {
     
     private long mLatestTimestamp = 0;
         
-    public static ViolationGroups clone(ViolationGroups from, String packageFilter) {
+    public static ViolationGroups clone(ViolationGroups from, ViolationFilter filter) {
         ViolationGroups groups = new ViolationGroups();
         for(ViolationGroup group : from.mSortedGroups) {
             for(Violation violation : group.getViolations()) {
-                if(packageFilter == null || packageFilter.equals(violation.getPackage())) {
+                if(filter == null || filter.matches(violation)) {
                     groups.add(violation);
                 }
             }
         }
         return groups;
     }
+    
     
     public long getTimestamp() {
         return mLatestTimestamp;

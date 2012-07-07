@@ -5,6 +5,7 @@ import com.robomorphine.strictmode.R;
 import com.robomorphine.strictmode.activity.ViolationActivity;
 import com.robomorphine.strictmode.adapter.ViolationListAdapter;
 import com.robomorphine.strictmode.loader.ViolationLoader;
+import com.robomorphine.strictmode.violation.filter.ViolationFilter;
 import com.robomorphine.strictmode.violation.group.ViolationGroup;
 import com.robomorphine.strictmode.violation.group.ViolationGroups;
 
@@ -20,29 +21,36 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import javax.annotation.Nullable;
+
 public class ViolationListFragment extends ListFragment implements LoaderCallbacks<ViolationGroups>{
 
     private final static int LOADER_ID = 1;
 
     private final static long LOADER_THROTTLE_TIMEOUT_MS = 500;
     
-    private final static String STATE_PACKAGE_FILTER = "packageFilter";
+    private final static String STATE_VIOLATION_FILTER = "violationFilter";
     
     private ViolationListAdapter mAdapter;
-    private String mPackageFilter;
+    private ViolationFilter mViolationFilter;
     private TextView mViolationCount;
     private TextView mViolationGroupCount;
     
+    private static boolean isAllApplicationsMode(@Nullable ViolationFilter filter) {
+        return filter == null || !filter.usesProperty(ViolationFilter.PROPERTY_PACKAGE);
+    }
+        
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);        
-        mAdapter = new ViolationListAdapter(getActivity());
-        mAdapter.setAllApplicationsMode(mPackageFilter == null);
-        
+                
         /* restore filter */
         if(savedInstanceState != null) {
-            mPackageFilter = savedInstanceState.getString(STATE_PACKAGE_FILTER);
+            mViolationFilter = (ViolationFilter)savedInstanceState.getSerializable(STATE_VIOLATION_FILTER);
         }
+                
+        mAdapter = new ViolationListAdapter(getActivity());         
+        mAdapter.setAllApplicationsMode(isAllApplicationsMode(mViolationFilter));
     }
     
     @Override
@@ -84,16 +92,16 @@ public class ViolationListFragment extends ListFragment implements LoaderCallbac
         startActivity(intent);
     }
     
-    public void setFilter(String packageFilter) {
-        if(!Objects.equal(mPackageFilter, packageFilter)) {
-            mPackageFilter = packageFilter;
+    public void setFilter(ViolationFilter filter) {
+        if(!Objects.equal(mViolationFilter, filter)) {
+            mViolationFilter = filter;
             Loader<?> loader = getLoaderManager().getLoader(LOADER_ID);
             if(loader != null) {
                 ViolationLoader violationLoader = (ViolationLoader)loader;
-                violationLoader.setFilter(mPackageFilter);
+                violationLoader.setFilter(mViolationFilter);
             }
             if(mAdapter != null) {
-                mAdapter.setAllApplicationsMode(mPackageFilter == null);
+                mAdapter.setAllApplicationsMode(isAllApplicationsMode(mViolationFilter));
             }
         }
     }
@@ -101,7 +109,7 @@ public class ViolationListFragment extends ListFragment implements LoaderCallbac
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString(STATE_PACKAGE_FILTER, mPackageFilter);
+        outState.putSerializable(STATE_VIOLATION_FILTER, mViolationFilter);
     }
         
     /***************************/
@@ -112,7 +120,7 @@ public class ViolationListFragment extends ListFragment implements LoaderCallbac
     public Loader<ViolationGroups> onCreateLoader(int id, Bundle args) {
         ViolationLoader loader = new ViolationLoader(getActivity());
         loader.setUpdateThrottle(LOADER_THROTTLE_TIMEOUT_MS);
-        loader.setFilter(mPackageFilter);
+        loader.setFilter(mViolationFilter);
         return loader;
     }
     

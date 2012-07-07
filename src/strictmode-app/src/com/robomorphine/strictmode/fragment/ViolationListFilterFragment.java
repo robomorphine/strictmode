@@ -2,6 +2,8 @@ package com.robomorphine.strictmode.fragment;
 
 import com.robomorphine.strictmode.R;
 import com.robomorphine.strictmode.activity.PackageListActivity;
+import com.robomorphine.strictmode.violation.filter.ViolationFilter;
+import com.robomorphine.strictmode.violation.filter.PackageViolationFilter;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -23,14 +25,14 @@ import javax.annotation.Nullable;
 
 public class ViolationListFilterFragment extends Fragment implements OnClickListener {
     
-    public interface FilterListener {
-        void onFilterChanged(@Nullable String selectedPackage);
+    public interface OnViolationFilterChangedListener {
+        void onViolationFilterChanged(@Nullable ViolationFilter filter);
     }
     
     private final static String SELECTED_PACKAGE_PREF_KEY = "ViolationPackageFilter";
     private final static int SELECT_PACKAGE_REQUEST_KEY = 1;
     
-    private FilterListener mListener;
+    private OnViolationFilterChangedListener mListener;
     
     private View mRootView;
     private ImageView mIconView;
@@ -43,8 +45,8 @@ public class ViolationListFilterFragment extends Fragment implements OnClickList
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        if(activity instanceof FilterListener) {
-            mListener = (FilterListener)activity;
+        if(activity instanceof OnViolationFilterChangedListener) {
+            mListener = (OnViolationFilterChangedListener)activity;
         }
     }
     
@@ -92,7 +94,7 @@ public class ViolationListFilterFragment extends Fragment implements OnClickList
         updateUI();
         
         if(mListener != null) {
-            mListener.onFilterChanged(mSelectedPackage);
+            mListener.onViolationFilterChanged(new PackageViolationFilter(mSelectedPackage));
         }
     }
     

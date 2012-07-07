@@ -4,6 +4,7 @@ import com.google.common.base.Objects;
 import com.robomorphine.loader.AsyncLoader;
 import com.robomorphine.strictmode.violation.Violation;
 import com.robomorphine.strictmode.violation.ViolationParser;
+import com.robomorphine.strictmode.violation.filter.ViolationFilter;
 import com.robomorphine.strictmode.violation.group.ViolationGroups;
 
 import android.content.BroadcastReceiver;
@@ -33,23 +34,23 @@ public class ViolationLoader extends AsyncLoader<ViolationGroups> {
         public void unregister(Context context) {
             context.unregisterReceiver(this);
         }
-    }    
+    }
         
     private final DropBoxBroadcastReceiver mReceiver = new DropBoxBroadcastReceiver();
     private final ViolationParser mViolationParser = new ViolationParser();
     private final ViolationGroups mViolationGroups;
     
     private long mTimestamp = 0;
-    private String mPackageFilter;
-    
+    private ViolationFilter mViolationFilter;
+        
     public ViolationLoader(Context context) {
         super(context);
         mViolationGroups = new ViolationGroups();
     }
-    
-    public void setFilter(String packageFilter) {
-        if(!Objects.equal(mPackageFilter, packageFilter)) {
-            mPackageFilter = packageFilter;
+   
+    public void setFilter(ViolationFilter filter) {
+        if(!Objects.equal(mViolationFilter, filter)) {
+            mViolationFilter = filter;
             onContentChanged();
         }
     }
@@ -57,7 +58,7 @@ public class ViolationLoader extends AsyncLoader<ViolationGroups> {
     @Override
     public ViolationGroups loadInBackground() {
         fetchNewDropBoxItems();
-        ViolationGroups groups = ViolationGroups.clone(mViolationGroups, mPackageFilter);
+        ViolationGroups groups = ViolationGroups.clone(mViolationGroups, mViolationFilter);
         groups.sort();
         return groups;
     }    

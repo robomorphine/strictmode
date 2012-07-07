@@ -3,8 +3,9 @@ package com.robomorphine.strictmode.activity;
 import com.robomorphine.strictmode.R;
 import com.robomorphine.strictmode.adapter.ViolationFilterListAdapter;
 import com.robomorphine.strictmode.adapter.ViolationFilterListAdapter.ViolationFilterInfo;
-import com.robomorphine.strictmode.fragment.ViolationListFilterFragment.FilterListener;
+import com.robomorphine.strictmode.fragment.ViolationListFilterFragment.OnViolationFilterChangedListener;
 import com.robomorphine.strictmode.fragment.ViolationListFragment;
+import com.robomorphine.strictmode.violation.filter.ViolationFilter;
 
 import android.app.ActionBar;
 import android.app.ActionBar.OnNavigationListener;
@@ -16,7 +17,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class MainActivity extends FragmentActivity 
-                          implements FilterListener, OnNavigationListener {
+                          implements OnViolationFilterChangedListener, OnNavigationListener {
    
     private ViolationListFragment mViolationListFragment;
     private ViolationFilterListAdapter mViolationFilterListAdapter;
@@ -43,8 +44,8 @@ public class MainActivity extends FragmentActivity
     }
     
     @Override
-    public void onFilterChanged(String selectedPackage) {
-        mViolationListFragment.setFilter(selectedPackage);
+    public void onViolationFilterChanged(ViolationFilter filter) {
+        mViolationListFragment.setFilter(filter);
     }
     
     @Override
