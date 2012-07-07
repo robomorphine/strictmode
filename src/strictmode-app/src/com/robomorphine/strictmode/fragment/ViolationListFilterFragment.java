@@ -54,7 +54,6 @@ public class ViolationListFilterFragment extends Fragment implements OnClickList
         mListener = null;
     }
     
-    
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.violation_list_filter_fragment, container, false);
