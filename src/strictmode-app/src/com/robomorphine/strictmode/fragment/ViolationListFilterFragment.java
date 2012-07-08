@@ -225,12 +225,12 @@ public class ViolationListFilterFragment extends Fragment
         mPackageTimestampTracker.stopTracking();
     }
     
-    private String getSelectedPackage() {
+    public String getSelectedPackage() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         return prefs.getString(SELECTED_PACKAGE_PREF_KEY, null);
     }
     
-    private void setSelectedPackage(String selectedPackage) {
+    public void setSelectedPackage(String selectedPackage) {
         if(!Objects.equal(mSelectedPackage, selectedPackage)) {
             mSelectedPackage = selectedPackage;
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());

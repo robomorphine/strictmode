@@ -2,7 +2,6 @@ package com.robomorphine.strictmode.fragment;
 
 import com.google.common.base.Objects;
 import com.robomorphine.strictmode.R;
-import com.robomorphine.strictmode.activity.ViolationActivity;
 import com.robomorphine.strictmode.adapter.ViolationListAdapter;
 import com.robomorphine.strictmode.loader.ViolationLoader;
 import com.robomorphine.strictmode.violation.filter.ViolationFilter;
@@ -10,8 +9,8 @@ import com.robomorphine.strictmode.violation.group.ViolationGroup;
 import com.robomorphine.strictmode.violation.group.ViolationGroups;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -20,20 +19,30 @@ import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import javax.annotation.Nullable;
 
-public class ViolationListFragment extends ListFragment implements LoaderCallbacks<ViolationGroups>{
+public class ViolationListFragment extends ListFragment 
+                                   implements LoaderCallbacks<ViolationGroups>, 
+                                              OnItemLongClickListener {
 
+    public interface OnViolationClickListener {
+        public void onViolationClicked(ViolationGroup group);
+        public void onViolationLongClicked(ViolationGroup group);
+    }
+    
     private final static int LOADER_ID = 1;
 
     private final static long LOADER_THROTTLE_TIMEOUT_MS = 500;
     
     private final static String STATE_VIOLATION_FILTER = "violationFilter";
     
+    private OnViolationClickListener mListener;
     private ViolationListAdapter mAdapter;
     private ViolationFilter mViolationFilter;
     private TextView mViolationCount;
@@ -41,6 +50,20 @@ public class ViolationListFragment extends ListFragment implements LoaderCallbac
     
     private static boolean isAllApplicationsMode(@Nullable ViolationFilter filter) {
         return filter == null || !filter.usesProperty(ViolationFilter.PROPERTY_PACKAGE);
+    }
+    
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        if(activity instanceof OnViolationClickListener) {
+            mListener = (OnViolationClickListener)activity;
+        }
+    }
+    
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
     }
         
     @Override
@@ -93,6 +116,7 @@ public class ViolationListFragment extends ListFragment implements LoaderCallbac
         
         ListView list = getListView();
         list.setFastScrollEnabled(true);
+        list.setOnItemLongClickListener(this);
                 
         /* fetch data */
         getLoaderManager().initLoader(LOADER_ID, null, this);  
@@ -100,11 +124,19 @@ public class ViolationListFragment extends ListFragment implements LoaderCallbac
     
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        Intent intent = new Intent(getActivity(), ViolationActivity.class);
-        intent.putExtra(ViolationActivity.EXTRA_VIOLATION_GROUP, mAdapter.getItem(position));
-        startActivity(intent);
+        if(mListener != null)  {
+            mListener.onViolationClicked(mAdapter.getItem(position));
+        }
     }
     
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+        if(mListener != null)  {
+            mListener.onViolationLongClicked(mAdapter.getItem(position));
+        }
+        return true;
+    }
+        
     public void setFilter(ViolationFilter filter) {
         if(!Objects.equal(mViolationFilter, filter)) {
             mViolationFilter = filter;
