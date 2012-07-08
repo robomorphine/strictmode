@@ -2,6 +2,6 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
     <item android:drawable="@drawable/disk" />
     <item android:drawable="@drawable/arrow_up" 
-          android:left="24dp"
-          android:top="24dp" />
+          android:left="@dimen/subicon_size"
+          android:top="@dimen/subicon_size" />
 </layer-list>

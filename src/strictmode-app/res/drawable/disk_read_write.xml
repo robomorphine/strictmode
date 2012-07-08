@@ -3,11 +3,11 @@
     <item android:drawable="@drawable/disk" />
     
     <item android:drawable="@drawable/arrow_down"
-          android:left="24dp"
-          android:top="24dp"  />
+          android:left="@dimen/subicon_size"
+          android:top="@dimen/subicon_size"  />
     
     <item android:drawable="@drawable/arrow_up"
-          android:right="24dp"
-          android:top="24dp" />
+          android:right="@dimen/subicon_size"
+          android:top="@dimen/subicon_size" />
     
 </layer-list>
