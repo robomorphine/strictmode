@@ -13,34 +13,47 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ViolationFilterListAdapter extends BaseAdapter {
+public class ViolationTimestampModeAdapter extends BaseAdapter {
     
-    public static class ViolationFilterInfo {
+    public enum TimestampMode { All, SinceInstall };
+    
+    public static class TimestampModeInfo {
+        public final TimestampMode timestampMode;
         public final String title;
         public final String subtitle;
         
-        public ViolationFilterInfo(String title, String subtitle) {
+        public TimestampModeInfo(TimestampMode mode, String title, String subtitle) {
+            this.timestampMode = mode;
             this.title = title;
             this.subtitle = subtitle;
         }
     }
     
     private final LayoutInflater mInflater;
-    private final List<ViolationFilterInfo> mFilters;
+    private final List<TimestampModeInfo> mFilters;
         
-    public ViolationFilterListAdapter(Context context, List<ViolationFilterInfo> filters) {
+    public ViolationTimestampModeAdapter(Context context, List<TimestampModeInfo> filters) {
         mInflater = LayoutInflater.from(context);
-        mFilters = new ArrayList<ViolationFilterInfo>();
+        mFilters = new ArrayList<TimestampModeInfo>();
         if(filters != null) {
             mFilters.addAll(filters);
         }
     }
     
-    public ViolationFilterListAdapter(Context context) {
+    public ViolationTimestampModeAdapter(Context context) {
         this(context, null);
     }   
     
-    public void setFilterList(List<ViolationFilterInfo> filters) {
+    public int getTimestampModePosition(TimestampMode mode) {
+        for(int i = 0; i < mFilters.size(); i++) {
+            if(mFilters.get(i).timestampMode == mode) {
+                return i;
+            }
+        }
+        return -1;
+    }
+    
+    public void setFilterList(List<TimestampModeInfo> filters) {
         mFilters.clear();
         if(filters != null) {
             mFilters.addAll(filters);
@@ -54,7 +67,7 @@ public class ViolationFilterListAdapter extends BaseAdapter {
     }
     
     @Override
-    public ViolationFilterInfo getItem(int position) {
+    public TimestampModeInfo getItem(int position) {
         return mFilters.get(position);
     }
     

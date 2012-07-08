@@ -13,7 +13,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.DropBoxManager;
 import android.util.Log;
-import android.widget.Toast;
 
 public class ViolationLoader extends AsyncLoader<ViolationGroups> {
     

@@ -29,7 +29,7 @@
             android:name=".activity.ViolationActivity" />
         
         <activity
-            android:name=".activity.PackageListActivity" />
+            android:name=".activity.PackageListActivity" />        
         
     </application>
 

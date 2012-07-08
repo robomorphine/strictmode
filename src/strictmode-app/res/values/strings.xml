@@ -57,5 +57,9 @@
     <string name="all_violations_are_visible">All violations are visible</string>
     <string name="click_to_select_application">Click to select application.</string>
     <string name="permission_not_granted">Permission %1$s was not granted.</string>
+    <string name="show_since_last_install">Show Since Last Install</string>
+    <string name="ignore_timestamp">Ignore Timestamp</string>
+    <string name="show_since_last_install_descr">Only violations that were reported after last application installation are visible.</string>
+    <string name="ignore_timestamp_descr">All violations are visible.</string>
     
 </resources>
