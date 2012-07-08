@@ -11,19 +11,24 @@ import com.robomorphine.strictmode.violation.group.ViolationGroup;
 import com.robomorphine.strictmode.violation.icon.ViolationIconMap;
 
 import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.app.ActionBar.Tab;
 import android.app.ActionBar.TabListener;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -35,6 +40,8 @@ import java.util.Map;
 public class ViolationActivity extends FragmentActivity implements TabListener {
     
     private final static String STATE_SELECTED_TAB = "tab";
+    
+    private final static String HELP_DIALOG_FRAGMENT_TAG = "help";
     
     /**
      * Type: ViolationGroup
@@ -117,15 +124,40 @@ public class ViolationActivity extends FragmentActivity implements TabListener {
     }
     
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = new MenuInflater(this);
+        inflater.inflate(R.menu.violation_activity, menu);
+        return true;
+    }
+    
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == android.R.id.home) {
             Intent intent = new Intent(this, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
             return true;
+        } else if(item.getItemId() == R.id.help) {
+            showViolationInfoDialog(mViolationGroup);
+            return true;
         } else {
             return super.onOptionsItemSelected(item);
         }
+    }
+    
+    private void showViolationInfoDialog(ViolationGroup violationGroup) {
+        final String title = violationGroup.getViolation().getClass().getSimpleName();
+        final String body = "some text";
+        
+        DialogFragment dialog = new DialogFragment() {            
+            public Dialog onCreateDialog(Bundle savedInstanceState) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(ViolationActivity.this);
+                builder.setTitle(title).setMessage(body);
+                return builder.create();
+            };
+        };
+        
+        dialog.show(getSupportFragmentManager(), HELP_DIALOG_FRAGMENT_TAG);
     }
     
     private void initViolationInfo(ViolationGroup violationGroup) {
