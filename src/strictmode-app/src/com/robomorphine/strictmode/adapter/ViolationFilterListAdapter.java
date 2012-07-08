@@ -62,6 +62,14 @@ public class ViolationFilterListAdapter extends BaseAdapter {
         return position;
     }
     
+    private void bindView(View view, int position) {
+        TextView title = (TextView)view.findViewById(R.id.title);
+        TextView subtitle = (TextView)view.findViewById(R.id.subtitle);
+        
+        title.setText(getItem(position).title);
+        subtitle.setText(getItem(position).subtitle);
+    }
+    
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView;
@@ -69,11 +77,11 @@ public class ViolationFilterListAdapter extends BaseAdapter {
             view = mInflater.inflate(R.layout.filter_info_layout, parent, false);
         }
         
-        TextView title = (TextView)view.findViewById(R.id.title);
-        title.setText(getItem(position).title);
+        bindView(view, position);
         return view;
     }
-
+    
+    
     @Override
     public View getDropDownView(int position, View convertView, ViewGroup parent) {
         View view = convertView;
@@ -81,11 +89,7 @@ public class ViolationFilterListAdapter extends BaseAdapter {
             view = mInflater.inflate(R.layout.filter_info_dropdown_layout, parent, false);
         }
         
-        TextView title = (TextView)view.findViewById(R.id.title);
-        TextView subtitle = (TextView)view.findViewById(R.id.subtitle);
-        
-        title.setText(getItem(position).title);
-        subtitle.setText(getItem(position).subtitle);
+        bindView(view, position);
         return view;
     }
 }

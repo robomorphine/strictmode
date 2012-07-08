@@ -54,4 +54,7 @@
     
     <string name="unknown">\?</string>
     
+    
+    <string name="timestamp_filtering_mode">Timestamp Filtering Mode</string>
+    
 </resources>

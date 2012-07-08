@@ -2,6 +2,8 @@ package com.robomorphine.strictmode.fragment;
 
 import com.robomorphine.strictmode.R;
 import com.robomorphine.strictmode.activity.PackageListActivity;
+import com.robomorphine.strictmode.adapter.ViolationFilterListAdapter;
+import com.robomorphine.strictmode.adapter.ViolationFilterListAdapter.ViolationFilterInfo;
 import com.robomorphine.strictmode.violation.filter.ViolationFilter;
 import com.robomorphine.strictmode.violation.filter.PackageViolationFilter;
 
@@ -19,7 +21,11 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
+
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.annotation.Nullable;
 
@@ -29,18 +35,26 @@ public class ViolationListFilterFragment extends Fragment implements OnClickList
         void onViolationFilterChanged(@Nullable ViolationFilter filter);
     }
     
+    private enum TimestampMode { All, Last24h, SinceInstall }; 
+    
+    private final static String SELECTED_TIMESTAMP_MODE_PREF_KEY = "ViolationTimestampFil ter";
     private final static String SELECTED_PACKAGE_PREF_KEY = "ViolationPackageFilter";
+    
     private final static int SELECT_PACKAGE_REQUEST_KEY = 1;
     
     private OnViolationFilterChangedListener mListener;
     
-    private View mRootView;
+    private View mPackageView;
     private ImageView mIconView;
     private TextView mAppLabel;
     private TextView mAppPackage;    
     private ImageView mClearButton;
     
+    private Spinner mTimestampModeSpinner;
+    private ViolationFilterListAdapter mTimestampModeSpinnerAdapter;
+        
     private String mSelectedPackage;
+    private TimestampMode mSelectedTimestampMode;
     
     @Override
     public void onAttach(Activity activity) {
@@ -58,21 +72,32 @@ public class ViolationListFilterFragment extends Fragment implements OnClickList
     
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mRootView = inflater.inflate(R.layout.violation_list_filter_fragment, container, false);
-        mIconView = (ImageView)mRootView.findViewById(R.id.icon);
-        mAppLabel = (TextView)mRootView.findViewById(R.id.name);
-        mAppPackage = (TextView)mRootView.findViewById(R.id.package_name);
+        View view = inflater.inflate(R.layout.violation_list_filter_fragment, container, false);
         
-        mClearButton = (ImageView)mRootView.findViewById(R.id.checkbox);
+        mPackageView = view.findViewById(R.id.package_filter_layout);
+        mIconView = (ImageView)view.findViewById(R.id.icon);
+        mAppLabel = (TextView)view.findViewById(R.id.name);
+        mAppPackage = (TextView)view.findViewById(R.id.package_name);
+        
+        mClearButton = (ImageView)view.findViewById(R.id.checkbox);
         mClearButton.setImageResource(android.R.drawable.ic_menu_close_clear_cancel);
         mClearButton.setBackgroundResource(R.drawable.clear_btn_bg);
         mClearButton.setClickable(true);
         mClearButton.setOnClickListener(this);
         
-        mRootView.setBackgroundResource(R.drawable.filter_btn_bg);
-        mRootView.setClickable(true);
-        mRootView.setOnClickListener(this);        
-        return mRootView;
+        mPackageView.setBackgroundResource(R.drawable.filter_btn_bg);
+        mPackageView.setClickable(true);
+        mPackageView.setOnClickListener(this);
+                
+        List<ViolationFilterInfo> generalFilters = new LinkedList<ViolationFilterInfo>();
+        generalFilters.add(new ViolationFilterInfo("Show Since Last Install", "Only violations that were reported after last application installation are visible."));
+        generalFilters.add(new ViolationFilterInfo("Ignore Timestamp", "All violations are visible."));
+        
+        mTimestampModeSpinnerAdapter = new ViolationFilterListAdapter(getActivity(), generalFilters);
+        mTimestampModeSpinner = (Spinner)view.findViewById(R.id.timestamp_mode);
+        mTimestampModeSpinner.setAdapter(mTimestampModeSpinnerAdapter);
+        
+        return view;
     } 
     
     @Override
@@ -121,7 +146,7 @@ public class ViolationListFilterFragment extends Fragment implements OnClickList
     
     @Override
     public void onClick(View v) {
-        if(v == mRootView) {
+        if(v == mPackageView) {
             Intent intent = new Intent(getActivity(), PackageListActivity.class);
             startActivityForResult(intent, SELECT_PACKAGE_REQUEST_KEY);
         } else if(v == mClearButton) {

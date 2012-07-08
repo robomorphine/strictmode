@@ -3,24 +3,32 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
-    android:orientation="vertical" >
-    
+    android:orientation="horizontal" >
+
     <LinearLayout
         android:id="@+id/package_filter_layout"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" >
 
         <include
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             layout="@layout/package_list_item" />
-        
     </LinearLayout>
+    
+    <View
+        android:layout_width="@dimen/pixel"
+        android:layout_height="fill_parent"
+        android:layout_marginTop="@dimen/xsmall"
+        android:layout_marginBottom="@dimen/xsmall"
+        android:background="#999999" />
     
     <Spinner
         android:id="@+id/timestamp_mode"
-        android:layout_width="fill_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        />    
+        android:layout_weight="1" />
+    
 
 </LinearLayout>
