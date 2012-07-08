@@ -1,8 +1,8 @@
 package com.robomorphine.strictmode.activity;
 
 import com.robomorphine.strictmode.R;
-import com.robomorphine.strictmode.fragment.ViolationListFilterFragment.OnViolationFilterChangedListener;
 import com.robomorphine.strictmode.fragment.ViolationListFragment;
+import com.robomorphine.strictmode.fragment.ViolationListFilterFragment.OnViolationFilterChangedListener;
 import com.robomorphine.strictmode.violation.filter.ViolationFilter;
 
 import android.app.ActionBar;

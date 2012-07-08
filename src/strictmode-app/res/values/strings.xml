@@ -40,21 +40,21 @@
     <string name="violation_timestamp">latest at %s</string>
     
     
-    <string name="page_position">%1$d out of %2$d</string>
+    <string name="page_position">%1$d out of %2$d</string>    
     
+    <string name="show_violations_for_title">Show violations for:</string>    
     
-    <string name="show_violations_for_title">Show violations for:</string>
+    <string name="unique_violation_title">unique:</string>    
     
+    <string name="total_violations_title">total:</string>    
     
-    <string name="unique_violation_title">unique:</string>
+    <string name="unknown">\?</string>    
     
+    <string name="timestamp_filtering_mode">Timestamp Filtering Mode</string>    
     
-    <string name="total_violations_title">total:</string>
+    <string name="all_applications">All applications</string>    
     
-    
-    <string name="unknown">\?</string>
-    
-    
-    <string name="timestamp_filtering_mode">Timestamp Filtering Mode</string>
+    <string name="all_violations_are_visible">All violations are visible</string>
+    <string name="click_to_select_application">Click to select application.</string>
     
 </resources>

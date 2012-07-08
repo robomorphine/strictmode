@@ -13,7 +13,7 @@
     
     <View
         android:layout_width="fill_parent"
-        android:layout_height="@dimen/xsmall" 
+        android:layout_height="@dimen/pixel" 
         android:background="#888888"/>
         
     <fragment

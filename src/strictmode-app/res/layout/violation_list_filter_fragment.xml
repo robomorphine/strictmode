@@ -4,23 +4,22 @@
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
     android:orientation="vertical" >
-    
-    <LinearLayout
-        android:id="@+id/package_filter_layout"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
-
-        <include
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            layout="@layout/package_list_item" />
         
-    </LinearLayout>
+    <com.robomorphine.strictmode.view.ClickableSpinner
+        android:id="@+id/package_filter"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+    
+    <View
+        android:id="@+id/divider"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#999999" 
+        android:visibility="gone"/>
     
     <Spinner
-        android:id="@+id/timestamp_mode"
+        android:id="@+id/timestamp_filter_mode"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        />    
+        android:layout_height="wrap_content" />    
 
 </LinearLayout>

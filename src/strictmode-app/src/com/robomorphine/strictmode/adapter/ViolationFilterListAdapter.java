@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -63,9 +64,11 @@ public class ViolationFilterListAdapter extends BaseAdapter {
     }
     
     private void bindView(View view, int position) {
+        ImageView icon = (ImageView)view.findViewById(R.id.icon);
         TextView title = (TextView)view.findViewById(R.id.title);
         TextView subtitle = (TextView)view.findViewById(R.id.subtitle);
         
+        icon.setImageResource(R.drawable.timestamp_filter);
         title.setText(getItem(position).title);
         subtitle.setText(getItem(position).subtitle);
     }
@@ -74,7 +77,7 @@ public class ViolationFilterListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView;
         if(view == null) {
-            view = mInflater.inflate(R.layout.filter_info_layout, parent, false);
+            view = mInflater.inflate(R.layout.filter_info, parent, false);
         }
         
         bindView(view, position);
@@ -86,7 +89,7 @@ public class ViolationFilterListAdapter extends BaseAdapter {
     public View getDropDownView(int position, View convertView, ViewGroup parent) {
         View view = convertView;
         if(view == null) {
-            view = mInflater.inflate(R.layout.filter_info_dropdown_layout, parent, false);
+            view = mInflater.inflate(R.layout.filter_info_dropdown, parent, false);
         }
         
         bindView(view, position);

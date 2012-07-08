@@ -12,8 +12,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.DropBoxManager;
+import android.util.Log;
+import android.widget.Toast;
 
 public class ViolationLoader extends AsyncLoader<ViolationGroups> {
+    
+    private static final String TAG = ViolationLoader.class.getSimpleName();    
     
     private static final int MAX_DATA_LEN = 5 * 1024;
     private static final String STRICT_MODE_TAG = "data_app_strictmode";
@@ -81,22 +85,26 @@ public class ViolationLoader extends AsyncLoader<ViolationGroups> {
         
     public void fetchNewDropBoxItems() {
         DropBoxManager dbm = (DropBoxManager)getContext().getSystemService(Context.DROPBOX_SERVICE);
-        
-        DropBoxManager.Entry dbEntry = null;
-        while(true) {
-            dbEntry = dbm.getNextEntry(STRICT_MODE_TAG, mTimestamp);
-            if(dbEntry == null) {
-                break;
+                
+        try {
+            DropBoxManager.Entry dbEntry = null;
+            while(true) {
+                dbEntry = dbm.getNextEntry(STRICT_MODE_TAG, mTimestamp);
+                if(dbEntry == null) {
+                    break;
+                }
+                
+                String tag = dbEntry.getTag();
+                String data = dbEntry.getText(MAX_DATA_LEN);
+                mTimestamp = dbEntry.getTimeMillis();
+                
+                if(tag != null && data != null) {
+                    onNewDropBoxItem(data, mTimestamp);
+                }
+                dbEntry.close();
             }
-            
-            String tag = dbEntry.getTag();
-            String data = dbEntry.getText(MAX_DATA_LEN);
-            mTimestamp = dbEntry.getTimeMillis();
-            
-            if(tag != null && data != null) {
-                onNewDropBoxItem(data, mTimestamp);
-            }
-            dbEntry.close();
+        } catch(Throwable ex) {
+            Log.e(TAG, "Failed to fetch drop box items.", ex);
         }
     }
         
