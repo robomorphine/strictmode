@@ -56,5 +56,6 @@
     
     <string name="all_violations_are_visible">All violations are visible</string>
     <string name="click_to_select_application">Click to select application.</string>
+    <string name="permission_not_granted">Permission %1$s was not granted.</string>
     
 </resources>

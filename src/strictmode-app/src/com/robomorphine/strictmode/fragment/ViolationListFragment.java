@@ -9,7 +9,10 @@ import com.robomorphine.strictmode.violation.filter.ViolationFilter;
 import com.robomorphine.strictmode.violation.group.ViolationGroup;
 import com.robomorphine.strictmode.violation.group.ViolationGroups;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
@@ -66,6 +69,16 @@ public class ViolationListFragment extends ListFragment implements LoaderCallbac
         return view;
     }
     
+    private String getEmptyText() {
+        Context context = getActivity();        
+        int result = context.checkCallingOrSelfPermission(Manifest.permission.READ_LOGS);
+        if(result == PackageManager.PERMISSION_GRANTED) {
+            return getString(R.string.dropbox_list_empty);
+        } else {
+            return getString(R.string.permission_not_granted, Manifest.permission.READ_LOGS);
+        }
+    }
+    
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -75,7 +88,7 @@ public class ViolationListFragment extends ListFragment implements LoaderCallbac
         
         /* setup list */
         setListAdapter(mAdapter);
-        setEmptyText(getString(R.string.dropbox_list_empty));
+        setEmptyText(getEmptyText());
         setListShown(false);
         
         ListView list = getListView();
