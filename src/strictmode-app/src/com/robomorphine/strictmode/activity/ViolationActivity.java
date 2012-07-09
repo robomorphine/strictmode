@@ -5,15 +5,22 @@ import com.robomorphine.strictmode.fragment.ThreadViolationStatsFragment;
 import com.robomorphine.strictmode.fragment.ViolationFragmentHelper;
 import com.robomorphine.strictmode.fragment.ViolationHeadersPagerFragment;
 import com.robomorphine.strictmode.fragment.ViolationStacktraceFragment;
+import com.robomorphine.strictmode.violation.CustomThreadViolation;
+import com.robomorphine.strictmode.violation.DiskReadThreadViolation;
+import com.robomorphine.strictmode.violation.DiskWriteThreadViolation;
+import com.robomorphine.strictmode.violation.ExplicitTerminationVmViolation;
+import com.robomorphine.strictmode.violation.InstanceCountVmViolation;
+import com.robomorphine.strictmode.violation.NetworkThreadViolation;
 import com.robomorphine.strictmode.violation.ThreadViolation;
 import com.robomorphine.strictmode.violation.Violation;
+import com.robomorphine.strictmode.violation.VmViolation;
 import com.robomorphine.strictmode.violation.group.ViolationGroup;
 import com.robomorphine.strictmode.violation.icon.ViolationIconMap;
 
 import android.app.ActionBar;
-import android.app.AlertDialog;
 import android.app.ActionBar.Tab;
 import android.app.ActionBar.TabListener;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
@@ -34,6 +41,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -47,6 +55,22 @@ public class ViolationActivity extends FragmentActivity implements TabListener {
      * Type: ViolationGroup
      */
     public final static String EXTRA_VIOLATION_GROUP = "violation_group";
+    
+    private final static Map<Class<? extends Violation>, Integer> sViolationHelp;
+    static {
+        Map<Class<? extends Violation>, Integer> help;
+        help = new HashMap<Class<? extends Violation>, Integer>();
+        help.put(ThreadViolation.class, R.string.violation_info_thread);
+        help.put(CustomThreadViolation.class, R.string.violation_info_thread_custom);
+        help.put(DiskReadThreadViolation.class, R.string.violation_info_thread_disk_read);
+        help.put(DiskWriteThreadViolation.class, R.string.violation_info_thread_disk_write);
+        help.put(NetworkThreadViolation.class, R.string.violation_info_thread_network);
+        help.put(VmViolation.class, R.string.violation_info_vm);
+        help.put(ExplicitTerminationVmViolation.class, R.string.violation_info_vm_explicit_termination);
+        help.put(InstanceCountVmViolation.class, R.string.violation_info_vm_instance_count);
+        
+        sViolationHelp = Collections.unmodifiableMap(help);
+    }    
     
     private final static String STATS_TAB = "stats";
     private final static String STACKTRACE_TAB = "stacktrace";
@@ -62,6 +86,37 @@ public class ViolationActivity extends FragmentActivity implements TabListener {
         public final String tag;
         public final Class<? extends Fragment> clazz;
         public final Bundle args;
+    }
+    
+    public static class ViolationHelpDialog extends DialogFragment {
+        
+        public static String EXTRA_TITLE = "title";
+        public static String EXTRA_BODY = "body";
+        
+        public static ViolationHelpDialog newInstance(String title, String body) {
+            Bundle args = new Bundle();
+            args.putString(EXTRA_TITLE, title);
+            args.putString(EXTRA_BODY, body);
+            
+            ViolationHelpDialog fragment = new ViolationHelpDialog();
+            fragment.setArguments(args);
+            return fragment;
+        }
+        
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            String title = null;
+            String body = null;
+            Bundle args = getArguments();
+            if(args != null) {
+                title = args.getString(EXTRA_TITLE);
+                body = args.getString(EXTRA_BODY);
+            }
+            
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle(title).setMessage(body);
+            return builder.create();
+        }
     }
     
     private ViolationGroup mViolationGroup;
@@ -145,18 +200,22 @@ public class ViolationActivity extends FragmentActivity implements TabListener {
         }
     }
     
+    private String getViolationHelp(ViolationGroup violationGroup) {
+        Violation violation = violationGroup.getViolation();
+                
+        Class<?> clazz = violation.getClass();
+        if(sViolationHelp.containsKey(clazz)) {
+            return getString(sViolationHelp.get(clazz));
+        }
+       
+        return getString(R.string.violation_info_not_found);
+    }
+        
     private void showViolationInfoDialog(ViolationGroup violationGroup) {
         final String title = violationGroup.getViolation().getClass().getSimpleName();
-        final String body = "some text";
+        final String body = getViolationHelp(violationGroup);
         
-        DialogFragment dialog = new DialogFragment() {            
-            public Dialog onCreateDialog(Bundle savedInstanceState) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(ViolationActivity.this);
-                builder.setTitle(title).setMessage(body);
-                return builder.create();
-            };
-        };
-        
+        DialogFragment dialog = ViolationHelpDialog.newInstance(title, body);
         dialog.show(getSupportFragmentManager(), HELP_DIALOG_FRAGMENT_TAG);
     }
     

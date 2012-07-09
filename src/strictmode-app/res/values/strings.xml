@@ -63,4 +63,51 @@
     <string name="ignore_timestamp_descr">All violations are visible.</string>
     <string name="describe_violation">describe violation</string>
     
+    <!-- violation help -->
+    <string name="violation_info_not_found">No information is found on this violation type.</string>
+    <string name="violation_info_thread">
+        Thread violation is a violation that is reported when some potentially long running operation
+        is executed in this thread. Such operations should be executed in another dedicated thread.
+    </string>
+    <string name="violation_info_thread_custom">
+        Custom thread violation is user-defined violation.
+        \n\nIts is usually reported by third party 
+        applications or signifies some violation that does not fit in other pre-defined thread
+        violation types.
+    </string>
+    <string name="violation_info_thread_disk_read">
+        Disk read thread violation is reported when application tries to open or read file from 
+        ui thread.
+        \n\nThis is not desirable because such operations may take potentially long time 
+        to execute. Another dedicated thread should be used to executed such tasks when possible.
+    </string>
+    <string name="violation_info_thread_disk_write">
+        Disk write thread violation is reported when application tries to write to file from 
+        ui thread.
+        \n\nThis is not desirable because such operations may take potentially long time 
+        to execute. Another dedicated thread should be used to executed such tasks when possible.
+    </string>
+    <string name="violation_info_thread_network">
+        Network thread violation is reported when application tries to access network layer from 
+        ui thread.
+        \n\nThis is not desirable because such operations may take potentially very long time 
+        to execute. Another dedicated thread must be used to executed such tasks.
+    </string>
+    <string name="violation_info_vm">
+        VM violation is reported when some memory or resource related issues are detected.
+    </string>
+    <string name="violation_info_vm_explicit_termination">
+        This violation is reported when VM detects that some resource was not explicitely released
+        or closed. 
+        \n\nFor example, developer forgot to call close() on file stream, or forgot to close Cursor
+        that was acquired from database or ContentProvider. 
+    </string>
+    <string name="violation_info_vm_instance_count">
+        This violation is reported when VM detects that there too many instances of specified type.
+        \n\nFor example, there usually shouldn\'t be more than one instance of specific Activity object.
+        If there are more than one instance there is a possibility that acitivty is leaked 
+        (some other objects may reference activity and prevent it from being garbage collected).
+        \n\nBe careful, as sometimes this violations might be false positives.
+    </string>
+    
 </resources>
