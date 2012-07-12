@@ -1,5 +1,7 @@
 package com.robomorphine.strictmode.activity;
 
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.robomorphine.strictmode.R;
 import com.robomorphine.strictmode.fragment.ViolationListFilterFragment;
 import com.robomorphine.strictmode.fragment.ViolationListFilterFragment.OnViolationFilterChangedListener;
@@ -8,13 +10,11 @@ import com.robomorphine.strictmode.fragment.ViolationListFragment.OnViolationCli
 import com.robomorphine.strictmode.violation.filter.ViolationFilter;
 import com.robomorphine.strictmode.violation.group.ViolationGroup;
 
-import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 
-public class MainActivity extends FragmentActivity 
+public class MainActivity extends SherlockFragmentActivity
                           implements OnViolationFilterChangedListener, 
                                      OnViolationClickListener {
    
@@ -26,7 +26,7 @@ public class MainActivity extends FragmentActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         
-        ActionBar actionBar = getActionBar();
+        ActionBar actionBar = getSupportActionBar();
         actionBar.setSubtitle(R.string.app_name_subtitle);
                 
         FragmentManager fm = getSupportFragmentManager();

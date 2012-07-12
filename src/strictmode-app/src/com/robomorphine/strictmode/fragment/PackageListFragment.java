@@ -1,6 +1,10 @@
 package com.robomorphine.strictmode.fragment;
 
 
+import com.actionbarsherlock.app.SherlockListFragment;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.google.common.base.Objects;
 import com.robomorphine.strictmode.R;
 import com.robomorphine.strictmode.adapter.PackageListAdapter;
@@ -9,13 +13,9 @@ import com.robomorphine.strictmode.loader.PackageListLoader;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
 import android.text.TextUtils;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.SearchView;
@@ -23,7 +23,7 @@ import android.widget.SearchView.OnQueryTextListener;
 
 import java.util.List;
 
-public class PackageListFragment extends ListFragment 
+public class PackageListFragment extends SherlockListFragment
                                  implements OnQueryTextListener,
                                             LoaderCallbacks<List<AndroidPackage>> {
     
