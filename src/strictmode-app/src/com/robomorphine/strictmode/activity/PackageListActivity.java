@@ -1,13 +1,14 @@
 package com.robomorphine.strictmode.activity;
 
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.robomorphine.strictmode.R;
 import com.robomorphine.strictmode.fragment.PackageListFragment.PackageSelectionListener;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 
-public class PackageListActivity extends FragmentActivity implements PackageSelectionListener {
+public class PackageListActivity extends SherlockFragmentActivity 
+                                 implements PackageSelectionListener {
     
     public static final String EXTRA_SELECTED_PACKAGE = "selectedPackage";
         

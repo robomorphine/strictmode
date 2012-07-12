@@ -7,8 +7,8 @@
   <import file="builder/ant-tasks.xml" />
 
   <!-- defaults --> 
-  <property name="test.targets" value="android-8,android-10,android-11,android-12,android-13,android-14,android-15" />
-  <property name="test.target" value="android-8" />
+  <property name="test.targets" value="android-10,android-15,android-16" />
+  <property name="test.target" value="android-10" />
   <property name="tester.filter" value="s+m+l" />
   
   

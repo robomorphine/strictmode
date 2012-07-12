@@ -1,5 +1,12 @@
 package com.robomorphine.strictmode.activity;
 
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.ActionBar.Tab;
+import com.actionbarsherlock.app.ActionBar.TabListener;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.robomorphine.strictmode.R;
 import com.robomorphine.strictmode.fragment.ThreadViolationStatsFragment;
 import com.robomorphine.strictmode.fragment.ViolationFragmentHelper;
@@ -17,9 +24,6 @@ import com.robomorphine.strictmode.violation.VmViolation;
 import com.robomorphine.strictmode.violation.group.ViolationGroup;
 import com.robomorphine.strictmode.violation.icon.ViolationIconMap;
 
-import android.app.ActionBar;
-import android.app.ActionBar.Tab;
-import android.app.ActionBar.TabListener;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
@@ -30,13 +34,9 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -45,7 +45,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ViolationActivity extends FragmentActivity implements TabListener {
+public class ViolationActivity extends SherlockFragmentActivity implements TabListener {
     
     private final static String STATE_SELECTED_TAB = "tab";
     
@@ -129,7 +129,7 @@ public class ViolationActivity extends FragmentActivity implements TabListener {
         
         setContentView(R.layout.violation_activity);
         
-        ActionBar actionBar = getActionBar();
+        ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         
@@ -163,7 +163,7 @@ public class ViolationActivity extends FragmentActivity implements TabListener {
             String selectedTag = savedInstanceState.getString(STATE_SELECTED_TAB);
             Tab tab = mTabs.get(selectedTag);
             if(tab != null) {
-                getActionBar().selectTab(tab);
+                getSupportActionBar().selectTab(tab);
             }
         }
     }
@@ -171,7 +171,7 @@ public class ViolationActivity extends FragmentActivity implements TabListener {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Tab tab = getActionBar().getSelectedTab();
+        Tab tab = getSupportActionBar().getSelectedTab();
         if(tab != null) {
             TabInfo info = (TabInfo)tab.getTag();
             outState.putString(STATE_SELECTED_TAB, info.tag);
@@ -260,7 +260,7 @@ public class ViolationActivity extends FragmentActivity implements TabListener {
     }
     
     private void addTab(String name, String tag, Class<? extends Fragment> clazz, Bundle args) {
-        ActionBar actionBar = getActionBar();
+        ActionBar actionBar = getSupportActionBar();
         TabInfo tabInfo = new TabInfo(tag, clazz, args);
         Tab tab = actionBar.newTab()
                            .setTag(tabInfo)
@@ -271,7 +271,7 @@ public class ViolationActivity extends FragmentActivity implements TabListener {
     }
     
     @Override
-    public void onTabSelected(Tab tab, android.app.FragmentTransaction nft) {
+    public void onTabSelected(Tab tab, FragmentTransaction nft) {
         TabInfo info = (TabInfo)tab.getTag();
         
         FragmentManager fm = getSupportFragmentManager();
@@ -297,7 +297,7 @@ public class ViolationActivity extends FragmentActivity implements TabListener {
     }
     
     @Override
-    public void onTabUnselected(Tab tab, android.app.FragmentTransaction nft) {
+    public void onTabUnselected(Tab tab, FragmentTransaction nft) {
         TabInfo info = (TabInfo)tab.getTag();
         
         FragmentManager fm = getSupportFragmentManager();
@@ -310,7 +310,7 @@ public class ViolationActivity extends FragmentActivity implements TabListener {
     }    
     
     @Override
-    public void onTabReselected(Tab tab, android.app.FragmentTransaction ft) {
+    public void onTabReselected(Tab tab, FragmentTransaction ft) {
         
     }
     
