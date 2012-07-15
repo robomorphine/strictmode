@@ -42,5 +42,5 @@ public class ExplicitTerminationViolation extends VmViolation {
                 Toast.makeText(getContext(), error, Toast.LENGTH_LONG).show();
             }
         });
-    }
+    }    
 }

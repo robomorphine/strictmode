@@ -6,7 +6,6 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
 import android.os.StrictMode;
-import android.widget.Toast;
 
 public class FakeSlowCallViolation extends ThreadViolation {
     
@@ -20,10 +19,12 @@ public class FakeSlowCallViolation extends ThreadViolation {
     @TargetApi(11)
     @Override    
     public void violate() {
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            StrictMode.noteSlowCall(FakeSlowCallViolation.class.getName());
-        } else {
-            Toast.makeText(getContext(), "Not supported.", Toast.LENGTH_LONG).show();
-        }
+        StrictMode.noteSlowCall(FakeSlowCallViolation.class.getName());
     }
+    
+    @Override
+    public int getMinimunPlatformVersion() {
+        return Build.VERSION_CODES.HONEYCOMB;
+    }
+    
 }

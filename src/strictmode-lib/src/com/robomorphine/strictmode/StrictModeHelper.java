@@ -2,21 +2,36 @@ package com.robomorphine.strictmode;
 
 import android.app.ActivityManagerNative;
 import android.app.IActivityManager;
-import android.app.StrictModeActivityManagerProxy;
+import android.app.IActivityManagerProxyR09;
+import android.app.IActivityManagerProxyR11;
+import android.app.IActivityManagerProxyR12;
+import android.app.IActivityManagerProxyR13;
+import android.app.IActivityManagerProxyR14;
+import android.app.IActivityManagerProxyR15;
+import android.app.IActivityManagerProxyR16;
+import android.os.Build;
+import android.os.StrictMode.ViolationInfo;
 import android.util.Log;
 
 import java.lang.reflect.Field;
 
 public class StrictModeHelper {
     
+    public static class UnsupportedVersionException extends RuntimeException {
+        
+        private static final long serialVersionUID = 1L;
+
+        public UnsupportedVersionException() {
+            super("This version of Android is not supported by StrictModeHelper.");
+        }
+    }
+    
     private static final String TAG = StrictModeHelper.class.getSimpleName();
     
     private static final String GLOBAL_DEFAULT_INSTANCE = "gDefault";
     
     private static final String SINGLETON_CLASSNAME = "android.util.Singleton";
-    private static final String SINGLETON_INSTANCE = "mInstance";
-    
-     
+    private static final String SINGLETON_INSTANCE = "mInstance"; 
     
     private static IActivityManager sOldActivityManager;
     
@@ -57,12 +72,53 @@ public class StrictModeHelper {
             return null;
         }
     }
+    
+    private static IActivityManager createActivityManagerProxy(IActivityManager manager) {
+        DataProxy<ViolationInfo> dataProxy = null;
+        
+        switch(Build.VERSION.SDK_INT) {
+            case 9:
+            case 10:
+                dataProxy = new ViolationInfoProxyR09();
+                break;
+            case 11:
+            case 12:
+            case 13:
+            case 14:
+            case 15:
+            case 16:
+                dataProxy = new ViolationInfoProxyR11();
+                break;
+            default:
+                throw new UnsupportedVersionException();
+        }
+        
+        switch(Build.VERSION.SDK_INT) {
+            case 9:
+            case 10:
+                return new IActivityManagerProxyR09(manager, dataProxy);
+            case 11:
+                return new IActivityManagerProxyR11(manager, dataProxy);
+            case 12:
+                return new IActivityManagerProxyR12(manager, dataProxy);
+            case 13:
+                return new IActivityManagerProxyR13(manager, dataProxy);
+            case 14: 
+                return new IActivityManagerProxyR14(manager, dataProxy);
+            case 15: 
+                return new IActivityManagerProxyR15(manager, dataProxy);
+            case 16: 
+                return new IActivityManagerProxyR16(manager, dataProxy);
+            default:
+                throw new UnsupportedVersionException();
+        }
+    }
         
     public static boolean enableUniqueViolations(boolean enable) {
         synchronized (StrictModeHelper.class) {
             if(enable && sOldActivityManager == null) {
-                StrictModeActivityManagerProxy proxy;
-                proxy = new StrictModeActivityManagerProxy(ActivityManagerNative.getDefault());
+                IActivityManager originalActivityManager = ActivityManagerNative.getDefault();
+                IActivityManager proxy = createActivityManagerProxy(originalActivityManager);
                 sOldActivityManager = replaceActivityManager(proxy);
                 return sOldActivityManager != null;
             } else if(!enable && sOldActivityManager != null) {

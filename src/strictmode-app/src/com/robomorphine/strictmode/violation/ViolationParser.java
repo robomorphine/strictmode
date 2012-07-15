@@ -21,6 +21,7 @@ public class ViolationParser { //NOPMD
     private static final String STACK_TRACE_COMMENT_PREFIX = "#";
     private static final String STACK_TRACE_NATIVE_METHOD = "Native Method";
     private static final String STACK_TRACE_UNKNOWN_SOURCE = "Unknown Source";
+    private static final String STACK_TRACE_INGORE_PREFIX = "strictmode$ignore@";
     
     private static final List<Violation.ViolationFactory> sFactoryRegistry;
     static {
@@ -160,6 +161,10 @@ public class ViolationParser { //NOPMD
                 //just a comment, do nothing
             } else if(line.startsWith(STACK_TRACE_ENTRY_PREFIX)) {
                 exceptionStackTrace.push(line);
+            } else if(line.startsWith(STACK_TRACE_INGORE_PREFIX)) {
+                //special prefix that is added in order to 
+                //make stacktrace unique, but that should be ignored
+                //during parsing
             } else {
                 exception = parseExceptionTitle(line, exception);
                 exception.setStackTrace(parseExceptionStackTrace(exceptionStackTrace));

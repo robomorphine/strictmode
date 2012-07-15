@@ -31,6 +31,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -150,9 +151,11 @@ public class ViolationActivity extends SherlockFragmentActivity implements TabLi
                          STACKTRACE_TAB,
                          ViolationStacktraceFragment.class);
         
-        addTab(getString(R.string.violation_headers_tab), 
-                         HEADERS_TAB, 
-                         ViolationHeadersPagerFragment.class);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            addTab(getString(R.string.violation_headers_tab), 
+                             HEADERS_TAB, 
+                             ViolationHeadersPagerFragment.class);
+        }
     }
     
     @Override

@@ -28,9 +28,13 @@ public class App extends Application {
     }
     
     @Override
-    public void onCreate() {
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
         sContext = this;
-        
+    }
+    
+    @Override
+    public void onCreate() {        
         if(BuildConfig.DEBUG) {
             enableStrictMode();
         }
@@ -78,7 +82,6 @@ public class App extends Application {
             VmPolicy.Builder vmBuilder) {
         threadBuilder.detectAll().penaltyLog().penaltyDropBox();
         vmBuilder.detectAll().penaltyLog().penaltyDropBox();
-
     }
 
     @TargetApi(11)

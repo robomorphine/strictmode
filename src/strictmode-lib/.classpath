@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
-	<classpathentry kind="lib" path="/rbm-root/libs/private-android-15.jar"/>
-	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/rbm-strictmode-lib-android-common"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/rbm-strictmode-lib-android-r09"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/rbm-strictmode-lib-android-r14"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/rbm-strictmode-lib-android-r15"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/rbm-strictmode-lib-android-r16"/>
+	<classpathentry kind="lib" path="/rbm-strictmode-lib-android-r09/framework.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/rbm-strictmode-lib-android-r11"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/rbm-strictmode-lib-android-r12"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/rbm-strictmode-lib-android-r13"/>
+	<classpathentry kind="lib" path="/rbm-strictmode-lib-android-r09/core.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

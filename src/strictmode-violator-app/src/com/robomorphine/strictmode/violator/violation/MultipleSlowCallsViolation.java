@@ -6,7 +6,6 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
 import android.os.StrictMode;
-import android.widget.Toast;
 
 public class MultipleSlowCallsViolation extends ThreadViolation {
     
@@ -20,13 +19,13 @@ public class MultipleSlowCallsViolation extends ThreadViolation {
     @TargetApi(11)
     @Override    
     public void violate() {
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            for(int i = 0; i < 10; i++) {
-                StrictMode.noteSlowCall(MultipleSlowCallsViolation.class.getName());          
-            }
-        } else {
-            Toast.makeText(getContext(), "Not supported.", Toast.LENGTH_LONG).show();
+        for(int i = 0; i < 10; i++) {
+            StrictMode.noteSlowCall(MultipleSlowCallsViolation.class.getName());          
         }
-        
+    }    
+
+    @Override
+    public int getMinimunPlatformVersion() {
+        return Build.VERSION_CODES.HONEYCOMB;
     }
 }

@@ -2,6 +2,7 @@ package com.robomorphine.strictmode.violator.violation;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 
 public abstract class Violation {
     
@@ -38,6 +39,10 @@ public abstract class Violation {
     
     public Context getContext() {
         return mContext;
+    }
+    
+    public int getMinimunPlatformVersion() {
+        return Build.VERSION_CODES.GINGERBREAD;
     }
     
     public abstract void violate();

@@ -1,0 +1,6 @@
+<ivy-module version="1.0">
+    <info organisation="com.robomorphine" module="com.robomorphine.strictmode.lib" />
+    <dependencies>
+		<!-- dependency org="android" name="private-android" rev="latest.integration" /-->
+    </dependencies>
+</ivy-module>

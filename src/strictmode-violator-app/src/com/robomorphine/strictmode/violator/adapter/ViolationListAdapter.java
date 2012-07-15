@@ -4,6 +4,7 @@ import com.robomorphine.strictmode.violator.R;
 import com.robomorphine.strictmode.violator.violation.Violation;
 
 import android.content.Context;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +23,14 @@ public class ViolationListAdapter extends BaseAdapter {
     
     public ViolationListAdapter(Context context, List<Violation> violations) {
         mInflator = LayoutInflater.from(context);
-        mViolations = Collections.unmodifiableList(new ArrayList<Violation>(violations));
+        
+        List<Violation> filtered = new ArrayList<Violation>(violations.size());
+        for(Violation violation : violations) {
+            if(Build.VERSION.SDK_INT >= violation.getMinimunPlatformVersion() ) {
+                filtered.add(violation);
+            }
+        }
+        mViolations = Collections.unmodifiableList(filtered);
     }
     
     @Override
