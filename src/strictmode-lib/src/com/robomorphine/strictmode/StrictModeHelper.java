@@ -128,5 +128,5 @@ public class StrictModeHelper {
             }
             return true;
         }        
-    } 
+    }    
 }

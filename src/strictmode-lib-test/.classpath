@@ -7,6 +7,9 @@
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/rbm-strictmode-lib"/>
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/rbm-strictmode-lib-android-common"/>
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/rbm-strictmode-lib-android-r09"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/rbm-strictmode-lib-android-r11"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/rbm-strictmode-lib-android-r12"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/rbm-strictmode-lib-android-r13"/>
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/rbm-strictmode-lib-android-r14"/>
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/rbm-strictmode-lib-android-r15"/>
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/rbm-strictmode-lib-android-r16"/>

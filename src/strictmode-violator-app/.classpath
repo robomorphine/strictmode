@@ -14,8 +14,8 @@
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/rbm-strictmode-lib-android-r14"/>
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/rbm-strictmode-lib-android-r15"/>
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/rbm-strictmode-lib-android-r16"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/rbm-strictmode-lib-android-r11"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/rbm-strictmode-lib-android-r12"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/rbm-strictmode-lib-android-r13"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/rbm-strictmode-lib-android-r11"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/rbm-strictmode-lib-android-r12"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/rbm-strictmode-lib-android-r13"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
