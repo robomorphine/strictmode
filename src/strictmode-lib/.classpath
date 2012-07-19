@@ -6,10 +6,10 @@
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/rbm-strictmode-lib-android-r14"/>
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/rbm-strictmode-lib-android-r15"/>
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/rbm-strictmode-lib-android-r16"/>
-	<classpathentry kind="lib" path="/rbm-strictmode-lib-android-r09/framework.jar"/>
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/rbm-strictmode-lib-android-r11"/>
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/rbm-strictmode-lib-android-r12"/>
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/rbm-strictmode-lib-android-r13"/>
-	<classpathentry kind="lib" path="/rbm-strictmode-lib-android-r09/core.jar"/>
+	<classpathentry kind="lib" path="/rbm-strictmode-lib-android-r16/core.jar"/>
+	<classpathentry kind="lib" path="/rbm-strictmode-lib-android-r16/framework.jar" sourcepath="R:/repository/dev/bin/android-sdk/sources/android-16"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
