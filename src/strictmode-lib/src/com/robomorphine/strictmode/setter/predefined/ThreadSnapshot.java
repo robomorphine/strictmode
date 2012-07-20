@@ -2,9 +2,11 @@ package com.robomorphine.strictmode.setter.predefined;
 
 import com.robomorphine.strictmode.setter.AbstractStrictModeSetter;
 
+import android.annotation.TargetApi;
 import android.os.StrictMode;
 import android.os.StrictMode.ThreadPolicy;
 import android.os.StrictMode.ThreadPolicy.Builder;
+import android.util.Log;
 
 /**
  * Makes snapshot of current thread policy and can restore this policy later on.
@@ -13,15 +15,18 @@ import android.os.StrictMode.ThreadPolicy.Builder;
  */
 public class ThreadSnapshot extends AbstractStrictModeSetter {
     
+    private static final String TAG = ThreadSnapshot.class.getSimpleName();
     private static final int TARGET_VERSION = 9; //Build.VERSION_CODES.GINGERBREAD
+        
+    private Object mPolicy;
     
-    private ThreadPolicy mPolicy;
-    public ThreadSnapshot(ThreadPolicy policy) {
-        mPolicy = policy;        
-    }
-    
+    @TargetApi(9)
     public ThreadSnapshot() {
-        this(StrictMode.getThreadPolicy());
+        try {
+            mPolicy = StrictMode.getThreadPolicy();
+        } catch(Throwable ex) {
+            Log.e(TAG, "Unable to retrieve current thread policy.", ex);
+        }
     }
         
     @Override
@@ -29,8 +34,11 @@ public class ThreadSnapshot extends AbstractStrictModeSetter {
         return TARGET_VERSION;
     }
     
-    @Override
-    protected ThreadPolicy onUpdateThreadPolicy(Builder builder) {
-        return new StrictMode.ThreadPolicy.Builder(mPolicy).build();
+    @TargetApi(TARGET_VERSION)
+    @Override    
+    protected ThreadPolicy onUpdateThreadPolicy(Builder unused) {
+        ThreadPolicy policy = (ThreadPolicy)mPolicy;
+        ThreadPolicy.Builder builder = new StrictMode.ThreadPolicy.Builder(policy);
+        return builder.build();
     }
 }

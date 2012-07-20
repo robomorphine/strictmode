@@ -4,5 +4,6 @@
 	<classpathentry kind="lib" path="framework.jar"/>
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/rbm-strictmode-lib-android-common"/>
 	<classpathentry kind="lib" path="core.jar"/>
+	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

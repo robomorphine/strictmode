@@ -11,5 +11,6 @@
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/rbm-strictmode-lib-android-r13"/>
 	<classpathentry kind="lib" path="/rbm-strictmode-lib-android-r16/core.jar"/>
 	<classpathentry kind="lib" path="/rbm-strictmode-lib-android-r16/framework.jar" sourcepath="R:/repository/dev/bin/android-sdk/sources/android-16"/>
-	<classpathentry kind="output" path="bin"/>
+	<classpathentry kind="src" path="gen"/>
+	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

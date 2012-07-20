@@ -4,8 +4,9 @@ import junit.framework.TestCase;
 
 public class StrictModeHelperTest extends TestCase {
     
-    public void testEnableDisableSimple() {
+    public void testEnableDisableUniqueViolations() {
         assertTrue(StrictModeHelper.enableUniqueViolations(true));        
         assertTrue(StrictModeHelper.enableUniqueViolations(false));
     }
+    
 }

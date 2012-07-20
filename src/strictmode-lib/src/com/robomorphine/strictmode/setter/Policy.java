@@ -1,6 +1,10 @@
 package com.robomorphine.strictmode.setter;
 
+import com.robomorphine.strictmode.setter.predefined.DetectAll;
 import com.robomorphine.strictmode.setter.predefined.LaxAll;
+import com.robomorphine.strictmode.setter.predefined.PenaltyDeathAll;
+import com.robomorphine.strictmode.setter.predefined.PenaltyDropBoxAll;
+import com.robomorphine.strictmode.setter.predefined.PenaltyLogAll;
 import com.robomorphine.strictmode.setter.predefined.ResetAll;
 import com.robomorphine.strictmode.setter.predefined.ThreadDetectAll;
 import com.robomorphine.strictmode.setter.predefined.ThreadDetectCustomSlowCalls;
@@ -33,7 +37,11 @@ public class Policy {
     
     public static enum All implements StrictModeSetter {
         Lax(new LaxAll()),
-        Reset(new ResetAll());
+        Reset(new ResetAll()),
+        DetectAll(new DetectAll()),
+        PenaltyDeath(new PenaltyDeathAll()),
+        PenaltyDropBox(new PenaltyDropBoxAll()),
+        PenaltyLog(new PenaltyLogAll());
         
         private final StrictModeSetter mSetter;
         private All(StrictModeSetter setter) {
