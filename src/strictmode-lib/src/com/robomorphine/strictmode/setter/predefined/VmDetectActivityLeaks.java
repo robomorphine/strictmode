@@ -6,6 +6,13 @@ import android.annotation.TargetApi;
 import android.os.StrictMode.VmPolicy;
 import android.os.StrictMode.VmPolicy.Builder;
 
+/**
+ * Detect leaks of Activity subclasses.
+ * 
+ * See: StrictMode.VmPolicy.Builder.detectActivityLeaks()
+ * 
+ * @author inazaruk
+ */
 public class VmDetectActivityLeaks extends AbstractStrictModeSetter {
     private static final int TARGET_VERSION = 11; //Build.VERSION_CODES.HONEYCOMB
     

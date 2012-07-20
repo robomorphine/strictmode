@@ -6,6 +6,13 @@ import android.annotation.TargetApi;
 import android.os.StrictMode.ThreadPolicy;
 import android.os.StrictMode.ThreadPolicy.Builder;
 
+/**
+ * Allows network violations on current thread.
+ * 
+ * See: StrictMode.ThreadPolicy.Builder.permitNetwork()
+ * 
+ * @author inazaruk
+ */
 public class ThreadPermitNetwork extends AbstractStrictModeSetter {
     private static final int TARGET_VERSION = 9; //Build.VERSION_CODES.GINGERBREAD 
     

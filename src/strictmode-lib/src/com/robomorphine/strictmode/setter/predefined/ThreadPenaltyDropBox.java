@@ -6,6 +6,14 @@ import android.annotation.TargetApi;
 import android.os.StrictMode.ThreadPolicy;
 import android.os.StrictMode.ThreadPolicy.Builder;
 
+/**
+ * Enable detected violations log a stacktrace and timing data to the DropBox on policy violation. 
+ * Intended mostly for platform integrators doing beta user field data collection.
+ * 
+ * See: StrictMode.ThreadPolicy.Builder.penaltyDropBox()
+ * 
+ * @author inazaruk
+ */
 public class ThreadPenaltyDropBox extends AbstractStrictModeSetter {
     private static final int TARGET_VERSION = 9; //Build.VERSION_CODES.GINGERBREAD
     

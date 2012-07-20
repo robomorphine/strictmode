@@ -6,6 +6,13 @@ import android.annotation.TargetApi;
 import android.os.StrictMode.VmPolicy;
 import android.os.StrictMode.VmPolicy.Builder;
 
+/**
+ * Detect everything that's potentially suspect.
+ * 
+ *  See: StrictMode.VmPolicy.Builder.detectAll()
+ * 
+ * @author inazaruk
+ */
 public class VmDetectAll extends AbstractStrictModeSetter {
     private static final int TARGET_VERSION = 9; //Build.VERSION_CODES.GINGERBREAD
     

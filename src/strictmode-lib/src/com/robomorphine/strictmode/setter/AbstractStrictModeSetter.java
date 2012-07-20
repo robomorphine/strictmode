@@ -73,7 +73,7 @@ public abstract class AbstractStrictModeSetter implements StrictModeSetter {
     }
     
     @TargetApi(9)
-    private VmPolicy.Builder createVmBuilder(VmPolicy policy) {
+    protected VmPolicy.Builder createVmBuilder(VmPolicy policy) {
         if (Build.VERSION.SDK_INT >= 11) {
             return createVmBuilder_v11(policy);
         } else if (Build.VERSION.SDK_INT >= 9){

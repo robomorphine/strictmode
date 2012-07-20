@@ -5,6 +5,13 @@ import com.robomorphine.strictmode.setter.AbstractStrictModeSetter;
 import android.annotation.TargetApi;
 import android.os.StrictMode.VmPolicy;
 
+/**
+ * The default, lax policy which doesn't catch anything.
+ * 
+ *  See:  StrictMode.VmPolicy.LAX
+ * 
+ * @author inazaruk
+ */
 public class VmLax extends AbstractStrictModeSetter {
     private static final int TARGET_VERSION = 9; //Build.VERSION_CODES.GINGERBREAD
     

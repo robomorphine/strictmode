@@ -1,17 +1,15 @@
 package com.robomorphine.strictmode;
 
+import com.robomorphine.strictmode.setter.Policy;
 import com.robomorphine.strictmode.setter.StrictModeSetter;
-import com.robomorphine.strictmode.setter.ThreadPolicy;
-import com.robomorphine.strictmode.setter.VmPolicy;
+import com.robomorphine.strictmode.setter.predefined.SnapshotAll;
 
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-
 
 public class StrictModeHelper {
     
@@ -26,18 +24,19 @@ public class StrictModeHelper {
      * Enables strict mode with default strict mode configuration.
      */
     public static void enableStrictMode() {
-        setStrictMode(ThreadPolicy.DetectAll, 
-                      ThreadPolicy.PenaltyDeathOnNetwork,
-                      ThreadPolicy.PenaltyFalshScreen,
-                      VmPolicy.DetectAll,
-                      VmPolicy.PenaltyLog);
+        setStrictMode(Policy.All.Reset, 
+                      Policy.Thread.DetectAll, 
+                      Policy.Thread.PenaltyDeathOnNetwork,
+                      Policy.Thread.PenaltyFalshScreen,
+                      Policy.Vm.DetectAll,
+                      Policy.Vm.PenaltyLog);
     }
     
     /**
      * Completely disables StrictMode checks.
      */
     public static void disableStrictMode() {
-        setStrictMode(ThreadPolicy.Lax, VmPolicy.Lax);
+        setStrictMode(Policy.All.Reset, Policy.All.Lax);
     }
     
     public static void setStrictMode(StrictModeSetter...setters) {
@@ -49,7 +48,11 @@ public class StrictModeHelper {
     }
     
     public static void setStrictMode(final List<StrictModeSetter> setters) {
-        doSetStrictMode(setters);
+        for (StrictModeSetter setter : setters) {
+            setter.set();
+        }        
+        final SnapshotAll savedPolicy = new SnapshotAll();
+        
         if (Build.VERSION.SDK_INT >= 16) { //Build.VERSION_CODES.JELLY_BEAN
             //workaround bug in JellyBean when called from Application's onCreate().
             synchronized (StrictModeHelper.class) {
@@ -63,17 +66,11 @@ public class StrictModeHelper {
                 sRestoreStrictMode = new Runnable() {
                     @Override
                     public void run() {
-                        doSetStrictMode(setters);
+                        savedPolicy.set();
                     }
                 };
                 sHandler.postAtFrontOfQueue(sRestoreStrictMode);
             }
-        }
-    }
-    
-    private static void doSetStrictMode(Collection<StrictModeSetter> setters) {
-        for (StrictModeSetter setter : setters) {
-            setter.set();
         }
     }
 }

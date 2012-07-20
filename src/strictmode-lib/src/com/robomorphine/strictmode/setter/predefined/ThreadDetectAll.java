@@ -6,6 +6,13 @@ import android.annotation.TargetApi;
 import android.os.StrictMode.ThreadPolicy;
 import android.os.StrictMode.ThreadPolicy.Builder;
 
+/**
+ * Enables detection of all known Thread violations for current thread.
+ * 
+ * See: StrictMode.ThreadPolicy.Builder.detectAll()
+ * 
+ * @author inazaruk
+ */
 public class ThreadDetectAll extends AbstractStrictModeSetter {
     private static final int TARGET_VERSION = 9; //Build.VERSION_CODES.GINGERBREAD
     

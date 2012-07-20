@@ -6,6 +6,13 @@ import android.annotation.TargetApi;
 import android.os.StrictMode.VmPolicy;
 import android.os.StrictMode.VmPolicy.Builder;
 
+/**
+ * Detect when a BroadcastReceiver or ServiceConnection is leaked during Context teardown.
+ * 
+ *  See: StrictMode.VmPolicy.Builder.detectLeakedRegistrationObjects()
+ * 
+ * @author inazaruk
+ */
 public class VmDetectLeakedRegistrationObjects extends AbstractStrictModeSetter {
     private static final int TARGET_VERSION = 16; //Build.VERSION_CODES.JELLY_BEAN
     

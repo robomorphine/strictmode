@@ -6,6 +6,13 @@ import android.annotation.TargetApi;
 import android.os.StrictMode.VmPolicy;
 import android.os.StrictMode.VmPolicy.Builder;
 
+/**
+ * Set an upper bound on how many instances of a class can be in memory at once.
+ * 
+ *  See: StrictMode.VmPolicy.Builder.setClassInstanceLimit()
+ * 
+ * @author inazaruk
+ */
 public class VmDetectClassInstanceLimit extends AbstractStrictModeSetter {
     private static final int TARGET_VERSION = 11; //Build.VERSION_CODES.HONEYCOMB
     

@@ -6,6 +6,13 @@ import android.annotation.TargetApi;
 import android.os.StrictMode.ThreadPolicy;
 import android.os.StrictMode.ThreadPolicy.Builder;
 
+/**
+ * Allows all thread violations for current thread.
+ * 
+ * See: StrictMode.ThreadPolicy.Builder.permitAll()
+ * 
+ * @author inazaruk
+ */
 public class ThreadPermitAll extends AbstractStrictModeSetter {
     private static final int TARGET_VERSION = 9; //Build.VERSION_CODES.GINGERBREAD
     
