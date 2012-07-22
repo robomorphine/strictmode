@@ -1,0 +1,8 @@
+<ivy-module version="1.0">
+    <info organisation="com.robomorphine" module="com.robomorphine.strictmode.lib.prebuilt.r16" />
+    <dependencies>
+		<dependency org="com.robomorphine" 
+                    name="com.robomorphine.strictmode.lib.prebuilt.common" 
+                    rev="latest.integration" />
+    </dependencies>
+</ivy-module>

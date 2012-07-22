@@ -3,5 +3,15 @@
     <!-- Import build system -->
     <inz:root-import marker="rootdir" file="builder/builder.xml" />
     
-    <property name="extra.bootclasspath" location="${root.dir}/libs/private-android-15.jar" />
+    <target name="-pre-compile" >
+    	<echo>Changing bootclasspath to use non-stripped core and framework files</echo>
+        <path id="project.target.class.path" >
+            <fileset dir="${project.dir}/android-prebuilt/r16/prebuilt">
+                <include name="core.jar" />
+                <include name="framework.jar" />
+            </fileset>
+        </path>
+        <echo>${toString:project.target.class.path}</echo>
+	</target>
+	
 </project>
