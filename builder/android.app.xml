@@ -131,30 +131,8 @@
         <copy overwrite="yes" file="${out.final.file}" tofile="${out.file}" />
     </target>
     
-    <!-- creates empty jar file for dependency management purposes -->
-    <target name="make-jar" >
-         <delete dir="${jar.dir}" />
-         <mkdir dir="${jar.dir}" />
-         <jar destfile="${jar.file}" 
-              includes="**/*.class" basedir="${jar.dir}" >        
-
-              <manifest>
-                  <!-- Who is building this jar? -->
-                  <attribute name="Built-By" value="${user.name}"/>
-        
-                  <!-- Information about the program itself -->
-                  <attribute name="Implementation-Vendor" value="${vendor}"/>
-                  <attribute name="Implementation-Title" value="${project.name}"/>
-                  <attribute name="Implementation-Version" value="${version.name}"/>
-                  <attribute name="Description" value="Empty stub jar for dependcy management." />
-              </manifest>
-        </jar>    
-        <delete dir="${jar.dir}" />
-    </target>
-            
-    <target name="drop" depends="make-jar" >
+    <target name="drop" >
             <mkdir dir="${drop.dir}" />
-            <copy file="${jar.file}" todir="${drop.dir}/${build.mode}" />
             <copy file="${out.file}" todir="${drop.dir}/${build.mode}" />          
     </target>
     
