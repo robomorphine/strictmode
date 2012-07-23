@@ -3,7 +3,6 @@
 	<dependencies>
 		<dependency org="com.google.guava" name="guava" rev="latest.integration" />
 		<dependency org="android" name="android-support" rev="latest.integration" />
-        <dependency org="com.robomorphine" name="com.robomorphine" rev="latest.integration" />
         <dependency org="findbugs" name="findbugs-annotations" rev="latest.integration" />
 	</dependencies>
 </ivy-module>

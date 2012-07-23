@@ -2,6 +2,5 @@
     <info organisation="com.robomorphine" module="com.robomorphine.demo" />	
 	<dependencies>
 		<dependency org="com.google.guava" name="guava" rev="latest.integration" />
-		<dependency org="com.robomorphine" name="com.robomorphine" rev="latest.integration" />
 	</dependencies>
 </ivy-module>

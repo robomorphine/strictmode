@@ -1,29 +1,3 @@
 <ivy-module version="1.0">
     <info organisation="com.robomorphine" module="com.robomorphine.strictmode.lib" />
-    <dependencies>
-		<dependency org="com.robomorphine" 
-                    name="com.robomorphine.strictmode.lib.prebuilt.common" 
-                    rev="latest.integration" />
-        <dependency org="com.robomorphine" 
-                    name="com.robomorphine.strictmode.lib.prebuilt.r09" 
-                    rev="latest.integration" />
-        <dependency org="com.robomorphine" 
-                    name="com.robomorphine.strictmode.lib.prebuilt.r11" 
-                    rev="latest.integration" />
-        <dependency org="com.robomorphine" 
-                    name="com.robomorphine.strictmode.lib.prebuilt.r12" 
-                    rev="latest.integration" />
-        <dependency org="com.robomorphine" 
-                    name="com.robomorphine.strictmode.lib.prebuilt.r13" 
-                    rev="latest.integration" />
-        <dependency org="com.robomorphine" 
-                    name="com.robomorphine.strictmode.lib.prebuilt.r14" 
-                    rev="latest.integration" />
-        <dependency org="com.robomorphine" 
-                    name="com.robomorphine.strictmode.lib.prebuilt.r15" 
-                    rev="latest.integration" />
-        <dependency org="com.robomorphine" 
-                    name="com.robomorphine.strictmode.lib.prebuilt.r16" 
-                    rev="latest.integration" />
-    </dependencies>
 </ivy-module>

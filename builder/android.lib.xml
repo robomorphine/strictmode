@@ -24,45 +24,24 @@
         <property name="bin.dir" location="${project.dir}/bin" />
         <property name="libs.dir" location="${project.dir}/libs" />
         <property name="bin.dir" location="${project.dir}/bin/${build.mode}" />
-        <property name="jar.file" location="${bin.dir}/${project.name}.jar" />
+        <property name="jar.file" location="${bin.dir}/classes.jar" />
         <property name="jar.dir"  location="${bin.dir}/jar" />
         
         <echo>bin.dir  = ${bin.dir}</echo>
         <echo>jar.file = ${jar.file}</echo>
         <echo>jar.dir  = ${jar.dir}</echo>
         <mkdir dir="${bin.dir}" />
-    </target>
-
-    <target name="make-jar" >
-         <delete dir="${jar.dir}" />
-         <mkdir dir="${jar.dir}" />
-         <jar destfile="${jar.file}" 
-              includes="**/*.class" basedir="${jar.dir}" >
-
-            <manifest>
-                <!-- Who is building this jar? -->
-                <attribute name="Built-By" value="${user.name}"/>
-
-                <!-- Information about the program itself -->
-                <attribute name="Implementation-Vendor" value="${vendor}"/>
-                <attribute name="Implementation-Title" value="${project.name}"/>
-                <attribute name="Implementation-Version" value="${version.name}"/>
-                <attribute name="Description" value="Empty stub jar for dependcy management." />
-            </manifest>
-        </jar>    
-        <delete dir="${jar.dir}" />
-    </target>
+    </target>    
 
     <target name="drop-jar">
-        <mkdir dir="${drop.dir}" />
-        <copy file="${jar.file}" todir="${drop.dir}/${build.mode}" />
+        <copy file="${jar.file}" tofile="${drop.dir}/${build.mode}/${project.name}.jar" />
     </target>
 
     <target name="make-libs-dir">
         <mkdir dir="${libs.dir}" />
     </target>
 
-    <target name="build" depends="-pre-build, make-jar, drop-jar, make-libs-dir" />
+    <target name="build" depends="-pre-build, drop-jar, make-libs-dir" />
 
     <target name="debug" depends="-pre-build-debug, prepare-project, android.debug, build" />
     <target name="instrument" depends="-pre-build-instrument, prepare-project, android.instrument, build" />
@@ -76,5 +55,5 @@
 	<target name="pmd" depends="-pre-build-debug, android.quality.pmd" />
 	<target name="cpd" depends="-pre-build-debug, android.quality.cpd" />
 	<target name="findbugs" depends="debug, android.quality.findbugs" />
-
+    
 </project>

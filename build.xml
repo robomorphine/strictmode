@@ -111,6 +111,31 @@
       </ant>
   </target>
   
-  
+
+  <target name="package" depends="set-build-mode" >
+    <property file="version.properties" />
+    <property name="version.file.suffix" value="v${jar.version}" />
+    
+    <delete dir="${package.dir}" />
+    <mkdir dir="${package.dir}" />
+        
+    <jarjar jarfile="${package.dir}/robomorphine.strictmode.jar">
+        <zipfileset src="${bin.dir}/com.robomorphine.strictmode.lib.jar"/>
+        <zipfileset src="${bin.dir}/com.robomorphine.strictmode.lib.prebuilt.common.jar"/>
+        <zipfileset src="${bin.dir}/com.robomorphine.strictmode.lib.prebuilt.r09.jar"/>
+        <zipfileset src="${bin.dir}/com.robomorphine.strictmode.lib.prebuilt.r11.jar"/>
+        <zipfileset src="${bin.dir}/com.robomorphine.strictmode.lib.prebuilt.r12.jar"/>
+        <zipfileset src="${bin.dir}/com.robomorphine.strictmode.lib.prebuilt.r13.jar"/>
+        <zipfileset src="${bin.dir}/com.robomorphine.strictmode.lib.prebuilt.r14.jar"/>
+        <zipfileset src="${bin.dir}/com.robomorphine.strictmode.lib.prebuilt.r15.jar"/>
+        <zipfileset src="${bin.dir}/com.robomorphine.strictmode.lib.prebuilt.r16.jar"/>
+        <manifest>
+            <attribute name="Built-By" value="${user.name}"/>
+            <attribute name="Implementation-Vendor" value="${vendor}"/>
+            <attribute name="Implementation-Title" value="robomorphine-strictmode"/>
+            <attribute name="Implementation-Version" value="${jar.version}"/>
+        </manifest>
+    </jarjar>
+  </target>
   
 </project>
