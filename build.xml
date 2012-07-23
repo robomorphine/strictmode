@@ -119,7 +119,7 @@
     <delete dir="${package.dir}" />
     <mkdir dir="${package.dir}" />
         
-    <jarjar jarfile="${package.dir}/robomorphine.strictmode.jar">
+    <jarjar jarfile="${package.dir}/com.robomorphine.strictmode.jar">
         <zipfileset src="${bin.dir}/com.robomorphine.strictmode.lib.jar"/>
         <zipfileset src="${bin.dir}/com.robomorphine.strictmode.lib.prebuilt.common.jar"/>
         <zipfileset src="${bin.dir}/com.robomorphine.strictmode.lib.prebuilt.r09.jar"/>
