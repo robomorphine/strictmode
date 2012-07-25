@@ -1,8 +1,0 @@
-<ivy-module version="1.0">
-    <info organisation="com.robomorphine" module="com.robomorphine.remoteprefs" />	
-	<dependencies>
-		<dependency org="com.google.guava" name="guava" rev="latest.integration" />
-		<dependency org="android" name="android-support" rev="latest.integration" />
-        <dependency org="findbugs" name="findbugs-annotations" rev="latest.integration" />
-	</dependencies>
-</ivy-module>
