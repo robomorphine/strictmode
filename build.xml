@@ -82,6 +82,12 @@
     </subant>
   </target>
   
+  <target name="lint" depends="buildlist, debug">    
+    <subant target="lint" buildpathref="all-projects" >
+        <property name="build.mode" value="${build.mode}" />
+    </subant>
+  </target>
+  
   <!-- test -->
   <target name="kill-all" >
     <rbm-stop-all-emulators />	

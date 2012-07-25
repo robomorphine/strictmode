@@ -8,8 +8,12 @@
 		<mkdir dir="${quality.dir}" />
 	</target>
 	
-	<target name="-pmd-defaults" >
-		<property name="project.pmd" value="true" />
+	<target name="-defaults" >
+		<property name="project.quality" value="true" />
+	</target>
+	
+	<target name="-pmd-defaults" depends="-defaults" >
+		<property name="project.pmd" value="${project.quality}" />
 		<property name="project.pmd.src" location="${project.dir}/src" />
 		<property name="project.pmd.minimumPriority" value="4" />
 	</target>
@@ -29,8 +33,8 @@
        </pmd>
 	</target>
 	
-	<target name="-cpd-defaults" >
-        <property name="project.cpd" value="true" />
+	<target name="-cpd-defaults" depends="-defaults" >
+        <property name="project.cpd" value="${project.quality}" />
 		<property name="project.cpd.src" location="${project.dir}/src" />
 		<property name="project.cpd.minimumTokenCount" value="75" />
     </target>
@@ -49,8 +53,8 @@
 	    </cpd>
     </target>
 	
-	<target name="-findbugs-defaults" >
-        <property name="project.findbugs" value="true" />
+	<target name="-findbugs-defaults" depends="-defaults" >
+        <property name="project.findbugs" value="${project.quality}" />
 		<property name="project.findbugs.reportlevel" value="medium" />
         <property name="project.findbugs.src" location="${project.dir}/src" />
 		<property name="project.findbugs.classes" location="${project.dir}/bin/" />
@@ -73,10 +77,39 @@
     	 	
     	    <sourcePath path="${project.findbugs.src}" />
     		<auxClasspath path="${project.findbugs.libs}" />
-    	    <class location="${project.findbugs.classes}" />
-    		 
-    		
+    	    <class location="${project.findbugs.classes}" />    		
 	    </findbugs>
+    </target>
+    
+    <target name="-lint-defaults" depends="-defaults">
+        <property name="project.lint" value="${project.quality}" />
+            	
+    	<condition property="lint.ext" value=".bat">
+    		<os family="windows" />
+    	</condition>
+
+    	<condition property="lint.ext" value="">
+    	    <os family="unix" />
+    	</condition>
+    	
+    	<condition property="lint.ext" value="">
+            <os family="mac" />
+        </condition>
+    	<property name="lint.file" location="${sdk.dir}/tools/lint${lint.ext}" />
+    </target>
+    
+    <target name="lint" depends="-quality-dirs, -lint-defaults" if="${project.lint}">
+    	 <mkdir dir="${quality.dir}/lint/${project.name}" />
+         <exec executable="${lint.file}">
+         	<arg line="--xml"/>
+         	<arg file="${quality.dir}/lint/${project.name}/lint.xml"/>
+         	<arg file="${project.dir}" />
+     	 </exec>
+    	 <exec executable="${lint.file}">
+            <arg line="--html"/>
+            <arg file="${quality.dir}/lint/${project.name}/html"/>
+            <arg file="${project.dir}" />
+         </exec>
     </target>
 
 </project>
