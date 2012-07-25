@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>    
+    <string name="app_name">StrictMode</string>
+    <string name="app_name_subtitle">Violation Viewer</string>
+    <string name="package_list_empty">No packages found.</string>
+    <string name="dropbox_list_empty">No StrictMode violations are found.</string>
+    
+    <string name="menu_search">Search</string>
+    <string name="menu_violate_thread_policy">Violate Thread</string>
+    <string name="menu_violate_vm_policy">Violate VM</string>
+    
+    <string name="dropbox_item_no_entry">Failed to locate DropBox entry.</string>
+    <string name="not_available">N/A</string>
+    <string name="na">--</string>
+    
+    <string name="violation_stats_tab">Stats</string>
+    <string name="violation_stacktrace_tab">Stacktrace</string>
+    <string name="violation_headers_tab">Headers</string>
+    
+    <string name="thread_violation_stats_times_occurred">Times occurred</string>
+    <string name="thread_violation_stats_total_duration">Total Duration</string>
+    <string name="thread_violation_stats_min_duration">Min Duration</string>
+    <string name="thread_violation_stats_max_duration">Max Duration</string>
+    <string name="thread_violation_stats_avg_duration">Avg Duration</string>
+    <string name="thread_violation_duration_args">%d ms</string>
+    <string name="thread_violation_stats_hist_range">Histogram range</string>
+    <string name="thread_violation_stats_hist_delta">delta</string>
+    <string name="thread_violation_stats_hist_90">90%</string>
+    <string name="thread_violation_stats_hist_95">95%</string>
+    <string name="thread_violation_stats_hist_avarage">avarage</string>
+    <string name="histogram_range">[%1$d ms, %2$d ms]</string>
+    <string name="histogram_value">%d ms</string>
+    <string name="violation_stacktrace_menu_print_to_logcat">print to logcat</string>
+    <string name="violation_stacktrace_fragment_native_code">Native code</string>
+    <string name="violation_stacktrace_fragment_unknown_source">Unknown source</string>
+    <string name="violation_stacktrace_fragment_location">at %1$s:%2$d</string>
+    <string name="violation_stacktrace_logcat_message">Printing violation exception stacktrace.</string>
+    <string name="violation_stacktrace_printed_to_logcat">Printed to logcat.</string>
+    <string name="violation_count">x%1$d</string>
+    <string name="violation_timestamp">latest at %s</string>
+    
+    
+    <string name="page_position">%1$d out of %2$d</string>    
+    
+    <string name="show_violations_for_title">Show violations for:</string>    
+    
+    <string name="unique_violation_title">unique:</string>    
+    
+    <string name="total_violations_title">total:</string>    
+    
+    <string name="unknown">\?</string>    
+    
+    <string name="timestamp_filtering_mode">Timestamp Filtering Mode</string>    
+    
+    <string name="all_applications">All applications</string>    
+    
+    <string name="all_violations_are_visible">All violations are visible</string>
+    <string name="click_to_select_application">Click to select application.</string>
+    <string name="permission_not_granted">Permission %1$s was not granted.</string>
+    <string name="show_since_last_install">Show Since Last Install</string>
+    <string name="ignore_timestamp">Ignore Timestamp</string>
+    <string name="show_since_last_install_descr">Only violations that were reported after last application installation are visible.</string>
+    <string name="ignore_timestamp_descr">All violations are visible.</string>
+    <string name="describe_violation">describe violation</string>
+    
+    <!-- violation help -->
+    <string name="violation_info_not_found">No information is found on this violation type.</string>
+    <string name="violation_info_thread">
+        Thread violation is a violation that is reported when some potentially long running operation
+        is executed in this thread. Such operations should be executed in another dedicated thread.
+    </string>
+    <string name="violation_info_thread_custom">
+        Custom thread violation is user-defined violation.
+        \n\nIts is usually reported by third party 
+        applications or signifies some violation that does not fit in other pre-defined thread
+        violation types.
+    </string>
+    <string name="violation_info_thread_disk_read">
+        Disk read thread violation is reported when application tries to open or read file from 
+        ui thread.
+        \n\nThis is not desirable because such operations may take potentially long time 
+        to execute. Another dedicated thread should be used to executed such tasks when possible.
+    </string>
+    <string name="violation_info_thread_disk_write">
+        Disk write thread violation is reported when application tries to write to file from 
+        ui thread.
+        \n\nThis is not desirable because such operations may take potentially long time 
+        to execute. Another dedicated thread should be used to executed such tasks when possible.
+    </string>
+    <string name="violation_info_thread_network">
+        Network thread violation is reported when application tries to access network layer from 
+        ui thread.
+        \n\nThis is not desirable because such operations may take potentially very long time 
+        to execute. Another dedicated thread must be used to executed such tasks.
+    </string>
+    <string name="violation_info_vm">
+        VM violation is reported when some memory or resource related issues are detected.
+    </string>
+    <string name="violation_info_vm_explicit_termination">
+        This violation is reported when VM detects that some resource was not explicitely released
+        or closed. 
+        \n\nFor example, developer forgot to call close() on file stream, or forgot to close Cursor
+        that was acquired from database or ContentProvider. 
+    </string>
+    <string name="violation_info_vm_instance_count">
+        This violation is reported when VM detects that there too many instances of specified type.
+        \n\nFor example, there usually shouldn\'t be more than one instance of specific Activity object.
+        If there are more than one instance there is a possibility that acitivty is leaked 
+        (some other objects may reference activity and prevent it from being garbage collected).
+        \n\nBe careful, as sometimes this violations might be false positives.
+    </string>
+    
+</resources>

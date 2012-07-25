@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="builder" xmlns:inz="antlib:com.inazaruk.ant">
+    <!-- Import build system -->
+    <inz:root-import marker="rootdir" file="builder/builder.xml" />
+    
+    <target name="-pre-compile" >
+    	<echo>Changing bootclasspath to use non-stripped core and framework files</echo>
+        <path id="project.target.class.path" >
+            <fileset dir="${project.dir}/android-prebuilt/r16/prebuilt">
+                <include name="core.jar" />
+                <include name="framework.jar" />
+            </fileset>
+        </path>
+        <echo>${toString:project.target.class.path}</echo>
+	</target>
+	
+</project>

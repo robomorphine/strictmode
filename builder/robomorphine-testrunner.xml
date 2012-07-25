@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+Helper tasks to define robormophine tasks.
+-->
+<project name="robomorphine-testrunner" >
+	
+	<!-- Internal, do not use directly. Use rbm-define-tasks macro instead. -->
+	<macrodef name="rbm-do-define-tasks">
+		<attribute name="sdkdir" />
+        <attribute name="jar" />
+        <attribute name="force" default="false" />
+        <element name="extra-classpath" optional="true"/>
+        <sequential>            
+            <path id="rbm.testrunner.classpath">
+                <fileset dir="@{sdkdir}/tools/lib" includes="*.jar" />
+                <pathelement path="@{jar}" />
+                <extra-classpath />
+            </path>
+            
+            <classloader name="rbm.testrunner.classloader" 
+                         classpathref="rbm.testrunner.classpath" />
+            
+            <presetdef name="rbm-taskdef">
+                <taskdef loaderref="rbm.testrunner.classloader"
+                         classpathref="rbm.testrunner.classpath" />
+            </presetdef>
+            
+            <!-- general -->
+            <rbm-taskdef name="rbm-setup"      
+                         classname="com.robomorphine.test.ant.SetupTask" />
+        	
+        	<rbm-taskdef name="rbm-restart-adb"      
+                         classname="com.robomorphine.test.ant.RestartAdbTask" />
+            
+            <!-- avd -->
+            <rbm-taskdef name="rbm-avd-config" 
+                         classname="com.robomorphine.test.ant.avd.AvdConfigTask" />
+            <rbm-taskdef name="rbm-create-avd" 
+                         classname="com.robomorphine.test.ant.avd.CreateAvdTask" />
+            <rbm-taskdef name="rbm-delete-avd" 
+                         classname="com.robomorphine.test.ant.avd.DeleteAvdTask" />
+            
+            <!-- emulator -->
+            <rbm-taskdef name="rbm-start-emulator" 
+                         classname="com.robomorphine.test.ant.emulator.StartEmulatorTask" />
+            <rbm-taskdef name="rbm-stop-emulator"  
+                         classname="com.robomorphine.test.ant.emulator.StopEmulatorTask" />
+            <rbm-taskdef name="rbm-stop-all-emulators" 
+                         classname="com.robomorphine.test.ant.emulator.StopEmulatorsTask" />
+            
+            <!-- controlling device -->
+            <rbm-taskdef name="rbm-lock-device"        
+                         classname="com.robomorphine.test.ant.device.LockDeviceTask" />
+            <rbm-taskdef name="rbm-unlock-device"      
+                         classname="com.robomorphine.test.ant.device.UnlockDeviceTask" />
+            <rbm-taskdef name="rbm-get-locked-device"  
+                         classname="com.robomorphine.test.ant.device.GetLockedDeviceTask" />
+            <rbm-taskdef name="rbm-get-device-property" 
+                         classname="com.robomorphine.test.ant.device.GetDevicePropertyTask" />
+        	<rbm-taskdef name="rbm-start-logcat" 
+        	             classname="com.robomorphine.test.ant.device.StartLogcatTask" />
+        	<rbm-taskdef name="rbm-stop-logcat" 
+        	             classname="com.robomorphine.test.ant.device.StopLogcatTask" />
+            <rbm-taskdef name="rbm-get-apk-package"    
+                         classname="com.robomorphine.test.ant.device.GetApkPackageTask" />
+            <rbm-taskdef name="rbm-install-apk"        
+                         classname="com.robomorphine.test.ant.device.InstallApkTask" />
+            <rbm-taskdef name="rbm-uninstall-apk"      
+                         classname="com.robomorphine.test.ant.device.UninstallApkTask" />
+            <rbm-taskdef name="rbm-adb-push" 
+                         classname="com.robomorphine.test.ant.device.AdbPushTask" />                
+            <rbm-taskdef name="rbm-adb-pull" 
+                         classname="com.robomorphine.test.ant.device.AdbPullTask" />                
+            <rbm-taskdef name="rbm-adb-shell"
+                         classname="com.robomorphine.test.ant.device.AdbShellTask" />
+            <rbm-taskdef name="rbm-run-tests"          
+                         classname="com.robomorphine.test.ant.device.runner.RunTestsTask" />
+    	</sequential>
+	</macrodef>
+	
+    <macrodef name="rbm-define-tasks">
+        <attribute name="sdkdir" />
+        <attribute name="jar" />
+    	<attribute name="force" default="false" />
+    	<attribute name="skip" default="false" />
+    	<element name="classpath" optional="true"/>
+        <sequential>
+        	<path id="rbm-sdk-dir-antlib">
+    	        <pathelement path="${sdk.dir}/tools/lib/anttasks.jar" />
+    	    </path>
+    	    <taskdef name="rbm-if" 
+    	    	     classname="com.android.ant.IfElseTask" 
+    	    	     classpathref="rbm-sdk-dir-antlib" />
+        	
+        	<rbm-if>
+        		<condition>
+        		   <and>
+        		   	  <not><isset property="robomorphine.tasks.defined" /></not>
+        		   	  <isfalse value="@{skip}"  /> 
+        			  <isfalse value="@{force}" />
+        		   </and>
+        		</condition>
+        		<then>
+        			<rbm-do-define-tasks sdkdir="@{sdkdir}" jar="@{jar}">
+        				<extra-classpath>
+        					<classpath />
+        				</extra-classpath>
+        			</rbm-do-define-tasks>
+        		</then>
+        		<else>
+        			<echo>Rbm tasks are not defined, because script detected that they were already defined</echo> 
+        		</else>
+        	</rbm-if>
+        	<property name="robomorphine.tasks.defined" value="true" />
+        	
+        </sequential>
+    </macrodef>
+	
+	<macrodef name="rbm-define-avd-configs">
+		<sequential>
+			<rbm-avd-config id="rbm-avd-7" target="android-7">
+                <sdcard size="100M" />
+				<screen resolution="WVGA800" />
+                <hardware>
+                    <ram size="256" />
+                    <heap size="24" />
+                </hardware>
+            </rbm-avd-config>
+			<rbm-avd-config id="rbm-avd-8" target="android-8">
+				<sdcard size="100M" />
+				<screen resolution="WVGA800" />
+				<hardware>
+	                <ram size="256" />
+	                <heap size="24" />
+	            </hardware>
+		    </rbm-avd-config>
+			<rbm-avd-config id="rbm-avd-10" target="android-10" >
+				<sdcard size="100" />
+				<screen resolution="WVGA800" />
+                <hardware>
+                    <ram size="256" />
+                    <heap size="24" />
+                </hardware>
+			</rbm-avd-config>
+			
+		    <rbm-avd-config id="rbm-avd-11" target="android-11" >
+		    	<sdcard size="100" />
+                <screen resolution="WXGA" />
+                <hardware>
+                    <ram size="800" />
+                    <heap size="48" />
+                </hardware>
+			</rbm-avd-config>
+			<rbm-avd-config id="rbm-avd-12" target="android-12" >
+				<sdcard size="100" />
+                <screen resolution="WXGA" />
+                <hardware>
+                    <ram size="800" />
+                    <heap size="48" />
+                </hardware>
+			</rbm-avd-config>
+			<rbm-avd-config id="rbm-avd-13" target="android-13" >
+				<sdcard size="100" />
+                <screen resolution="WXGA" />
+                <hardware>
+                    <ram size="800" />
+                    <heap size="48" />
+                </hardware>
+			</rbm-avd-config>
+			<rbm-avd-config id="rbm-avd-14" target="android-14" >
+				<sdcard size="100" />
+                <screen resolution="WVGA800" />
+                <hardware>
+                    <ram size="800" />
+                    <heap size="24" />
+                </hardware>
+			</rbm-avd-config>
+			<rbm-avd-config id="rbm-avd-14-tablet" target="android-14" >
+                <sdcard size="100" />
+                <screen resolution="WXGA800" />
+                <hardware>
+                    <ram size="800" />
+                    <heap size="48" />
+                </hardware>
+            </rbm-avd-config>
+			<rbm-avd-config id="rbm-avd-15" target="android-15" >
+                <sdcard size="100" />
+                <screen resolution="WVGA800" />
+                <hardware>
+                    <ram size="800" />
+                    <heap size="24" />
+                </hardware>
+            </rbm-avd-config>
+			<rbm-avd-config id="rbm-avd-15-tablet" target="android-15" >
+                <sdcard size="100" />
+                <screen resolution="WXGA800" />
+                <hardware>
+                    <ram size="800" />
+                    <heap size="48" />
+                </hardware>
+            </rbm-avd-config>
+		</sequential>
+	</macrodef>
+	
+	<macrodef name="rbm-create-avd-configs">
+		<sequential>
+			<rbm-create-avd name="rbm-avd-7"         avdconfig="rbm-avd-7"           force="true"/> 
+			<rbm-create-avd name="rbm-avd-8"         avdconfig="rbm-avd-8"           force="true"/>
+			<rbm-create-avd name="rbm-avd-10"        avdconfig="rbm-avd-10"          force="true"/>
+			<rbm-create-avd name="rbm-avd-11"        avdconfig="rbm-avd-11"          force="true"/>
+			<rbm-create-avd name="rbm-avd-12"        avdconfig="rbm-avd-12"          force="true"/>
+			<rbm-create-avd name="rbm-avd-13"        avdconfig="rbm-avd-13"          force="true"/>
+			<rbm-create-avd name="rbm-avd-14"        avdconfig="rbm-avd-14"          force="true"/>
+			<rbm-create-avd name="rbm-avd-14-tablet" avdconfig="rbm-avd-14-tablet"   force="true"/>
+			<rbm-create-avd name="rbm-avd-15"        avdconfig="rbm-avd-15"          force="true"/>
+			<rbm-create-avd name="rbm-avd-15-tablet" avdconfig="rbm-avd-15-tablet"   force="true"/>
+		</sequential>
+	</macrodef>
+
+</project>

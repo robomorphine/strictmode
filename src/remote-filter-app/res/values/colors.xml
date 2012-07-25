@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<color name="table_divider_light">#ff888888</color>
+	<color name="table_divider_dark">#ff444444</color>
+	
+	<color name="filter_selected">#ffdbdbaa</color>
+	<color name="filter_pressed">#ffffffff</color>
+	<color name="filter_ignore">#ff333333</color>
+	<color name="filter_exclude">#ff7e3e35</color>
+	<color name="filter_include">#ff4c5A39</color>
+	
+	
+</resources>

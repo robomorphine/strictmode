@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="builder" xmlns:inz="antlib:com.inazaruk.ant">
+    <!-- Import build system -->
+    <inz:root-import marker="rootdir" file="builder/builder.xml" />
+    <import file="../prebuilt.xml" />
+    
+    <target name="-pre-compile" depends="-set-bootclasspath" />    
+</project>

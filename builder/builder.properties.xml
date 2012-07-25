@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="builder.properties" >
+
+<!--###############################################################################
+    #                  Properties                                                 #
+    #                                                                             #
+    #   project.dir - points to directory of current project                      #
+    #   builder.dir   - points to build dir (.../builder/)                        #
+    #   root.dir    - points to root dir                                          #
+    #   drop.dir    - points to location where all build artifcats will be placed #
+    #   prebuilt.libs.dir - points to location where all prebuild                 #
+    #                        libraries (3rd party included) are stored.           #
+    #                                                                             #
+    #   Also note how local.properties are first imported from project directory  #
+    #   and then local.properties are imported from root directory.               #
+    #   The local.properties file from project directory is meant                 #
+    #   to store project specific settings. While local.properties file           #
+    #   that is located in root directory should store properties that            #
+    #   are general and are applied to all projects. Note that project            #
+    #   local.properties file overrides properties in root local.properties file. #
+    #                                                                             #
+    ###############################################################################-->
+
+    <!-- project.alias is optional, default to same value as project.name -->
+    <property name="project.alias" value="${project.name}" />
+
+    <!-- directory of current project -->
+    <dirname file="${ant.file}" property="project.dir"/>
+    <!-- directory where all build scripts are located -->
+    <dirname file="${ant.file.builder.properties}" property="builder.dir" />
+    <!-- root directory -->
+    <property name="root.dir" location="${builder.dir}/.."/>
+    <!-- all final build files are dropped at this location -->
+    <property name="drop.dir" location="${root.dir}/bin" />
+    <!-- all prebuilt and 3rd party libs should be located here -->
+    <property name="prebuilt.libs.dir" location="${root.dir}/libs" /> 
+
+    <!-- now import project specific properties -->
+    <property file="${project.dir}/local.properties" />
+    <!-- and then import general properties -->
+    <property file="${root.dir}/local.properties" />
+
+    <!-- global properties -->
+    <property file="${builder.dir}/global.properties" />
+
+    <!-- only used to automate release builds without real release private key -->
+    <property file="${builder.dir}/autobuild.properties" />
+</project>

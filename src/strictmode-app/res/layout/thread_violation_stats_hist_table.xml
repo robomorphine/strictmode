@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/small" >
+    
+       <TableRow>
+
+        <ImageView style="@style/TableImage" />
+
+        <TextView
+            style="@style/TableKey"
+            android:text="@string/thread_violation_stats_hist_range" />
+
+        <TextView
+            android:id="@+id/hist_range"
+            style="@style/TableValue" />
+    </TableRow>
+
+    <TableRow>
+
+        <ImageView style="@style/TableImage" />
+
+        <TextView
+            style="@style/TableKey"
+            android:text="@string/thread_violation_stats_hist_delta" />
+
+        <TextView
+            android:id="@+id/hist_delta"
+            style="@style/TableValue" />
+    </TableRow>
+    
+    <TableRow>
+
+        <ImageView
+            style="@style/TableImage"
+            android:src="@drawable/histogram_avg" />
+
+        <TextView
+            style="@style/TableKey"
+            android:text="@string/thread_violation_stats_hist_avarage" />
+
+        <TextView
+            android:id="@+id/hist_avg"
+            style="@style/TableValue" />
+    </TableRow>
+    
+
+    <TableRow>
+
+        <ImageView
+            style="@style/TableImage"
+            android:src="@drawable/histogram_90" />
+
+        <TextView
+            style="@style/TableKey"
+            android:text="@string/thread_violation_stats_hist_90" />
+
+        <TextView
+            android:id="@+id/hist_90"
+            style="@style/TableValue" />
+    </TableRow>
+
+    <TableRow>
+
+        <ImageView
+            style="@style/TableImage"
+            android:src="@drawable/histogram_95" />
+
+        <TextView
+            style="@style/TableKey"
+            android:text="@string/thread_violation_stats_hist_95" />
+
+        <TextView
+            android:id="@+id/hist_95"
+            style="@style/TableValue" />
+    </TableRow>
+
+   
+</TableLayout>

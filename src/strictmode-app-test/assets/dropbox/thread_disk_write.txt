@@ -1,0 +1,28 @@
+Process: com.android.strictmodetest
+Flags: 0xbe46
+Package: com.android.strictmodetest v1 (1.0)
+Build: google/yakju/maguro:4.0.4/IMM76D/299849:user/release-keys
+System-App: false
+Uptime-Millis: 192722555
+Loop-Violation-Number: 1
+Duration-Millis: 21
+
+android.os.StrictMode$StrictModeDiskWriteViolation: policy=159 violation=1
+	at android.os.StrictMode$AndroidBlockGuardPolicy.onWriteToDisk(StrictMode.java:1063)
+	at android.database.sqlite.SQLiteStatement.acquireAndLock(SQLiteStatement.java:226)
+	at android.database.sqlite.SQLiteStatement.executeUpdateDelete(SQLiteStatement.java:84)
+	at android.database.sqlite.SQLiteDatabase.executeSql(SQLiteDatabase.java:1899)
+	at android.database.sqlite.SQLiteDatabase.execSQL(SQLiteDatabase.java:1839)
+	at com.android.strictmodetest.StrictModeActivity$2.onClick(StrictModeActivity.java:129)
+	at android.view.View.performClick(View.java:3511)
+	at android.view.View$PerformClick.run(View.java:14105)
+	at android.os.Handler.handleCallback(Handler.java:605)
+	at android.os.Handler.dispatchMessage(Handler.java:92)
+	at android.os.Looper.loop(Looper.java:137)
+	at android.app.ActivityThread.main(ActivityThread.java:4424)
+	at java.lang.reflect.Method.invokeNative(Native Method)
+	at java.lang.reflect.Method.invoke(Method.java:511)
+	at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:784)
+	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:551)
+	at dalvik.system.NativeStart.main(Native Method)
+

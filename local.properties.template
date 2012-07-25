@@ -1,0 +1,6 @@
+###########################################################################
+# location of the SDK. This is only used by Ant                           # 
+#   example: D:\\Development\\android-sdk_r3-windows\\android-sdk         #
+###########################################################################
+
+sdk.dir=<path to android sdk>

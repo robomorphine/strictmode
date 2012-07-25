@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <string name="app_name">rbm-strictmode-violator-app</string>
+    
+    <string name="shared_prefs_commit_name">SharedPreferences Commit</string>
+    <string name="shared_prefs_commit_descr">
+        Tries to edit and save SharedPreferences using Editor.commit() from main thread.
+    </string>
+    
+    <string name="disk_read_name">DiskRead</string>
+    <string name="disk_read_descr">
+        Opens and reads some file on disk from main thread.
+    </string>
+    
+    <string name="disk_write_name">DiskWrite</string>
+    <string name="disk_write_descr">
+        Opens and writes to some file on disk from main thread.
+    </string>
+    
+    <string name="network_name">Network</string>
+    <string name="network_descr">
+        Opens page at http://www.google.com from main thread. 
+    </string>
+    
+    <string name="fake_slow_call_name">Fake SlowCall</string>
+    <string name="fake_slow_call_descr">
+        Immitates slow call by calling StrictMode.noteSlowCall()
+    </string>
+    
+    <string name="explicit_termination_name">Explicit Termination</string>
+    <string name="explicit_termination_descr">
+        Queries a cursor and never closes it. 
+    </string>
+    
+    <string name="instance_count_name">Instance Count</string>
+    <string name="instance_count_descr">
+        Creates multiple instances of activity. Click several times and rotate the device.
+    </string>
+    
+    <string name="multiple_slow_calls_name">Multiple slow calls</string>
+    <string name="multiple_slow_calls_descr">
+        Makes multiple slow calls in a row. Tests Loop-Violation-Number.
+    </string>
+    
+    <string name="broadcast_name">DiskRead from Broadcast Receiver</string>
+    <string name="broadcast_descr">
+        Reads disk from onReceive() of Broadcast Receiver.
+    </string>
+
+</resources>

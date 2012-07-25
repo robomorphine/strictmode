@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="teseter.properties" >
+
+    <property name="project.name" value="tester.properties" />
+	        
+    <import file="builder.properties.xml" />
+    <import file="${builder.dir}/ant-tasks.xml" />
+	        
+	<fail unless="sdk.dir" message="SDK dir is not set." />	
+	<fail unless="build.mode" message="build.mode property is not specified!" />
+	
+	<rbm-define-tasks sdkdir="${sdk.dir}" jar="${root.dir}/libs/rbm.host.testrunner.ant.jar" />
+    
+    <property name="bin.dir" location="${drop.dir}/${build.mode}" />
+	<property name="testrun.dir" location="${bin.dir}/testrun" />		
+	<property name="junit.root.dir" location="${testrun.dir}/junit" />
+	<property name="logcat.root.dir" location="${testrun.dir}/logcat" />
+		
+	<property name="testruns.dir" location="${bin.dir}/testruns" />
+    
+</project>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="all-tasks" >
+	<fail unless="sdk.dir" message="Android SDK dir is not set." />
+    
+	<!-- ant-contrib -->
+	<typedef resource="net/sf/antcontrib/antlib.xml" format="xml">
+      <classpath>
+        <pathelement location="${prebuilt.libs.dir}/ant-contrib.jar"/>
+      </classpath>
+    </typedef>
+    
+    <!-- jarjar -->
+    <taskdef name="jarjar" classname="com.tonicsystems.jarjar.JarJarTask" classpath="${root.dir}/libs/jarjar.jar"/>
+	
+	<!-- robomorphine-testrunner -->
+	<import file="${builder.dir}/robomorphine-testrunner.xml" />
+	<property name="rbm.verbose" value="false" />
+    <rbm-define-tasks sdkdir="${sdk.dir}" jar="${root.dir}/libs/robomorphine.testrunner.host.jar" />
+    <rbm-setup sdkdir="${sdk.dir}" lazy="true" force="false" verbose="${rbm.verbose}" />
+    
+	<!-- pmd -->
+	<taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask" >
+		<classpath>
+			<fileset dir="${root.dir}/libs/pmd" includes="*.jar"/>
+		</classpath>
+	</taskdef>
+	
+	<taskdef name="cpd" classname="net.sourceforge.pmd.cpd.CPDTask" >
+        <classpath>
+            <fileset dir="${root.dir}/libs/pmd" includes="*.jar"/>
+        </classpath>
+    </taskdef>
+	
+	<!-- findbugs -->
+	<taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask">
+		<classpath>
+            <fileset dir="${root.dir}/libs/findbugs/lib" includes="findbugs-ant.jar"/>
+        </classpath>
+	</taskdef>
+	
+    <!-- Override ant-contrib if task with android's if task.
+         Android's if task requires <condition> element, while 
+         ant-contrib's if task does not support it. 
+         Because we can not change Android's build files and must
+         comply with them, we are forced to use Android's if task 
+         in all places 
+    -->
+    <!--###########################################################-->     
+    <path id="build.android.antlibs">
+        <pathelement path="${sdk.dir}/tools/lib/anttasks.jar" />
+    </path>    
+    <taskdef name="if" classname="com.android.ant.IfElseTask" classpathref="build.android.antlibs" />
+    <!--###########################################################-->
+	
+	
+</project>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="test.runner"  default="run" >
+                  
+    <import file="tester.properties.xml" />    
+        
+    <!--
+    #############################    
+    ##   Process arguments     ##
+    #############################
+    -->
+    
+    <!-- List of parameters:
+    target.ap        - optional, path to apk file that is required to be installed before teseter.apk is launched.
+                       Normally this apk file contains your primary application under test.
+    tester.apk       - required, path to apk that will be installed and launched for tests.    
+    tester.filter    - optional, default to empty string (all tests are included). 
+                      Filter that is used to select tests for run (f.e. "s+m+l", see FilterTestRunner)
+    tester.junit.dir - optional, default to current directory. Directory where junit report file is placed.
+    tester.logcat.dir - optional, default to current directory. Directory where logcat file is placed.
+    tester.runner   - optional, default to com.robomorphine.test.testrunner.RobomorphineTestRunner. Determines which runner is used to run tests.
+    tester.listonly - optional, defaults to false. If set to true then tests are just listed in report but they never run.
+    
+    -->     
+
+    <!-- if "tester.apk" is not set, fail -->
+    <fail unless="tester.apk" message="Property 'tester.apk' must be set!" />
+	
+	<!-- if tested.apk is not specified, assume tester tests itself -->
+	<property name="target.apk" location="${tester.apk}" />	
+
+    <!-- default tester.filter to empty string -->
+    <property name="tester.filter" value="" />
+
+    <!-- default tester.junit.dir to current dir -->
+    <property name="tester.junit.dir" location="${junit.root.dir}" />    
+	
+	<!-- default tester.logcat.dir to current dir -->
+    <property name="tester.logcat.dir" location="${logcat.root.dir}" />
+	<property name="tester.logcat.format" value="threadtime" />
+
+    <!-- default tester.runner to  report runner -->
+    <property name="tester.runner" value="com.robomorphine.test.runner.RobomorphineTestRunner" />
+
+    <!-- default tester.listonly to false -->
+    <property name="tester.listonly" value="false" />    
+    
+    <!-- print all arguments -->    
+    <echo>#####################################</echo>
+    <echo>############# Arguments #############</echo>
+    <echo>#####################################</echo>    
+    <echo>target.apk:            ${target.apk}</echo>
+    <echo>tester.apk:            ${tester.apk}</echo>
+    <echo>tester.filter:         ${tester.filter}</echo>
+    <echo>tester.junit.dir:     ${tester.junit.dir}</echo>
+	<echo>tester.logcat.dir:     ${tester.logcat.dir}</echo>
+    <echo>tester.runner:         ${tester.runner}</echo>
+    <echo>tester.listonly:       ${tester.listonly}</echo>
+    <echo></echo>
+
+    <!--
+    #############################
+    ##           Targets       ##
+    #############################
+    -->
+            
+    <target name="run" >
+    	<!-- do not re-lock device, if it was already locked -->
+    	<rbm-lock-device force="false" />
+    	<!-- run tests -->
+		<trycatch reference="tester.exception" property="tester.exception.msg">
+			<try>
+				<rbm-start-logcat file="${tester.logcat.dir}/main.log"  
+				                  format="${tester.logcat.format}"
+				                  buffer="main"
+					              id="tester.logcat.main" />
+				
+				<rbm-start-logcat file="${tester.logcat.dir}/system.log"
+				                  format="${tester.logcat.format}"   
+				                  buffer="system" 
+					              id="tester.logcat.system" />
+				
+				<rbm-start-logcat file="${tester.logcat.dir}/radio.log"
+					              format="${tester.logcat.format}"
+					              buffer="radio"  
+					              id="tester.logcat.radio" />
+				
+				<rbm-start-logcat file="${tester.logcat.dir}/events.log"
+					              format="${tester.logcat.format}"
+					              buffer="events" 
+					              id="tester.logcat.events" />
+					
+				<rbm-run-tests runner="${tester.runner}" >
+					<junit dir="${tester.junit.dir}" multiple="true" />
+					<apks>
+					  <tester file="${tester.apk}" />
+					  <apk file="${target.apk}" />
+					</apks>
+					<args>
+					  <logonly enable="${tester.listonly}" />
+					  <arg key="filter" value="${tester.filter}" />
+					</args>
+				</rbm-run-tests>
+			</try>
+			<catch>
+				<echo level="error">${tester.exception.msg}</echo>
+			    <throw refid="tester.exception" />
+			</catch>
+			<finally>
+				<rbm-stop-logcat refid="tester.logcat.main" />
+				<rbm-stop-logcat refid="tester.logcat.system" />
+				<rbm-stop-logcat refid="tester.logcat.radio" />
+				<rbm-stop-logcat refid="tester.logcat.events" />
+			</finally>
+		</trycatch>
+    </target>
+    
+</project>

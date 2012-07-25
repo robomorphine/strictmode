@@ -1,0 +1,55 @@
+<project name="easy-build" default="help" >
+  <target name="help" >
+  	<echo>=====================================</echo>
+    <echo>          Build targets              </echo>
+  	<echo>=====================================</echo>
+  	<echo>clean   - Removes all compiled code and artifacts created during the build process</echo>
+  	<echo>compile - Compiles all source for project                  </echo>
+  	<echo>test    - Runs all tests for project                       </echo>
+  	<echo>testcc  - Runs all tests with code coverage for project    </echo>
+    <echo>package - Creates all deployable artifacts for the project </echo>    
+	</target>
+	
+	<target name="clean" >
+		<ant antfile="build.xml" target="clean"  inheritall="true" /> 
+	</target>
+	
+	<target name="compile" >
+    <ant antfile="build.xml" inheritall="true" >
+    	<target name="debug" />
+    	<target name="build" />
+    </ant>		
+  </target>
+	
+	<target name="package" >
+    <ant antfile="build.xml" inheritall="true">
+    	<target name="clean" />
+    	<target name="release" />
+    	<target name="build" />
+    </ant>    
+  </target>
+	
+	<target name="test" >
+    <ant antfile="build.xml" inheritall="true" >
+    	<target name="clean" />
+    	<target name="release" />      
+      <target name="build" />    	
+      <target name="test-on-emulator" />
+    	<target name="check-test-report" />
+      <!-- should probable be next target instead? -->
+      <!-- target name="test-on-all-emulators" / -->
+    </ant>
+	</target>
+	
+	<target name="testcc" >
+    <ant antfile="build.xml" inheritall="true" >
+    	<target name="clean" />
+    	<target name="instrument" />      
+    	<target name="build" />
+    	<target name="test-on-emulator" />
+    	<target name="check-test-report" />
+    	<target name="check-code-coverage" />    	
+    </ant>
+  </target>
+	
+</project>

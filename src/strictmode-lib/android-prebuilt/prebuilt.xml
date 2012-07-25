@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="bootclasspath" >
+   
+    <target name="-set-bootclasspath" >
+        <path id="project.target.class.path" >
+            <fileset dir="${project.dir}/prebuilt">
+                <include name="core.jar" />
+                <include name="framework.jar" />
+            </fileset>
+        </path>
+	</target>
+    
+</project>

@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="test.emulator.manager"  default="test-on-all-emulators" >
+
+    <import file="test.manager.xml" />
+    
+    <property name="emulator.report.dir" location="${testruns.dir}" />
+    <property name="emulator.tmp.dir" location="${bin.dir}/tmp" />
+        
+    <macrodef name="test-on-emulator" >
+        <attribute name="test-target" default="andorid-15" />
+        <attribute name="build-mode" default="debug" /> 
+        <sequential>
+        	<local name="device-serial" />
+        	<local name="avd-name" />
+        	<local name="exception-message" />
+        		
+        	<property name="avd-name" value="tester-avd" />        	
+        	
+        	<rbm-create-avd name="${avd-name}" target="@{test-target}" force="true">
+	            <sdcard size="100M" />
+        		<hardware>
+	                <ram size="512" />
+	                <heap size="32" />
+	            </hardware>
+	        </rbm-create-avd>
+        	
+        	<rbm-start-emulator avd="${avd-name}" serialProperty="device-serial" />        	
+        	<trycatch reference="exception" property="exception-message">
+        	    <try>
+        		    <rbm-lock-device serial="${device-serial}" force="true" />
+        		    	
+        		    <!-- unlock emulator, so ui tests can run -->
+        		    <rbm-adb-shell cmd="input keyevent 82" />
+        			<ant antfile="${builder.dir}/test.manager.xml"
+		                 target="create-test-report" inheritall="true" inheritrefs="true">
+		                <property name="build.mode" value="@{build-mode}" />
+		            </ant>		            
+		            <rbm-unlock-device />
+        	    </try>
+        		<catch>
+        		    <echo level="error">Test run failed: ${exception-message}</echo>
+        		    <throw refid="exception" />
+        		</catch>
+        		<finally>
+        		    <rbm-stop-emulator serial="${device-serial}" />
+        		</finally>
+        	</trycatch>
+        	
+        	<rbm-delete-avd name="${avd-name}" />
+        </sequential>
+    </macrodef>
+	
+    <macrodef name="test-report-all-emulators">
+        <sequential>
+           <delete dir="${emulator.tmp.dir}" />
+           <mkdir  dir="${emulator.tmp.dir}" />
+          
+           <for param="dir">
+              <path>
+                  <dirset dir="${emulator.report.dir}" includes="*"/>
+              </path>
+              <sequential>
+                  <local name="test.target" />
+                  <local name="cur.tmp.dir" />
+                  
+                  <basename file="@{dir}" property="test.target" />
+                  <property name="cur.tmp.dir" location="${emulator.tmp.dir}/${test.target}" />
+                  
+                  <mkdir dir="${cur.tmp.dir}" />
+                  <copy todir="${cur.tmp.dir}">
+                      <fileset dir="@{dir}">
+                          <include name="junit/original/*.xml"/>
+                      </fileset>
+                  </copy>
+
+                  <for param="file" >
+                      <path>
+                           <fileset dir="${cur.tmp.dir}" includes="**/*.xml"/>
+                      </path>
+                      <sequential>
+                          <replaceregexp 
+                              file="@{file}"
+                              flags="g"
+                              match='\sname="(.*?)"' 
+                              replace=' name="\1.${test.target}"' />
+                      </sequential>
+                  </for>
+             </sequential>
+           </for>
+                   
+           <junitreport todir="${emulator.report.dir}" tofile="all-platforms.xml" >
+               <fileset dir="${emulator.tmp.dir}">
+                  <include name="**/*.xml"/>
+               </fileset>
+           </junitreport>
+              
+           <delete dir="${emulator.tmp.dir}" />
+        </sequential>
+    </macrodef>
+    
+    <macrodef name="test-on-all-emulators">
+        <attribute name="test-targets" default="7,8,9,10,11,12,13" />
+        <attribute name="build-mode" default="debug" />
+        <sequential>
+            <echo>About to run tests on targets: @{test-targets} </echo>
+            <delete dir="${emulator.report.dir}"/>
+            <for list="@{test-targets}" delimiter=",;"  param="test.target">
+                <sequential>
+                    <var name="drop.dir" value="${emulator.report.dir}/@{test.target}" />
+    
+                    <echo>##############################</echo>
+                    <echo>## Running tests on target: @{test.target}</echo>
+                    <echo>##############################</echo>
+                    <test-on-emulator build-mode="@{build.mode}" test-target="@{test.target}" />
+					<!-- rbm-restart-adb /-->
+                    
+                    <copy todir="${drop.dir}">
+                        <fileset dir="${testrun.dir}"/>
+                    </copy>
+              </sequential>
+            </for>
+            
+            <test-report-all-emulators />
+            
+        </sequential>
+    </macrodef>
+
+    <target name="test-on-emulator" >
+        <property name="test.target" value="8" />
+        <test-on-emulator build-mode="${build.mode}" test-target="${test.target}" />
+    </target>
+
+    <target name="test-on-all-emulators" >
+        <property name="test.targets" value="7,8,9,10,11,12,13" />
+        <test-on-all-emulators build-mode="${build.mode}" test-targets="${test.targets}" />
+    </target>
+
+    <target name="test-report-all-emulators">
+        <test-report-all-emulators />
+    </target>
+
+</project>

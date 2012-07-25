@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<style name="filter_text_view">
+		<item name="android:gravity">center</item>
+		<item name="android:padding">@dimen/medium</item>		
+	</style>	
+</resources>

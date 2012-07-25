@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+
+   <item android:drawable="@color/histogram_bg" />
+   <item android:left="@dimen/histogram_sample_half_width"
+         android:right="@dimen/histogram_sample_half_width"
+         android:drawable="@color/histogram_avarage" />  
+  
+</layer-list>

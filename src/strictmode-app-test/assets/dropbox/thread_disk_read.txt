@@ -1,0 +1,30 @@
+Process: com.android.strictmodetest
+Flags: 0xbe46
+Package: com.android.strictmodetest v1 (1.0)
+Build: google/yakju/maguro:4.0.4/IMM76D/299849:user/release-keys
+System-App: false
+Uptime-Millis: 192856623
+Loop-Violation-Number: 2
+Duration-Millis: 14
+
+android.os.StrictMode$StrictModeDiskReadViolation: policy=159 violation=2
+	at android.os.StrictMode$AndroidBlockGuardPolicy.onReadFromDisk(StrictMode.java:1089)
+	at android.os.StrictMode.noteDiskRead(StrictMode.java:1832)
+	at android.os.FileUtils.getFileStatus(FileUtils.java:82)
+	at android.app.SharedPreferencesImpl.hasFileChangedUnexpectedly(SharedPreferencesImpl.java:159)
+	at android.app.SharedPreferencesImpl.startReloadIfChangedUnexpectedly(SharedPreferencesImpl.java:141)
+	at android.app.ContextImpl.getSharedPreferences(ContextImpl.java:592)
+	at android.content.ContextWrapper.getSharedPreferences(ContextWrapper.java:153)
+	at com.android.strictmodetest.StrictModeActivity$2.onClick(StrictModeActivity.java:130)
+	at android.view.View.performClick(View.java:3511)
+	at android.view.View$PerformClick.run(View.java:14105)
+	at android.os.Handler.handleCallback(Handler.java:605)
+	at android.os.Handler.dispatchMessage(Handler.java:92)
+	at android.os.Looper.loop(Looper.java:137)
+	at android.app.ActivityThread.main(ActivityThread.java:4424)
+	at java.lang.reflect.Method.invokeNative(Native Method)
+	at java.lang.reflect.Method.invoke(Method.java:511)
+	at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:784)
+	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:551)
+	at dalvik.system.NativeStart.main(Native Method)
+

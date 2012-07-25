@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.robomorphine.remoteprefs"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="15" />    
+    
+    <application
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name" 
+        android:name=".app.App">
+       
+        <activity
+            android:name=".activity.PackageListActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        
+        <activity
+            android:name=".activity.DomainListActivity"
+            android:label="@string/app_name" />
+        
+        <provider android:name="com.robomorphine.prefs.remote.provider.RemotePrefsProvider" 
+                  android:authorities="com.robomorophine.remoteprefs" 
+                  android:enabled="true">
+            
+            <!-- This is the exact string that should appear in manifest 
+                 in provider declaration. -->
+            <meta-data android:name="com.robomorphine.remote.preferences" 
+                       android:value="true" />
+            
+        </provider>
+        
+    </application>
+
+</manifest>

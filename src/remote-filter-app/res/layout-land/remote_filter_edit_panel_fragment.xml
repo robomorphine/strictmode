@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"	
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent">
+	
+	<TextView
+		android:layout_width="fill_parent"
+		android:layout_height="@dimen/list_item_height"
+		android:gravity="center" 
+		android:text="@string/remote_filter_edit_title" />	
+	
+	<View 
+		android:layout_width="fill_parent"
+		android:layout_height="1px"
+		android:background="@color/table_divider_light" />
+	
+	<ScrollView 
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:fillViewport="true">		
+		
+		<LinearLayout 
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			android:orientation="vertical">
+		
+			<TextView 
+				android:layout_width="fill_parent"			
+				android:layout_height="wrap_content"
+				android:gravity="center"		
+				android:background="@color/table_divider_dark"
+				android:text="@string/remote_filter_edit_selection" />
+			
+			<View 
+				android:layout_width="fill_parent"
+				android:layout_height="2px"
+				android:background="@color/table_divider_light" />
+					
+			<LinearLayout 
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"				 
+				android:layout_marginTop="@dimen/medium">		
+				
+				<Button 
+					android:layout_width="0dp"
+					android:layout_weight="1"
+					android:layout_height="wrap_content" 
+					android:text="@string/remote_filter_edit_selection_all" />
+				
+				<Button 
+					android:layout_width="0dp"
+					android:layout_weight="1"
+					android:layout_height="wrap_content" 
+					android:text="@string/remote_filter_edit_selection_none" />
+				
+				<Button 
+					android:layout_width="0dp"
+					android:layout_weight="1"
+					android:layout_height="wrap_content" 
+					android:text="@string/remote_filter_edit_selection_invert" />
+			
+			</LinearLayout>
+				
+			<View 
+				android:layout_width="fill_parent"
+				android:layout_height="1px"
+				android:background="@color/table_divider_light" />
+				
+				
+			<TextView 
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:gravity="center"
+				android:background="@color/table_divider_dark"		
+				android:text="@string/remote_filter_edit_order" />
+			
+			<View 
+				android:layout_width="fill_parent"
+				android:layout_height="2px"
+				android:background="@color/table_divider_light" />
+					
+			<LinearLayout 
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"				 
+				android:layout_marginTop="@dimen/medium" >
+				
+				<ImageButton 
+					android:layout_width="0dp"
+					android:layout_weight="1"
+					android:layout_height="wrap_content"					 
+					android:src="@drawable/filter_first" />		
+				
+				<ImageButton
+					android:layout_width="0dp"
+					android:layout_weight="1"
+					android:layout_height="wrap_content"					
+					android:src="@drawable/filter_up" />
+					
+				<ImageButton 
+					android:layout_width="0dp"
+					android:layout_weight="1"
+					android:layout_height="wrap_content"					
+					android:src="@drawable/filter_down" />
+					
+				<ImageButton 
+					android:layout_width="0dp"
+					android:layout_weight="1"
+					android:layout_height="wrap_content"					
+					android:src="@drawable/filter_last" />
+					
+			</LinearLayout>
+				
+			<View 
+				android:layout_width="fill_parent"
+				android:layout_height="1px"
+				android:background="@color/table_divider_light" />
+				
+			<TextView 
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:gravity="center"
+				android:background="@color/table_divider_dark"				
+				android:text="@string/remote_filter_edit_values" />
+			
+			<View 
+				android:layout_width="fill_parent"
+				android:layout_height="2px"		
+				android:background="@color/table_divider_light" />
+					
+			<LinearLayout 
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"				
+				android:layout_marginTop="@dimen/medium" >
+				
+				<Button 
+					android:layout_width="0dp"
+					android:layout_weight="1"
+					android:layout_height="wrap_content"					 
+					android:text="@string/remote_filter_edit_values_edit" />				
+				
+				<Button 
+					android:layout_width="0dp"
+					android:layout_weight="1"
+					android:layout_height="wrap_content" 
+					android:text="@string/remote_filter_edit_values_add" />
+				
+				<Button 
+					android:layout_width="0dp"
+					android:layout_weight="1"
+					android:layout_height="wrap_content" 
+					android:text="@string/remote_filter_edit_values_delete" />
+			
+			</LinearLayout>
+			
+			<View 
+				android:layout_width="fill_parent"
+				android:layout_height="0dp"
+				android:layout_weight="1" />
+			
+			<View 
+				android:layout_width="fill_parent"
+				android:layout_height="1px"
+				android:background="@color/table_divider_light" />
+		
+		</LinearLayout>	
+	</ScrollView>				    
+</LinearLayout>

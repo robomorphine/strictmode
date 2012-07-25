@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="verbose">#ff888888</color>
+    <color name="debug">#ff006699</color>
+    <color name="info">#ff009900</color>
+    <color name="warning">#ffcc6600</color>
+    <color name="error">#ff990000</color>
+    <color name="fatal">#ff934793</color>
+</resources>

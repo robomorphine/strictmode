@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="build.android.lib" >
+        
+    <fail unless="builder.imported" 
+                  message="Import build.xml in order to use ${ant.file.build.android.lib} build file." />
+    
+    <import file="common.xml" />
+	<import file="android.quality.xml" />
+    <import file="android.sdk.xml" />
+
+    <target name="-pre-build-debug" >
+        <property name="build.mode" value="debug" />
+    </target>
+
+    <target name="-pre-build-instrument" >
+        <property name="build.mode" value="instrument" />
+    </target>
+
+    <target name="-pre-build-release" >
+        <property name="build.mode" value="release" />
+    </target>
+
+    <target name="-pre-build">
+        <property name="bin.dir" location="${project.dir}/bin" />
+        <property name="libs.dir" location="${project.dir}/libs" />
+        <property name="bin.dir" location="${project.dir}/bin/${build.mode}" />
+        <property name="jar.file" location="${bin.dir}/classes.jar" />
+        <property name="jar.dir"  location="${bin.dir}/jar" />
+        
+        <echo>bin.dir  = ${bin.dir}</echo>
+        <echo>jar.file = ${jar.file}</echo>
+        <echo>jar.dir  = ${jar.dir}</echo>
+        <mkdir dir="${bin.dir}" />
+    </target>    
+
+    <target name="drop-jar">
+        <copy file="${jar.file}" tofile="${drop.dir}/${build.mode}/${project.name}.jar" />
+    </target>
+
+    <target name="make-libs-dir">
+        <mkdir dir="${libs.dir}" />
+    </target>
+
+    <target name="build" depends="-pre-build, drop-jar, make-libs-dir" />
+
+    <target name="debug" depends="-pre-build-debug, prepare-project, android.debug, build" />
+    <target name="instrument" depends="-pre-build-instrument, prepare-project, android.instrument, build" />
+    <target name="release" depends="-pre-build-release, prepare-project, android.release, build" />
+    <target name="clean" depends="-pre-build, android.clean" >
+        <delete dir="${bin.dir}" />
+        <delete dir="${libs.dir}" />
+        <mkdir dir="${libs.dir}" />
+    </target>
+	
+	<target name="pmd" depends="-pre-build-debug, android.quality.pmd" />
+	<target name="cpd" depends="-pre-build-debug, android.quality.cpd" />
+	<target name="findbugs" depends="debug, android.quality.findbugs" />
+    
+</project>

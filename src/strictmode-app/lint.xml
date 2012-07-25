@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <issue id="ContentDescription" severity="ignore" />
+    <issue id="IconDuplicatesConfig">
+        <ignore path="res\drawable-mdpi\list_selected_holo_dark.9.png" />
+    </issue>
+</lint>

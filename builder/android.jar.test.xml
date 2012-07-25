@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="build.android.jar.test" >
+
+    <property name="tested.project.target" value="noop" />
+    
+    <property name="tested.project.dir" location="." />
+    <import file="android.test.xml" />
+
+    <target name="noop" />
+</project>
