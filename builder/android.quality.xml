@@ -101,11 +101,13 @@
     <target name="lint" depends="-quality-dirs, -lint-defaults" if="${project.lint}">
     	 <mkdir dir="${quality.dir}/lint/${project.name}" />
          <exec executable="${lint.file}">
+            <arg line="--fullpath" />
          	<arg line="--xml"/>
          	<arg file="${quality.dir}/lint/${project.name}/lint.xml"/>
          	<arg file="${project.dir}" />
      	 </exec>
     	 <exec executable="${lint.file}">
+            <arg line="--fullpath" />
             <arg line="--html"/>
             <arg file="${quality.dir}/lint/${project.name}/html"/>
             <arg file="${project.dir}" />
