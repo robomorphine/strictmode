@@ -5,6 +5,8 @@ import com.actionbarsherlock.app.SherlockListFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.widget.searchview.OnQueryTextListener;
+import com.actionbarsherlock.widget.searchview.SearchView;
 import com.google.common.base.Objects;
 import com.robomorphine.strictmode.R;
 import com.robomorphine.strictmode.adapter.PackageListAdapter;
@@ -18,8 +20,6 @@ import android.support.v4.content.Loader;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.SearchView;
-import android.widget.SearchView.OnQueryTextListener;
 
 import java.util.List;
 

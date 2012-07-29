@@ -30,7 +30,8 @@
             android:name=".activity.ViolationActivity" />
         
         <activity
-            android:name=".activity.PackageListActivity" />        
+            android:name=".activity.PackageListActivity"
+            android:theme="@style/Theme.Sherlock.SearchView" />        
         
     </application>
 
