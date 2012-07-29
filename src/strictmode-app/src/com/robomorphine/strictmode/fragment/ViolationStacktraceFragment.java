@@ -5,6 +5,7 @@ import com.robomorphine.strictmode.adapter.ViolationStacktraceAdapter;
 import com.robomorphine.strictmode.violation.ViolationException;
 import com.robomorphine.strictmode.violation.group.ViolationGroup;
 
+import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.Menu;
