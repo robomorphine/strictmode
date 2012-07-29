@@ -21,15 +21,6 @@ import java.lang.reflect.Field;
 
 class ActivityManagerProxifier {
     
-    public static class UnsupportedVersionException extends RuntimeException {
-        
-        private static final long serialVersionUID = 1L;
-
-        public UnsupportedVersionException() {
-            super("This version of Android is not supported by StrictModeHelper.");
-        }
-    }
-    
     private static final String TAG = ActivityManagerProxifier.class.getSimpleName();
     
     private static final String GLOBAL_DEFAULT_INSTANCE = "gDefault";
@@ -77,7 +68,9 @@ class ActivityManagerProxifier {
         }
     }
     
-    private static IActivityManager createActivityManagerProxy(IActivityManager manager) {
+    private static IActivityManager createActivityManagerProxy(IActivityManager manager)
+            throws PlatformNotSupportedException {
+        
         DataProxy<ViolationInfo> dataProxy = null;
         
         switch(Build.VERSION.SDK_INT) {
@@ -94,7 +87,7 @@ class ActivityManagerProxifier {
                 dataProxy = new ViolationInfoProxyR11();
                 break;
             default:
-                throw new UnsupportedVersionException();
+                throw new PlatformNotSupportedException("ViolationInfoProxy");
         }
         
         switch(Build.VERSION.SDK_INT) {
@@ -114,23 +107,28 @@ class ActivityManagerProxifier {
             case 16: 
                 return new IActivityManagerProxyR16(manager, dataProxy);
             default:
-                throw new UnsupportedVersionException();
+                throw new PlatformNotSupportedException("IActivityManagerProxy");
         }
     }
         
-    public static boolean enableUniqueViolations(boolean enable) {
+    public static void enableUniqueViolations(boolean enable)
+            throws PlatformNotSupportedException {
+    
         synchronized (ActivityManagerProxifier.class) {
-            if(enable && sOldActivityManager == null) {
+            if (enable && sOldActivityManager == null) {
                 IActivityManager originalActivityManager = ActivityManagerNative.getDefault();
                 IActivityManager proxy = createActivityManagerProxy(originalActivityManager);
                 sOldActivityManager = replaceActivityManager(proxy);
-                return sOldActivityManager != null;
-            } else if(!enable && sOldActivityManager != null) {
+                if (sOldActivityManager == null) {
+                    throw new PlatformNotSupportedException("replaceActivityManager");
+                }
+            } else if (!enable && sOldActivityManager != null) {
                 IActivityManager activityManager = replaceActivityManager(sOldActivityManager);
                 sOldActivityManager = null;
-                return activityManager != null;
+                if (activityManager == null) {
+                    throw new PlatformNotSupportedException("replaceActivityManager");
+                }
             }
-            return true;
         }        
     }    
 }

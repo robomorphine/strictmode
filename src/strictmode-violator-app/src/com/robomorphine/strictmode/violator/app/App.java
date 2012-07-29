@@ -1,5 +1,6 @@
 package com.robomorphine.strictmode.violator.app;
 
+import com.robomorphine.strictmode.PlatformNotSupportedException;
 import com.robomorphine.strictmode.StrictModeHelper;
 import com.robomorphine.strictmode.setter.Policy;
 import com.robomorphine.strictmode.violator.BuildConfig;
@@ -10,9 +11,12 @@ import android.app.Application;
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
+import android.util.Log;
 
 @SuppressFBWarnings(justification="Android pattern", value = "ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD")
 public class App extends Application {
+    
+    private static String TAG = App.class.getSimpleName();
         
     private static Context sContext;
     
@@ -33,6 +37,12 @@ public class App extends Application {
                                            Policy.All.DetectAll,
                                            Policy.All.PenaltyDropBox,
                                            Policy.All.PenaltyLog);
+            
+            try{ 
+                StrictModeHelper.enableUniqueViolations(true);
+            } catch(PlatformNotSupportedException ex) {
+                Log.e(TAG, "Unique violations are not supported.", ex);
+            }
         }
         super.onCreate();
         

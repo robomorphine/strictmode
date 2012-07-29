@@ -16,8 +16,8 @@ public class StrictModeHelper {
     private static Runnable sRestoreStrictMode = null;
     private static Handler sHandler = null;
     
-    public static boolean enableUniqueViolations(boolean enable) {
-        return ActivityManagerProxifier.enableUniqueViolations(enable);        
+    public static void enableUniqueViolations(boolean enable) throws PlatformNotSupportedException {
+        ActivityManagerProxifier.enableUniqueViolations(enable);        
     }
     
     /**
