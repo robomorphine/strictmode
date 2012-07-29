@@ -1,5 +1,5 @@
 <ivy-module version="1.0">
-    <info organisation="com.robomorphine" module="com.robomorphine.prefs" />	
+<info organisation="com.actionbarsherlock" module="com.actionbarsherlock" />	
 	<dependencies>
 		<dependency org="android" name="android-support" rev="latest.integration" />
 	</dependencies>
