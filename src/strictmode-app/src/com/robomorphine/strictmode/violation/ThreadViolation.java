@@ -2,9 +2,12 @@ package com.robomorphine.strictmode.violation;
 
 import com.google.common.annotations.VisibleForTesting;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 import java.util.HashMap;
 import java.util.Map;
 
+@SuppressFBWarnings(value = "EQ_DOESNT_OVERRIDE_EQUALS")
 public class ThreadViolation extends Violation {
     
     private static final long serialVersionUID = 1L;

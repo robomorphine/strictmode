@@ -4,6 +4,8 @@ package com.robomorphine.strictmode.violator.violation;
 import com.robomorphine.strictmode.violator.R;
 import com.robomorphine.strictmode.violator.provider.SimpleProvider;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 import android.content.ContentResolver;
 import android.content.Context;
 import android.os.Handler;
@@ -19,6 +21,7 @@ public class ExplicitTerminationViolation extends VmViolation {
                 R.string.explicit_termination_descr);
     }
     
+    @SuppressFBWarnings(value="DM_GC")
     @Override
     public void violate() {
         new Thread(new Runnable() {

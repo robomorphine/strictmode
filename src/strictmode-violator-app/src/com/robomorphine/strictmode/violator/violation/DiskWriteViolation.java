@@ -25,10 +25,13 @@ public class DiskWriteViolation extends ThreadViolation {
             File file = new File(getContext().getFilesDir(), "violation-test");
             FileOutputStream fout = new FileOutputStream(file);
             OutputStreamWriter writer = new OutputStreamWriter(fout);
-            for(int i = 0; i < 100; i++) {
-                writer.write("test");
+            try {
+                for(int i = 0; i < 100; i++) {
+                    writer.write("test");
+                }
+            } finally {
+                writer.close();
             }
-            writer.close();
             
         } catch(IOException ex) {
             Toast.makeText(getContext(), "Failed to write file: " + ex.toString(), Toast.LENGTH_LONG).show();

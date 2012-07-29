@@ -152,11 +152,7 @@ public class HistogramView extends View implements Observer {
             int bottom = height;
             int top = height - (int)(yDelta * mHistogram.getBucketHitCount(i));
             Rect rect = new Rect(left, top, right, bottom);
-            if(i == maxIndex) {
-                canvas.drawRect(rect, ordinalPaint);//was: maxPaint
-            } else {
-                canvas.drawRect(rect, ordinalPaint);
-            }
+            canvas.drawRect(rect, ordinalPaint);//was: maxPaint
         }
         
         /* ticks */

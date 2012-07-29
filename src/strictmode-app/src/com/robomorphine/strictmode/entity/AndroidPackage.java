@@ -39,8 +39,21 @@ public class AndroidPackage implements Comparable<AndroidPackage> {
     }
     
     @Override
-    public int compareTo(AndroidPackage another) {
-        
+    public int hashCode() {
+        return mPackageInfo.hashCode();
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof AndroidPackage) {
+            AndroidPackage ap = (AndroidPackage)o;
+            return mPackageInfo.equals(ap.mPackageInfo);
+        }
+        return false;
+    }
+    
+    @Override
+    public int compareTo(AndroidPackage another) {        
         return mApplicationLabel.compareTo(another.mApplicationLabel);
     }
 }

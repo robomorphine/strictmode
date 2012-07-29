@@ -18,14 +18,17 @@ public class DiskReadViolation extends ThreadViolation {
               R.string.disk_read_name, 
               R.string.disk_read_descr);
     }
-    
+        
     @Override
     public void violate() {
         try {
             FileInputStream fin = new FileInputStream("/proc/self/limits");
             BufferedReader reader = new BufferedReader(new InputStreamReader(fin), 100);
-            while(reader.readLine() != null);//NOPMD
-            reader.close();
+            try {
+                while(reader.readLine() != null);//NOPMD
+            } finally {
+                reader.close();
+            }
         } catch(IOException ex) {
             Toast.makeText(getContext(), "Failed to read file: " + ex.toString(), Toast.LENGTH_LONG).show();
         }
