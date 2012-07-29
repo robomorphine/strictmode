@@ -16,7 +16,7 @@ public class ViolationInfoProxyR11 implements DataProxy<ViolationInfo> {
         violation.tags[0] = Long.toString(System.currentTimeMillis());
         
         if(oldTags != null) {
-            for(int i = 0; i < oldTags.length; i++) {
+            for(int i = 0; i < oldTags.length; i++) {//NOPMD
                 violation.tags[i+1] = oldTags[i];
             }
         }

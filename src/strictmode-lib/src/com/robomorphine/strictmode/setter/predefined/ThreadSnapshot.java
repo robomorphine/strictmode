@@ -24,7 +24,7 @@ public class ThreadSnapshot extends AbstractStrictModeSetter {
     public ThreadSnapshot() {
         try {
             mPolicy = StrictMode.getThreadPolicy();
-        } catch(Throwable ex) {
+        } catch(Throwable ex) {//NOPMD
             Log.e(TAG, "Unable to retrieve current thread policy.", ex);
         }
     }

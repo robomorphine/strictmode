@@ -9,7 +9,7 @@ import android.net.Uri;
 
 public class SimpleProvider extends ContentProvider {
     
-    public static Uri CONTENT_URI = Uri.parse("content://com.robomorphine.strictmode.violator.provider"); 
+    public static final Uri CONTENT_URI = Uri.parse("content://com.robomorphine.strictmode.violator.provider"); 
     
     @Override
     public boolean onCreate() {

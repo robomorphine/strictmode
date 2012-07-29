@@ -1,7 +1,5 @@
 package com.robomorphine.strictmode.violation;
 
-import com.robomorphine.strictmode.violation.ViolationException;
-
 import java.io.IOException;
 
 public class ViolationExceptionTest extends BaseTestCase {
@@ -30,7 +28,7 @@ public class ViolationExceptionTest extends BaseTestCase {
     }
     
     private StackTraceElement [] newStackTrace() {
-        Throwable th = new Throwable();
+        Throwable th = new Throwable();//NOPMD
         th.fillInStackTrace();
         return th.getStackTrace();
     }

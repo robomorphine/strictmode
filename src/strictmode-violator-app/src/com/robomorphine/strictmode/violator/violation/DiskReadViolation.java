@@ -24,7 +24,7 @@ public class DiskReadViolation extends ThreadViolation {
         try {
             FileInputStream fin = new FileInputStream("/proc/self/limits");
             BufferedReader reader = new BufferedReader(new InputStreamReader(fin), 100);
-            while(reader.readLine() != null);
+            while(reader.readLine() != null);//NOPMD
             reader.close();
         } catch(IOException ex) {
             Toast.makeText(getContext(), "Failed to read file: " + ex.toString(), Toast.LENGTH_LONG).show();

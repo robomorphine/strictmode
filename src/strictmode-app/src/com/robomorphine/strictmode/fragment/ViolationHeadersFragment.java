@@ -3,13 +3,12 @@ package com.robomorphine.strictmode.fragment;
 import com.robomorphine.strictmode.adapter.ViolationHeadersAdapter;
 import com.robomorphine.strictmode.violation.Violation;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 
 public class ViolationHeadersFragment extends ListFragment {
     
-    private Violation mViolation;
+    private Violation mViolation;//NOPMD
     private ViolationHeadersAdapter mAdapter;
     
     @Override
@@ -25,29 +24,5 @@ public class ViolationHeadersFragment extends ListFragment {
         setListAdapter(mAdapter);
         getListView().setFastScrollEnabled(true);
     }
-   
     
-    @Override
-    public void onDestroy() {
-        // TODO Auto-generated method stub
-        super.onDestroy();
-    }
-    
-    @Override
-    public void onAttach(Activity activity) {
-        // TODO Auto-generated method stub
-        super.onAttach(activity);
-    }
-    
-    @Override
-    public void onDestroyView() {
-        // TODO Auto-generated method stub
-        super.onDestroyView();
-    }
-    
-    @Override
-    public void onDetach() {
-        // TODO Auto-generated method stub
-        super.onDetach();
-    }
 }

@@ -91,8 +91,8 @@ public class ViolationActivity extends SherlockFragmentActivity implements TabLi
     
     public static class ViolationHelpDialog extends DialogFragment {
         
-        public static String EXTRA_TITLE = "title";
-        public static String EXTRA_BODY = "body";
+        public static final String EXTRA_TITLE = "title";
+        public static final String EXTRA_BODY = "body";
         
         public static ViolationHelpDialog newInstance(String title, String body) {
             Bundle args = new Bundle();
@@ -122,7 +122,7 @@ public class ViolationActivity extends SherlockFragmentActivity implements TabLi
     
     private ViolationGroup mViolationGroup;
     
-    private Map<String, Tab> mTabs = new HashMap<String, Tab>();
+    private final Map<String, Tab> mTabs = new HashMap<String, Tab>();
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -238,7 +238,7 @@ public class ViolationActivity extends SherlockFragmentActivity implements TabLi
             ApplicationInfo info = pm.getApplicationInfo(violation.getPackage(), 0);
             appIcon = pm.getApplicationIcon(info);
             appName = pm.getApplicationLabel(info).toString();
-        } catch(NameNotFoundException ex) {
+        } catch(NameNotFoundException ex) {//NOPMD
             //do nothing
         }
         if(appIcon == null) {

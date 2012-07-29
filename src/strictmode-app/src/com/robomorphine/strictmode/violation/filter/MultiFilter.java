@@ -8,7 +8,7 @@ public abstract class MultiFilter implements ViolationFilter {
     
     private static final long serialVersionUID = 1L;
          
-    private final ArrayList<ViolationFilter> mFilters = new ArrayList<ViolationFilter>();
+    private final List<ViolationFilter> mFilters = new ArrayList<ViolationFilter>();
     private final List<ViolationFilter> mPublicFilters = Collections.unmodifiableList(mFilters);
     private final int mHashCode;
          
@@ -40,21 +40,23 @@ public abstract class MultiFilter implements ViolationFilter {
     
     @Override
     public boolean equals(Object o) {
-        if(o instanceof MultiFilter) {
-            MultiFilter other = (MultiFilter)o;
-            if(mFilters.size() == other.mFilters.size()) {
-                int size = mFilters.size();
-                for(int i = 0; i < size; i++) {
-                    ViolationFilter a = mFilters.get(i);
-                    ViolationFilter b = other.mFilters.get(i);
-                    if(!a.equals(b)) {
-                        return false;
-                    }
-                }
-                return true;
+        if (!(o instanceof MultiFilter)) {
+            return false;
+        }
+        MultiFilter other = (MultiFilter)o;
+        if(mFilters.size() != other.mFilters.size()) {
+            return false;
+        }        
+        
+        int size = mFilters.size();
+        for(int i = 0; i < size; i++) {
+            ViolationFilter a = mFilters.get(i);
+            ViolationFilter b = other.mFilters.get(i);
+            if(!a.equals(b)) {
+                return false;
             }
         }
-        return false;
+        return true;
     }
     
     @Override

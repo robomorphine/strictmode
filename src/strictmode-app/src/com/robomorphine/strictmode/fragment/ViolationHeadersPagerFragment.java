@@ -25,14 +25,14 @@ public class ViolationHeadersPagerFragment extends Fragment implements OnPageCha
     private ViolationHeadersPagerAdapter mAdapter;
     private TextView mViewPagerPosition;
     
-    private Runnable mSetAdapterRunnable = new Runnable() {
+    private final Runnable mSetAdapterRunnable = new Runnable() {
         @Override
         public void run() {
             mViewPager.setAdapter(mAdapter);
         }
     };
     
-    private Runnable mUnsetAdapterRunnable = new Runnable() {
+    private final Runnable mUnsetAdapterRunnable = new Runnable() {
         @Override
         public void run() {
             mViewPager.setAdapter(null);

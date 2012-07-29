@@ -2,11 +2,11 @@ package com.robomorphine.strictmode.violator.violation;
 
 import java.util.Random;
 
-public class StackTraceRandomizer {
+public class StackTraceRandomizer {//NOPMD
         
-    private Random mRandom = new Random();
+    private final Random mRandom = new Random();
     
-    public void call(int depth, Runnable runnable) {
+    public void call(int depth, Runnable runnable) {//NOPMD
         if(depth == 0) {
             runnable.run();
             return;
@@ -43,6 +43,9 @@ public class StackTraceRandomizer {
                 break;
             case 9:
                 f9(depth, runnable);
+                break;
+            default:
+                f0(depth, runnable);
                 break;
         }
     }

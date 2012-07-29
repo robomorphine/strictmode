@@ -1,9 +1,5 @@
 package com.robomorphine.strictmode;
 
-import com.robomorphine.strictmode.DataProxy;
-import com.robomorphine.strictmode.ViolationInfoProxyR09;
-import com.robomorphine.strictmode.ViolationInfoProxyR11;
-
 import android.app.ActivityManagerNative;
 import android.app.IActivityManager;
 import android.app.IActivityManagerProxyR09;
@@ -19,7 +15,7 @@ import android.util.Log;
 
 import java.lang.reflect.Field;
 
-class ActivityManagerProxifier {
+class ActivityManagerProxifier { //NOPMD
     
     private static final String TAG = ActivityManagerProxifier.class.getSimpleName();
     
@@ -68,11 +64,8 @@ class ActivityManagerProxifier {
         }
     }
     
-    private static IActivityManager createActivityManagerProxy(IActivityManager manager)
-            throws PlatformNotSupportedException {
-        
-        DataProxy<ViolationInfo> dataProxy = null;
-        
+    private static DataProxy<ViolationInfo> createDataProxy() throws PlatformNotSupportedException {
+        DataProxy<ViolationInfo> dataProxy = null;        
         switch(Build.VERSION.SDK_INT) {
             case 9:
             case 10:
@@ -89,8 +82,14 @@ class ActivityManagerProxifier {
             default:
                 throw new PlatformNotSupportedException("ViolationInfoProxy");
         }
+        return dataProxy;
+    }
+    
+    private static IActivityManager createActivityManagerProxy(IActivityManager manager)
+            throws PlatformNotSupportedException {
         
-        switch(Build.VERSION.SDK_INT) {
+        DataProxy<ViolationInfo> dataProxy = createDataProxy();        
+        switch(Build.VERSION.SDK_INT) {//NOPMD
             case 9:
             case 10:
                 return new IActivityManagerProxyR09(manager, dataProxy);

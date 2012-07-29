@@ -32,8 +32,8 @@ public class ViolationListFragment extends ListFragment
                                               OnItemLongClickListener {
 
     public interface OnViolationClickListener {
-        public void onViolationClicked(ViolationGroup group);
-        public void onViolationLongClicked(ViolationGroup group);
+        void onViolationClicked(ViolationGroup group);
+        void onViolationLongClicked(ViolationGroup group);
     }
     
     private final static int LOADER_ID = 1;

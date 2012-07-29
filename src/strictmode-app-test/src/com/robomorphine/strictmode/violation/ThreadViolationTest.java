@@ -1,6 +1,5 @@
 package com.robomorphine.strictmode.violation;
 
-import com.robomorphine.strictmode.violation.ThreadViolation;
 import com.robomorphine.strictmode.violation.ThreadViolation.ThreadViolationFactory;
 
 import java.io.IOException;
@@ -44,8 +43,8 @@ public class ThreadViolationTest extends BaseTestCase {
         String key2 = "key2";
         String value2 = "value2 with spaces ";
         
-        String msg= key1 + "=" + value1;
-        msg += " " + key2 + "=" + value2;
+        String msg = key1 + "=" + value1;//NOPMD
+        msg += " " + key2 + "=" + value2;//NOPMD
         
         Map<String, String> map = ThreadViolation.parseExceptionMessage(msg);
         assertEquals(2, map.size());
@@ -59,8 +58,8 @@ public class ThreadViolationTest extends BaseTestCase {
         String key2 = "key2";
         String value2 = "value2 with spaces ";
         
-        String msg= key1 + "=" + value1;
-        msg += " " + key2 + "=" + value2;
+        String msg = key1 + "=" + value1;//NOPMD
+        msg += " " + key2 + "=" + value2;//NOPMD
         
         Map<String, String> map = ThreadViolation.parseExceptionMessage(msg);
         assertEquals(2, map.size());

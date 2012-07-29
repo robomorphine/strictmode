@@ -27,10 +27,10 @@ public class ExplicitTerminationViolation extends VmViolation {
                 try {
                     ContentResolver cr = getContext().getContentResolver(); 
                     cr.query(SimpleProvider.CONTENT_URI, null, null, null, null);
-                } catch(Throwable ex) {
+                } catch(Throwable ex) {//NOPMD
                     error(ex.toString());
                 }
-                System.gc();
+                System.gc();//NOPMD
             }
         }).start();
     }

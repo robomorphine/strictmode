@@ -100,7 +100,7 @@ public class ViolationListAdapter extends BaseAdapter implements SectionIndexer 
                 ApplicationInfo info = pm.getApplicationInfo(violation.getPackage(), 0);
                 appIcon = pm.getApplicationIcon(info);
                 tag = pm.getApplicationLabel(info).toString();
-            } catch(NameNotFoundException ex) {
+            } catch(NameNotFoundException ex) {//NOPMD
                 //do nothing
             }
             if(appIcon == null) {

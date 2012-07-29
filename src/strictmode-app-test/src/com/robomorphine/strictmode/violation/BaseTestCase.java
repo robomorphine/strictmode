@@ -1,8 +1,5 @@
 package com.robomorphine.strictmode.violation;
 
-import com.robomorphine.strictmode.violation.ViolationException;
-import com.robomorphine.strictmode.violation.ViolationParser;
-
 import android.content.res.AssetManager;
 import android.test.InstrumentationTestCase;
 
@@ -15,26 +12,26 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class BaseTestCase extends InstrumentationTestCase {
+public abstract class BaseTestCase extends InstrumentationTestCase { 
     
     protected static class RawViolation {
         public RawViolation(Map<String, String> headers, ViolationException exception) {
             this.headers = headers;
             this.exception = exception;
         }
-        final Map<String, String> headers;
-        final ViolationException exception;
+        protected final Map<String, String> headers;
+        protected final ViolationException exception;
     }
     
-    private List<InputStream> mOpenedStreams = new LinkedList<InputStream>();
+    private final List<InputStream> mOpenedStreams = new LinkedList<InputStream>();
     
     @Override
-    protected void tearDown() throws Exception {
+    protected void tearDown() throws Exception { //NOPMD
         super.tearDown();
         for(InputStream in : mOpenedStreams) {
             try {
                 in.close();
-            } catch(IOException ex) {
+            } catch(IOException ex) {//NOPMD
                 //ignore;
             }
         }

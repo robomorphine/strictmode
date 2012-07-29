@@ -23,7 +23,7 @@ public class VmSnapshot extends AbstractStrictModeSetter {
     public VmSnapshot() {
         try {
             mPolicy = StrictMode.getVmPolicy();
-        } catch (Throwable ex) {
+        } catch (Throwable ex) {//NOPMD
             Log.e(TAG, "Unable to retrieve current vm policy.", ex);
         }        
     }

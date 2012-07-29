@@ -1,7 +1,6 @@
 package com.robomorphine.strictmode.violation;
 
-import com.robomorphine.strictmode.violation.Violation;
-import com.robomorphine.strictmode.violation.ViolationException;
+
 import com.robomorphine.strictmode.violation.Violation.ViolationFactory;
 
 import java.io.IOException;

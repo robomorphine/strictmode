@@ -212,7 +212,7 @@ public class ViolationListFilterFragment extends Fragment
         updateFilter();
         
         if(mPendingFilter != null) {
-            if(mListener != null) {
+            if(mListener != null) {//NOPMD
                 mListener.onViolationFilterChanged(mPendingFilter);
                 mPendingFilter = null;
             }
@@ -277,7 +277,7 @@ public class ViolationListFilterFragment extends Fragment
         }
     }
     
-    void updateFilter() {
+    private void updateFilter() {
         ViolationFilter filter = null;
         if(mSelectedPackage == null || mSelectedTimestampMode == TimestampMode.All) {
             filter = new PackageViolationFilter(mSelectedPackage);
@@ -310,7 +310,7 @@ public class ViolationListFilterFragment extends Fragment
     
     @Override
     public void onClick(View v) {
-        if(v == mPackageSpinner) {
+        if(v == mPackageSpinner) {//NOPMD
             Intent intent = new Intent(getActivity(), PackageListActivity.class);
             startActivityForResult(intent, SELECT_PACKAGE_REQUEST_KEY);
         }
@@ -327,14 +327,14 @@ public class ViolationListFilterFragment extends Fragment
     
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        if(parent == mTimestampModeSpinner) {
+        if(parent == mTimestampModeSpinner) {//NOPMD
             setSelectedTimestampMode(mTimestampModeSpinnerAdapter.getItem(position).timestampMode);
         }
     }
     
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
-        if(parent == mTimestampModeSpinner) {
+        if(parent == mTimestampModeSpinner) {//NOPMD
             setSelectedTimestampMode(TimestampMode.SinceInstall);
         }
     }

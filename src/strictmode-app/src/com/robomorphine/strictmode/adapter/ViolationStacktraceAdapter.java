@@ -104,6 +104,8 @@ public class ViolationStacktraceAdapter extends BaseAdapter {
             case STACKTRACE_ELEMENT_TYPE:
                 bindStacktraceEntryView((StackTraceElement)getItem(position), view);
                 break;
+            default:
+                throw new IllegalStateException("Invalid view type.");
         }
         
         return view;

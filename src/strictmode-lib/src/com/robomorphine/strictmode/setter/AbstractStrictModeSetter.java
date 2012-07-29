@@ -66,7 +66,7 @@ public abstract class AbstractStrictModeSetter implements StrictModeSetter {
             
             int policyMask = policyMaskField.getInt(policy);
             builderMaskField.setInt(builder, policyMask);        
-        } catch (Throwable ex) {
+        } catch (Throwable ex) {//NOPMD
             Log.e(TAG, "Failed to inherit existing VmPolicy mask to VmPolicy.Builder.", ex);
         }
         return builder;

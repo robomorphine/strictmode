@@ -5,7 +5,7 @@ import com.robomorphine.strictmode.violation.group.ViolationGroup;
 
 import android.os.Bundle;
 
-public class ViolationFragmentHelper {
+public class ViolationFragmentHelper {//NOPMD
 
     /**
      * Type: ViolationGroup

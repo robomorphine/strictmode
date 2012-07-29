@@ -12,7 +12,7 @@ import java.util.Queue;
 
 public class InstanceCountViolation extends VmViolation {
       
-    private Queue<Object> mLeakQueue = new LinkedList<Object>();
+    private final Queue<Object> mLeakQueue = new LinkedList<Object>();
     
     public InstanceCountViolation(Context context) {
         super(context, R.drawable.memory_multiple, 

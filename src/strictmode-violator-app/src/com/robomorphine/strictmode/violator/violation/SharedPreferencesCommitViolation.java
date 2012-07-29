@@ -9,7 +9,7 @@ import java.util.Random;
 
 public class SharedPreferencesCommitViolation extends ThreadViolation {
     
-    private Random mRandom = new Random();
+    private final Random mRandom = new Random();
     
     public SharedPreferencesCommitViolation(Context context) {
         super(context,

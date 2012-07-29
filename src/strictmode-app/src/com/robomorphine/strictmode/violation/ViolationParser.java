@@ -40,7 +40,7 @@ public class ViolationParser { //NOPMD
         sFactoryRegistry = Collections.unmodifiableList(factoryRegistry);
     }
     
-    private HashMap<List<String>, StackTraceElement[]> mStacktraceCache;
+    private final Map<List<String>, StackTraceElement[]> mStacktraceCache;
     
     
     public ViolationParser() {
@@ -161,7 +161,7 @@ public class ViolationParser { //NOPMD
                 //just a comment, do nothing
             } else if(line.startsWith(STACK_TRACE_ENTRY_PREFIX)) {
                 exceptionStackTrace.push(line);
-            } else if(line.startsWith(STACK_TRACE_INGORE_PREFIX)) {
+            } else if(line.startsWith(STACK_TRACE_INGORE_PREFIX)) { //NOPMD
                 //special prefix that is added in order to 
                 //make stacktrace unique, but that should be ignored
                 //during parsing
@@ -304,7 +304,7 @@ public class ViolationParser { //NOPMD
                 } else {
                     /* extract file and line number */
                     List<String> locationParts = fastSplit(fullLocation, ':');
-                    if(locationParts.size() > 0) {
+                    if(locationParts.size() > 0) {//NOPMD
                         locationFileName = locationParts.get(0);
                     }
                     if(locationParts.size() > 1) {

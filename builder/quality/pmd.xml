@@ -138,7 +138,6 @@
    <rule ref="rulesets/sunsecure.xml/MethodReturnsInternalArray"/>
    <rule ref="rulesets/sunsecure.xml/ArrayIsStoredDirectly"/>
    <rule ref="rulesets/coupling.xml/CouplingBetweenObjects"/>
-   <rule ref="rulesets/coupling.xml/ExcessiveImports"/>
    <rule ref="rulesets/coupling.xml/LooseCoupling"/>
    <rule ref="rulesets/imports.xml/DuplicateImports"/>
    <rule ref="rulesets/imports.xml/DontImportJavaLang"/>
@@ -146,7 +145,6 @@
    <rule ref="rulesets/imports.xml/ImportFromSamePackage"/>
    <rule ref="rulesets/junit.xml/JUnitStaticSuite"/>
    <rule ref="rulesets/junit.xml/JUnitSpelling"/>
-   <rule ref="rulesets/junit.xml/JUnitTestsShouldIncludeAssert"/>
    <rule ref="rulesets/junit.xml/TestClassWithoutTestCases"/>
    <rule ref="rulesets/junit.xml/UnnecessaryBooleanAssertion"/>
    <rule ref="rulesets/junit.xml/UseAssertEqualsInsteadOfAssertTrue"/>

@@ -13,12 +13,11 @@ import javax.annotation.Nonnull;
  * 
  * @author inazaruk
  */
-public interface ViolationFilter extends Serializable {
-    
-    public static final String PROPERTY_PACKAGE = "package";
-    public static final String PROPERTY_TIMESTAMP = "timestamp";
+public interface ViolationFilter extends Serializable {    
+    String PROPERTY_PACKAGE = "package";
+    String PROPERTY_TIMESTAMP = "timestamp";
         
-    public boolean matches(@Nonnull Violation violation);
+    boolean matches(@Nonnull Violation violation);
     
-    public boolean usesProperty(@Nonnull String propertyName);
+    boolean usesProperty(@Nonnull String propertyName);
 }

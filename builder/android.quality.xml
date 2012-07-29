@@ -29,6 +29,8 @@
            <formatter type="xml" toFile="${pmd.out.dir}/${project.name}.xml" />
            <fileset dir="${project.pmd.src}">
               <include name="**/*.java"/>
+              <exclude name="**/R.java"/>
+              <exclude name="**/R$*.java"/>
            </fileset>
        </pmd>
 	</target>

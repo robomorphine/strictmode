@@ -102,7 +102,7 @@ public class ViolationLoader extends AsyncLoader<ViolationGroups> {
                 }
                 dbEntry.close();
             }
-        } catch(Throwable ex) {
+        } catch(Throwable ex) {//NOPMD
             Log.e(TAG, "Failed to fetch drop box items.", ex);
         }
     }

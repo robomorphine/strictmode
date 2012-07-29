@@ -16,7 +16,7 @@ import android.util.Log;
 @SuppressFBWarnings(justification="Android pattern", value = "ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD")
 public class App extends Application {
     
-    private static String TAG = App.class.getSimpleName();
+    private final static String TAG = App.class.getSimpleName();
         
     private static Context sContext;
     

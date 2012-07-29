@@ -11,7 +11,7 @@ import android.os.Looper;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StrictModeHelper {
+public class StrictModeHelper { //NOPMD
     
     private static Runnable sRestoreStrictMode = null;
     private static Handler sHandler = null;
