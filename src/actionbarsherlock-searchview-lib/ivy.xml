@@ -1,0 +1,6 @@
+<ivy-module version="1.0">
+    <info organisation="com.actionbarsherlock" module="com.actionbarsherlock.searchview" />	
+	<dependencies>
+		<dependency org="android" name="android-support" rev="latest.integration" />
+	</dependencies>
+</ivy-module>
