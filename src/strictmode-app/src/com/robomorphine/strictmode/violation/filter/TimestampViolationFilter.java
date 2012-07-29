@@ -28,7 +28,7 @@ public class TimestampViolationFilter implements ViolationFilter {
     
     @Override
     public boolean equals(Object o) {
-        if(o instanceof PackageViolationFilter) {
+        if(o instanceof TimestampViolationFilter) {
             TimestampViolationFilter other = (TimestampViolationFilter)o;
             return mTimestamp == other.mTimestamp;
         }
