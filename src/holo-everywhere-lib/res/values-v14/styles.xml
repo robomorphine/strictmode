@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.HoloEverywhereDark" parent="android:Theme.Holo">
+        <item name="android:windowNoTitle">false</item>
+    </style>
+
+    <style name="Theme.HoloEverywhereLight" parent="android:Theme.Holo.Light">
+        <item name="android:windowNoTitle">false</item>
+    </style>
+
+    <style name="Theme.HoloEverywhereDark.Sherlock" parent="Theme.Sherlock"></style>
+
+    <style name="Theme.HoloEverywhereLight.Sherlock" parent="Theme.Sherlock.Light"></style>
+
+</resources>
