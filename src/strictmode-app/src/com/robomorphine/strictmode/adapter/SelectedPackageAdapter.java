@@ -67,8 +67,7 @@ public class SelectedPackageAdapter extends BaseAdapter implements OnClickListen
         TextView appPackage = (TextView)view.findViewById(R.id.subtitle);
         
         ImageView clearButton = (ImageView)view.findViewById(R.id.action);
-        clearButton.setImageResource(android.R.drawable.ic_menu_close_clear_cancel);
-        clearButton.setBackgroundResource(R.drawable.clear_btn_bg);
+        clearButton.setImageResource(R.drawable.btn_clear);
         clearButton.setClickable(true);
         clearButton.setOnClickListener(this);
         
