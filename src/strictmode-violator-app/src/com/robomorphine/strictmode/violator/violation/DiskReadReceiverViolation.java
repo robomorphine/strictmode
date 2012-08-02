@@ -21,7 +21,7 @@ public class DiskReadReceiverViolation extends VmViolation {
     
     public DiskReadReceiverViolation(Context context) {
         super(context,
-              R.drawable.disk_read,
+              R.drawable.violation_type_disk_read,
               R.string.broadcast_name, 
               R.string.broadcast_descr);
     }

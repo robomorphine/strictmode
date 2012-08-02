@@ -103,7 +103,7 @@ public class ThreadViolationStatsFragment extends Fragment {
     
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.thread_violation_stats_fragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_thread_violation_stats, container, false);
         mSizeTextView = (TextView)view.findViewById(R.id.size);
         mTotalTextView = (TextView)view.findViewById(R.id.total_duration);
         mMinTextView = (TextView)view.findViewById(R.id.min_duration);

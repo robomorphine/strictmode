@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:paddingRight="@dimen/medium"
+    android:gravity="center_vertical"
     android:padding="@dimen/small"
-    android:gravity="center_vertical">
-    
+    android:paddingRight="@dimen/medium" >
+
     <ImageView
         android:id="@+id/icon"
         android:layout_width="@dimen/app_icon_size"
@@ -15,64 +16,64 @@
         android:layout_margin="@dimen/small"
         android:scaleType="centerInside"
         android:src="@drawable/ic_launcher" />
-    
-    <LinearLayout 
+
+    <LinearLayout
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/icon"
         android:layout_alignTop="@+id/icon"
-        android:gravity="center_vertical">
-        
+        android:layout_toRightOf="@+id/icon"
+        android:gravity="center_vertical"
+        tools:ignore="UseCompoundDrawables" >
+
         <ImageView
             android:id="@+id/appicon"
             android:layout_width="@dimen/subicon_size"
             android:layout_height="@dimen/subicon_size"
             android:scaleType="centerInside"
             android:src="@drawable/ic_launcher" />
-        
+
         <TextView
             android:id="@+id/tag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minHeight="@dimen/subicon_size"
             android:layout_marginLeft="@dimen/small"
             android:gravity="center_vertical"
-            android:textAppearance="@android:style/TextAppearance.Medium"
+            android:minHeight="@dimen/subicon_size"
             android:scrollHorizontally="true"
-            android:singleLine="true" />
-        
+            android:singleLine="true"
+            android:textAppearance="@android:style/TextAppearance.Medium" />
     </LinearLayout>
-    
+
     <TextView
         android:id="@+id/count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:minWidth="@dimen/subicon_size"
-        android:minHeight="@dimen/subicon_size"
-        android:layout_below="@id/title"
-        android:layout_toRightOf="@+id/icon"
-        android:layout_alignLeft="@+id/tag"
         android:layout_alignBottom="@+id/icon"
+        android:layout_alignLeft="@+id/tag"
+        android:layout_below="@id/title"
         android:layout_marginRight="@dimen/large"
+        android:layout_toRightOf="@+id/icon"
         android:gravity="center"
+        android:minHeight="@dimen/subicon_size"
+        android:minWidth="@dimen/subicon_size"
         android:scrollHorizontally="true"
         android:singleLine="true"
         android:textStyle="bold" />
-    
+
     <TextView
         android:id="@+id/timestamp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:minWidth="@dimen/subicon_size"
-        android:minHeight="@dimen/subicon_size"
-        android:layout_below="@id/title"
-        android:layout_toRightOf="@+id/count"
-        android:layout_alignParentRight="true"
         android:layout_alignBottom="@+id/icon"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/title"
         android:layout_marginRight="@dimen/medium"
+        android:layout_toRightOf="@+id/count"
         android:gravity="center_vertical"
+        android:minHeight="@dimen/subicon_size"
+        android:minWidth="@dimen/subicon_size"
         android:scrollHorizontally="true"
-        android:singleLine="true"/>
-    
+        android:singleLine="true" />
+
 </RelativeLayout>

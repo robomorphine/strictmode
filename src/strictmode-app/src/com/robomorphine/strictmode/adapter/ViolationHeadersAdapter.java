@@ -62,7 +62,7 @@ public class ViolationHeadersAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView;
         if(view == null) {
-            view = mInflater.inflate(R.layout.violation_header_item, parent, false);
+            view = mInflater.inflate(R.layout.item_violation_header, parent, false);
         }
         TextView key = (TextView)view.findViewById(R.id.key);
         TextView value = (TextView)view.findViewById(R.id.value);

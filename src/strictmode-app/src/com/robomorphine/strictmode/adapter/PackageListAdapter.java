@@ -56,7 +56,7 @@ public class PackageListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView;
         if(view == null) {
-            view = mInflator.inflate(R.layout.package_list_item, parent, false);
+            view = mInflator.inflate(R.layout.item_package_list, parent, false);
         }
         
         AndroidPackage pkg = getItem(position);

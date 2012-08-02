@@ -51,7 +51,7 @@ public class ViolationHeadersPagerFragment extends Fragment implements OnPageCha
     
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.violation_headers_pager_fragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_violation_headers_pager, container, false);
                 
         mViewPagerPosition = (TextView)view.findViewById(R.id.pager_position);
         mViewPager = (ViewPager)view.findViewById(R.id.pager);        

@@ -13,7 +13,7 @@ public class SharedPreferencesCommitViolation extends ThreadViolation {
     
     public SharedPreferencesCommitViolation(Context context) {
         super(context,
-              R.drawable.disk_read_write,
+              R.drawable.violation_type_disk_read_write,
               R.string.shared_prefs_commit_name, 
               R.string.shared_prefs_commit_descr);
     }

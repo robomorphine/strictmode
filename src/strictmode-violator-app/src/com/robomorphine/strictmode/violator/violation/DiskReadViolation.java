@@ -14,7 +14,7 @@ public class DiskReadViolation extends ThreadViolation {
     
     public DiskReadViolation(Context context) {
         super(context,
-              R.drawable.disk_read,
+              R.drawable.violation_type_disk_read,
               R.string.disk_read_name, 
               R.string.disk_read_descr);
     }

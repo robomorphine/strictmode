@@ -16,7 +16,7 @@ public class ExplicitTerminationViolation extends VmViolation {
     
     public ExplicitTerminationViolation(Context context) {
         super(context, 
-                R.drawable.memory_recycle,
+                R.drawable.violation_type_memory_recycle,
                 R.string.explicit_termination_name,
                 R.string.explicit_termination_descr);
     }

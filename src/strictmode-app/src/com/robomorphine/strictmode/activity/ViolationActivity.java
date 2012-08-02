@@ -128,7 +128,7 @@ public class ViolationActivity extends SherlockFragmentActivity implements TabLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        setContentView(R.layout.violation_activity);
+        setContentView(R.layout.activity_violation);
         
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -184,7 +184,7 @@ public class ViolationActivity extends SherlockFragmentActivity implements TabLi
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = new MenuInflater(this);
-        inflater.inflate(R.menu.violation_activity, menu);
+        inflater.inflate(R.menu.activity_violation, menu);
         return true;
     }
     

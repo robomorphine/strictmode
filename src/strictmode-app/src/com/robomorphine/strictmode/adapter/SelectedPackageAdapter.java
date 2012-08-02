@@ -59,7 +59,7 @@ public class SelectedPackageAdapter extends BaseAdapter implements OnClickListen
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView;
         if(view == null) {
-            view = mInflater.inflate(R.layout.filter_info, parent, false);
+            view = mInflater.inflate(R.layout.item_filter_info, parent, false);
         }
                     
         ImageView icon = (ImageView)view.findViewById(R.id.icon);

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
-    <item android:drawable="@drawable/disk" />
+    <item android:drawable="@drawable/violation_type_disk" />
     
-    <item android:drawable="@drawable/arrow_down"
+    <item android:drawable="@drawable/violation_type_arrow_down"
           android:left="@dimen/subicon_size"
           android:top="@dimen/subicon_size"  />
     
-    <item android:drawable="@drawable/arrow_up"
+    <item android:drawable="@drawable/violation_type_arrow_up"
           android:right="@dimen/subicon_size"
           android:top="@dimen/subicon_size" />
     

@@ -16,7 +16,7 @@ public class NetworkViolation extends ThreadViolation {
     
     public NetworkViolation(Context context) {
         super(context,
-              R.drawable.network,
+              R.drawable.violation_type_network,
               R.string.network_name, 
               R.string.network_descr);
     }

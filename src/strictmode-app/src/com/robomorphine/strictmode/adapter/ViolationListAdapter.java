@@ -79,7 +79,7 @@ public class ViolationListAdapter extends BaseAdapter implements SectionIndexer 
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView;
         if(view == null) {
-            view = mInflator.inflate(R.layout.violation_list_item, parent, false);
+            view = mInflator.inflate(R.layout.item_violation_list, parent, false);
         }
         
         ViolationGroup group = getItem(position);

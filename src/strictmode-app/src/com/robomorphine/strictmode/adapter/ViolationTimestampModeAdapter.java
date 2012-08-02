@@ -81,7 +81,7 @@ public class ViolationTimestampModeAdapter extends BaseAdapter {
         TextView title = (TextView)view.findViewById(R.id.title);
         TextView subtitle = (TextView)view.findViewById(R.id.subtitle);
         
-        icon.setImageResource(R.drawable.timestamp_filter);
+        icon.setImageResource(R.drawable.violation_filter_timestamp);
         title.setText(getItem(position).title);
         subtitle.setText(getItem(position).subtitle);
     }
@@ -90,7 +90,7 @@ public class ViolationTimestampModeAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView;
         if(view == null) {
-            view = mInflater.inflate(R.layout.filter_info, parent, false);
+            view = mInflater.inflate(R.layout.item_filter_info, parent, false);
         }
         
         bindView(view, position);
@@ -102,7 +102,7 @@ public class ViolationTimestampModeAdapter extends BaseAdapter {
     public View getDropDownView(int position, View convertView, ViewGroup parent) {
         View view = convertView;
         if(view == null) {
-            view = mInflater.inflate(R.layout.filter_info_dropdown, parent, false);
+            view = mInflater.inflate(R.layout.item_filter_info_dropdown, parent, false);
         }
         
         bindView(view, position);

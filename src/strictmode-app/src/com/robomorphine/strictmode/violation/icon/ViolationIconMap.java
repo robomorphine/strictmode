@@ -25,17 +25,17 @@ public class ViolationIconMap {
     public ViolationIconMap() {
         mIconMap = new HashMap<Class<? extends Violation>, Integer>();
         
-        mIconMap.put(Violation.class, R.drawable.warning);
+        mIconMap.put(Violation.class, R.drawable.violation_type_warning);
         
-        mIconMap.put(ThreadViolation.class, R.drawable.clock);
-        mIconMap.put(DiskReadThreadViolation.class, R.drawable.disk_read);
-        mIconMap.put(DiskWriteThreadViolation.class, R.drawable.disk_write);
-        mIconMap.put(NetworkThreadViolation.class, R.drawable.network);
-        mIconMap.put(CustomThreadViolation.class, R.drawable.clock);
+        mIconMap.put(ThreadViolation.class, R.drawable.violation_type_clock);
+        mIconMap.put(DiskReadThreadViolation.class, R.drawable.violation_type_disk_read);
+        mIconMap.put(DiskWriteThreadViolation.class, R.drawable.violation_type_disk_write);
+        mIconMap.put(NetworkThreadViolation.class, R.drawable.violation_type_network);
+        mIconMap.put(CustomThreadViolation.class, R.drawable.violation_type_clock);
         
-        mIconMap.put(VmViolation.class, R.drawable.memory);
-        mIconMap.put(ExplicitTerminationVmViolation.class, R.drawable.memory_recycle);
-        mIconMap.put(InstanceCountVmViolation.class, R.drawable.memory_multiple);
+        mIconMap.put(VmViolation.class, R.drawable.violation_type_memory);
+        mIconMap.put(ExplicitTerminationVmViolation.class, R.drawable.violation_type_memory_recycle);
+        mIconMap.put(InstanceCountVmViolation.class, R.drawable.violation_type_memory_multiple);
     }
     
     public Drawable getIcon(Context context, Violation violation) {

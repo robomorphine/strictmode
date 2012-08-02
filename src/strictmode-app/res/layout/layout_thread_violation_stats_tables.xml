@@ -7,7 +7,7 @@
     <include
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        layout="@layout/thread_violation_stats_table" />
+        layout="@layout/layout_thread_violation_stats_table" />
 
     <View
         android:layout_width="fill_parent"
@@ -17,6 +17,6 @@
     <include
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        layout="@layout/thread_violation_stats_hist_table" />
+        layout="@layout/layout_thread_violation_stats_hist_table" />
 
 </LinearLayout>

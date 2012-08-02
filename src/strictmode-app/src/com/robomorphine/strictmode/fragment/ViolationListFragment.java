@@ -81,7 +81,7 @@ public class ViolationListFragment extends ListFragment
     
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.violation_list_fragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_violation_list, container, false);
         LinearLayout listContainer = (LinearLayout)view.findViewById(R.id.container);
         mViolationCount = (TextView)view.findViewById(R.id.violation_count);
         mViolationGroupCount = (TextView)view.findViewById(R.id.violation_group_count);

@@ -40,7 +40,7 @@ public class ViolationStacktraceFragment extends ListFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.violation_stacktrace_fragment, menu);
+        inflater.inflate(R.menu.fragment_violation_stacktrace, menu);
     }
     
     @Override

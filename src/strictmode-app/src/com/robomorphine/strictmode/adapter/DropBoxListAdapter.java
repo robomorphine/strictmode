@@ -55,7 +55,7 @@ public class DropBoxListAdapter extends BaseAdapter implements SectionIndexer {
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView;
         if(view == null) {
-            view = mInflator.inflate(R.layout.dropbox_list_item, parent, false);
+            view = mInflator.inflate(R.layout.item_dropbox_list, parent, false);
         }
         
         DropBoxItem item = getItem(position);

@@ -8,7 +8,7 @@
     <include
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        layout="@layout/thread_violation_stats_tables" />
+        layout="@layout/layout_thread_violation_stats_tables" />
         
     <com.robomorphine.strictmode.histogram.HistogramView
         android:id="@+id/histogram"

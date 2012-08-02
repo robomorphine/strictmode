@@ -14,7 +14,7 @@ public class DiskWriteViolation extends ThreadViolation {
     
     public DiskWriteViolation(Context context) {
         super(context,
-              R.drawable.disk_write,
+              R.drawable.violation_type_disk_write,
               R.string.disk_write_name, 
               R.string.disk_write_descr);
     }

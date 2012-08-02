@@ -77,7 +77,7 @@ public class DropBoxListFragment extends ListFragment implements LoaderCallbacks
     
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.drop_box_fragment, menu);
+        inflater.inflate(R.menu.fragment_drop_box, menu);
     }
     
     @Override

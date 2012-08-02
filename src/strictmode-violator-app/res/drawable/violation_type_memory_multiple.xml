@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
-    <item android:drawable="@drawable/disk" />
-    <item android:drawable="@drawable/arrow_up" 
+    <item android:drawable="@drawable/violation_type_memory" />
+    <item android:drawable="@drawable/violation_type_multiple" 
           android:left="24dp"
           android:top="24dp" />
 </layer-list>

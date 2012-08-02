@@ -78,10 +78,10 @@ public class ViolationStacktraceAdapter extends BaseAdapter {
         View view = null;
         switch(getItemViewType(position)) {
             case EXCEPTION_MESSAGE_TYPE:
-                view = mInflater.inflate(R.layout.violation_stacktrace_message_item, parent, false);
+                view = mInflater.inflate(R.layout.item_violation_stacktrace_message, parent, false);
                 break;
             case STACKTRACE_ELEMENT_TYPE:
-                view = mInflater.inflate(R.layout.violation_stacktrace_entry_item, parent, false); 
+                view = mInflater.inflate(R.layout.item_violation_stacktrace_entry, parent, false); 
                 break;
             default:
                 throw new IllegalStateException("Invalid view type.");

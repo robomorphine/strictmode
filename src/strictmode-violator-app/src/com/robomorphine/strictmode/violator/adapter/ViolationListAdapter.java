@@ -52,7 +52,7 @@ public class ViolationListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView;
         if(view == null) {
-            view = mInflator.inflate(R.layout.violation_item, parent, false);
+            view = mInflator.inflate(R.layout.item_violation, parent, false);
         }
         
         Violation violation = mViolations.get(position);

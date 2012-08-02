@@ -15,7 +15,7 @@ public class InstanceCountViolation extends VmViolation {
     private final Queue<Object> mLeakQueue = new LinkedList<Object>();
     
     public InstanceCountViolation(Context context) {
-        super(context, R.drawable.memory_multiple, 
+        super(context, R.drawable.violation_type_memory_multiple, 
                         R.string.instance_count_name,
                         R.string.instance_count_descr);
     }

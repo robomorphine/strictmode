@@ -11,7 +11,7 @@ public class MultipleSlowCallsViolation extends ThreadViolation {
     
     public MultipleSlowCallsViolation(Context context) {
         super(context, 
-              R.drawable.clock,
+              R.drawable.violation_type_clock,
               R.string.multiple_slow_calls_name, 
               R.string.multiple_slow_calls_descr);
     }
