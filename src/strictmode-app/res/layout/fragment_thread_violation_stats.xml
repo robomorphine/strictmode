@@ -1,18 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/container"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android" 
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical" >
+    android:layout_height="fill_parent" 
+    android:fillViewport="true">
 
-    <include
+    <LinearLayout
+        android:id="@+id/container"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        layout="@layout/layout_thread_violation_stats_tables" />
-        
-    <com.robomorphine.strictmode.histogram.HistogramView
-        android:id="@+id/histogram"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" />
+        android:orientation="vertical" >
 
-</LinearLayout>
+        <include
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            layout="@layout/layout_thread_violation_stats_tables" />
+
+        <com.robomorphine.strictmode.histogram.HistogramView
+            android:id="@+id/histogram"
+            android:layout_width="fill_parent"            
+            android:layout_height="fill_parent"
+            android:minHeight="200dp" />
+    </LinearLayout>
+
+</ScrollView>
