@@ -1,6 +1,8 @@
 package com.robomorphine.strictmode.activity;
 
+import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.MenuItem;
 import com.robomorphine.strictmode.R;
 import com.robomorphine.strictmode.fragment.PackageListFragment.PackageSelectionListener;
 
@@ -16,6 +18,9 @@ public class PackageListActivity extends SherlockFragmentActivity
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_package_list);
+        
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
     }
     
     @Override
@@ -24,5 +29,14 @@ public class PackageListActivity extends SherlockFragmentActivity
         intent.putExtra(EXTRA_SELECTED_PACKAGE, packageName);
         setResult(RESULT_OK, intent);
         finish();
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            setResult(RESULT_CANCELED);
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
