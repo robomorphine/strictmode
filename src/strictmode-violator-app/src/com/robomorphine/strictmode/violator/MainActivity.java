@@ -1,13 +1,18 @@
 package com.robomorphine.strictmode.violator;
 
-import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 
-public class MainActivity extends FragmentActivity {
+import android.os.Bundle;
+
+public class MainActivity extends SherlockFragmentActivity {
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setSubtitle(R.string.violating_rules);
     }
 }

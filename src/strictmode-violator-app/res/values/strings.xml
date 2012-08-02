@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     
-    <string name="app_name">rbm-strictmode-violator-app</string>
+    <string name="app_name">StrictMode Violator</string>
     
     <string name="shared_prefs_commit_name">SharedPreferences Commit</string>
     <string name="shared_prefs_commit_descr">
@@ -47,5 +47,6 @@
     <string name="broadcast_descr">
         Reads disk from onReceive() of Broadcast Receiver.
     </string>
+    <string name="violating_rules">Violating rules</string>
 
 </resources>
