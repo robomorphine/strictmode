@@ -2,7 +2,12 @@ package com.robomorphine.strictmode.activity;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.robomorphine.strictmode.R;
+import com.robomorphine.strictmode.fragment.AboutDialogFragment;
+import com.robomorphine.strictmode.fragment.HelpDialogFragment;
 import com.robomorphine.strictmode.fragment.ViolationListFilterFragment;
 import com.robomorphine.strictmode.fragment.ViolationListFilterFragment.OnViolationFilterChangedListener;
 import com.robomorphine.strictmode.fragment.ViolationListFragment;
@@ -31,7 +36,8 @@ public class MainActivity extends SherlockFragmentActivity
                 
         FragmentManager fm = getSupportFragmentManager();
         
-        mViolationListFilterFragment = (ViolationListFilterFragment)fm.findFragmentById(R.id.violation_list_filter);
+        mViolationListFilterFragment = 
+                (ViolationListFilterFragment)fm.findFragmentById(R.id.violation_list_filter);
         mViolationListFragment = (ViolationListFragment)fm.findFragmentById(R.id.violation_list);
     }
     
@@ -50,5 +56,35 @@ public class MainActivity extends SherlockFragmentActivity
     @Override
     public void onViolationLongClicked(ViolationGroup group) {
         mViolationListFilterFragment.setSelectedPackage(group.getViolation().getPackage());
+    }
+    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = new MenuInflater(this);
+        inflater.inflate(R.menu.activity_main, menu);
+        return true;
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.about:
+                onAbout();
+                return true;
+            case R.id.help:
+                onHelp();
+                return true;
+        }        
+        return super.onOptionsItemSelected(item);
+    }
+    
+    private void onAbout() {
+        AboutDialogFragment fragment = new AboutDialogFragment();
+        fragment.show(getSupportFragmentManager(), "about");
+    }
+    
+    private void onHelp() {
+        HelpDialogFragment fragment = new HelpDialogFragment();
+        fragment.show(getSupportFragmentManager(), "help");
     }
 }

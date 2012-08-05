@@ -6,9 +6,29 @@
     <string name="dropbox_list_empty">No StrictMode violations are found.</string>
     
     <string name="menu_search">Search</string>
-    <string name="menu_violate_thread_policy">Violate Thread</string>
-    <string name="menu_violate_vm_policy">Violate VM</string>
+    <string name="menu_describe_violation">describe violation</string>    
+    <string name="menu_print_to_logcat">Print to logcat</string>
+    <string name="menu_help">Help</string>
+    <string name="menu_about">About</string>
     
+    <string name="about">About</string>
+    <string name="about_version">Version:</string>
+    <string name="about_developed_by">Developed by:</string>
+    <string name="about_license">License:</string>     
+    <string name="about_repo">Source:</string>    
+    <string name="about_project">Project:</string>
+    
+    <string name="license">Apache v2.0</string>
+    <string name="license_link">http://www.apache.org/licenses/LICENSE-2.0.html</string>
+    <string name="repo">on github</string>
+    <string name="repo_link">https://github.com/robomorphine/strictmode</string>
+    <string name="author">Ievgenii Nazaruk</string>
+    <string name="author_link">https://plus.google.com/u/0/105952273394105528735/posts</string>
+    <string name="project">robmorphine</string>
+    <string name="project_link">
+        https://plus.google.com/u/0/b/110168732545954637172/110168732545954637172/posts
+    </string>    
+        
     <string name="dropbox_item_no_entry">Failed to locate DropBox entry.</string>
     <string name="not_available">N/A</string>
     <string name="na">--</string>
@@ -29,8 +49,7 @@
     <string name="thread_violation_stats_hist_95">95%</string>
     <string name="thread_violation_stats_hist_avarage">avarage</string>
     <string name="histogram_range">[%1$d ms, %2$d ms]</string>
-    <string name="histogram_value">%d ms</string>
-    <string name="violation_stacktrace_menu_print_to_logcat">print to logcat</string>
+    <string name="histogram_value">%d ms</string>    
     <string name="violation_stacktrace_fragment_native_code">Native code</string>
     <string name="violation_stacktrace_fragment_unknown_source">Unknown source</string>
     <string name="violation_stacktrace_fragment_location">at %1$s:%2$d</string>
@@ -61,8 +80,7 @@
     <string name="ignore_timestamp">Ignore Timestamp</string>
     <string name="show_since_last_install_descr">Only violations that were reported after last application installation are visible.</string>
     <string name="ignore_timestamp_descr">All violations are visible.</string>
-    <string name="describe_violation">describe violation</string>
-    
+        
     <!-- violation help -->
     <string name="violation_info_not_found">No information is found on this violation type.</string>
     <string name="violation_info_thread">
@@ -109,5 +127,5 @@
         (some other objects may reference activity and prevent it from being garbage collected).
         \n\nBe careful, as sometimes this violations might be false positives.
     </string>
-    
+        
 </resources>

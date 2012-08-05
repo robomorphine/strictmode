@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
     <item android:id="@+id/logcat"
           android:icon="@drawable/ic_action_logcat"
-          android:title="@string/violation_stacktrace_menu_print_to_logcat"
+          android:title="@string/menu_print_to_logcat"
           android:showAsAction="ifRoom" 
           android:orderInCategory="1" />    
 </menu>

@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
     <item android:id="@+id/help"
           android:icon="@drawable/ic_action_help"
-          android:title="@string/describe_violation"
+          android:title="@string/menu_describe_violation"
           android:showAsAction="always" 
           android:orderInCategory="2" />    
 </menu>
