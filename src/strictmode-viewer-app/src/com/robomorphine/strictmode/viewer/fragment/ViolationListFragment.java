@@ -72,7 +72,8 @@ public class ViolationListFragment extends ListFragment
                 
         /* restore filter */
         if(savedInstanceState != null) {
-            mViolationFilter = (ViolationFilter)savedInstanceState.getSerializable(STATE_VIOLATION_FILTER);
+            mViolationFilter = 
+                    (ViolationFilter)savedInstanceState.getSerializable(STATE_VIOLATION_FILTER);
         }
                 
         mAdapter = new ViolationListAdapter(getActivity());         
@@ -98,7 +99,11 @@ public class ViolationListFragment extends ListFragment
         if(result == PackageManager.PERMISSION_GRANTED) {
             return getString(R.string.dropbox_list_empty);
         } else {
-            return getString(R.string.permission_not_granted, Manifest.permission.READ_LOGS);
+            String permissionNotGranted = 
+                    getString(R.string.permission_not_granted, Manifest.permission.READ_LOGS);
+            String jellyBeanNotSupported = 
+                    getString(R.string.jelly_bean_not_supported);
+            return permissionNotGranted + " " + jellyBeanNotSupported;
         }
     }
     
