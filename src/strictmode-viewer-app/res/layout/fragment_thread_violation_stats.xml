@@ -15,7 +15,7 @@
             android:layout_height="wrap_content"
             layout="@layout/layout_thread_violation_stats_tables" />
 
-        <com.robomorphine.strictmode.histogram.HistogramView
+        <com.robomorphine.strictmode.viewer.histogram.HistogramView
             android:id="@+id/histogram"
             android:layout_width="fill_parent"            
             android:layout_height="fill_parent"

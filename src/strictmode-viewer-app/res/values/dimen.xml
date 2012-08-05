@@ -1,15 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="app_icon_size">48dp</dimen>
-    <dimen name="subicon_size">24dp</dimen>
-    
-    <dimen name="pixel">1px</dimen>
-    <dimen name="xsmall">2dp</dimen>
-    <dimen name="small">5dp</dimen>
-    <dimen name="medium">10dp</dimen>
-    <dimen name="large">15dp</dimen>
-    <dimen name="xlarge">25dp</dimen>
-    
     <dimen name="histogram_sample_width">20dp</dimen>
     <dimen name="histogram_sample_half_width">9dp</dimen>
 </resources>

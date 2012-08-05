@@ -13,7 +13,7 @@
         <TableRow>
             <TextView
                 style="@style/about_key"               
-                android:text="@string/app_name" />
+                android:text="@string/app_name_title" />
             <TextView
                 style="@style/about_value"
                 android:text="@string/app_name_subtitle" />

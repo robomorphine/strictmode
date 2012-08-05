@@ -1,6 +1,6 @@
-package com.robomorphine.strictmode.viewer.fragment;
+package com.robomorphine.fragment;
 
-import com.robomorphine.strictmode.viewer.R;
+import com.robomorphine.strictmode.app.lib.R;
 
 import android.app.AlertDialog;
 import android.app.Dialog;

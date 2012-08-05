@@ -1,0 +1,1 @@
+Some stuff that is used in all strictmode applications.

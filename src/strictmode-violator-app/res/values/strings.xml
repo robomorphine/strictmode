@@ -2,6 +2,8 @@
 <resources>
     
     <string name="app_name">StrictMode Violator</string>
+    <string name="app_name_title">StrictMode</string>
+    <string name="app_name_subtitle">Violator</string>
     
     <string name="shared_prefs_commit_name">SharedPreferences Commit</string>
     <string name="shared_prefs_commit_descr">

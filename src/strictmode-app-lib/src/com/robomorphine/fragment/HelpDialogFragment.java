@@ -1,4 +1,4 @@
-package com.robomorphine.strictmode.viewer.fragment;
+package com.robomorphine.fragment;
 
 import android.support.v4.app.DialogFragment;
 

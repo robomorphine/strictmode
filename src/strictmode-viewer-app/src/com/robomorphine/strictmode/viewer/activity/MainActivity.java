@@ -5,9 +5,9 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.robomorphine.fragment.AboutDialogFragment;
+import com.robomorphine.fragment.HelpDialogFragment;
 import com.robomorphine.strictmode.viewer.R;
-import com.robomorphine.strictmode.viewer.fragment.AboutDialogFragment;
-import com.robomorphine.strictmode.viewer.fragment.HelpDialogFragment;
 import com.robomorphine.strictmode.viewer.fragment.ViolationListFilterFragment;
 import com.robomorphine.strictmode.viewer.fragment.ViolationListFilterFragment.OnViolationFilterChangedListener;
 import com.robomorphine.strictmode.viewer.fragment.ViolationListFragment;
@@ -32,6 +32,7 @@ public class MainActivity extends SherlockFragmentActivity
         setContentView(R.layout.activity_main);
         
         ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle(R.string.app_name_title);
         actionBar.setSubtitle(R.string.app_name_subtitle);
                 
         FragmentManager fm = getSupportFragmentManager();

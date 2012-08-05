@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/package_list"
-        android:name="com.robomorphine.strictmode.fragment.PackageListFragment"
+        android:name="com.robomorphine.strictmode.viewer.fragment.PackageListFragment"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" />
         
