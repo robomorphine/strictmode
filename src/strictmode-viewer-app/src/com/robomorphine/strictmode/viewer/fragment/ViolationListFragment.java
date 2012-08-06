@@ -13,9 +13,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
+import android.text.SpannableStringBuilder;
+import android.text.method.LinkMovementMethod;
+import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +30,7 @@ import android.widget.TextView;
 
 import javax.annotation.Nullable;
 
-public class ViolationListFragment extends ListFragment 
+public class ViolationListFragment extends ConfigurableListFragment 
                                    implements LoaderCallbacks<ViolationGroups>, 
                                               OnItemLongClickListener {
 
@@ -45,9 +48,10 @@ public class ViolationListFragment extends ListFragment
     private OnViolationClickListener mListener;
     private ViolationListAdapter mAdapter;
     private ViolationFilter mViolationFilter;
+    private ViewGroup mListContainer;
     private TextView mViolationCount;
     private TextView mViolationGroupCount;
-    
+            
     private static boolean isAllApplicationsMode(@Nullable ViolationFilter filter) {
         return filter == null || !filter.usesProperty(ViolationFilter.PROPERTY_PACKAGE);
     }
@@ -83,40 +87,37 @@ public class ViolationListFragment extends ListFragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_violation_list, container, false);
-        LinearLayout listContainer = (LinearLayout)view.findViewById(R.id.container);
+        mListContainer = (LinearLayout)view.findViewById(R.id.container);
         mViolationCount = (TextView)view.findViewById(R.id.violation_count);
         mViolationGroupCount = (TextView)view.findViewById(R.id.violation_group_count);
-        
-        View listLayout = super.onCreateView(inflater, listContainer, savedInstanceState);
-        listContainer.addView(listLayout);
-        
+                
+        View listLayout = super.onCreateView(inflater, mListContainer, savedInstanceState);
+        mListContainer.addView(listLayout);
+                
         return view;
     }
     
-    private String getEmptyText() {
-        Context context = getActivity();        
-        int result = context.checkCallingOrSelfPermission(Manifest.permission.READ_LOGS);
-        if(result == PackageManager.PERMISSION_GRANTED) {
-            return getString(R.string.dropbox_list_empty);
-        } else {
-            String permissionNotGranted = 
-                    getString(R.string.permission_not_granted, Manifest.permission.READ_LOGS);
-            String jellyBeanNotSupported = 
-                    getString(R.string.jelly_bean_not_supported);
-            return permissionNotGranted + " " + jellyBeanNotSupported;
-        }
+    @Override
+    protected void onConfigureEmptyView(TextView emptyView) {
+        super.onConfigureEmptyView(emptyView);
+        emptyView.setMovementMethod(LinkMovementMethod.getInstance());         
+                
+        /* apply 20 dp padding for empty view */
+        float dp = 20;
+        DisplayMetrics dm = getResources().getDisplayMetrics();
+        int px = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, dm);
+        emptyView.setPadding(px, px, px, px);
     }
     
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        
+                
         /* show menu items */
         setHasOptionsMenu(true);
         
         /* setup list */
-        setListAdapter(mAdapter);
-        setEmptyText(getEmptyText());
+        setListAdapter(mAdapter);        
         setListShown(false);
         
         ListView list = getListView();
@@ -124,7 +125,46 @@ public class ViolationListFragment extends ListFragment
         list.setOnItemLongClickListener(this);
                 
         /* fetch data */
-        getLoaderManager().initLoader(LOADER_ID, null, this);  
+        getLoaderManager().initLoader(LOADER_ID, null, this);
+        
+        /* update empty view */
+        updateEmptyView();
+    }    
+    
+    private CharSequence getEmptyText() {
+        Context context = getActivity();        
+        int result = context.checkCallingOrSelfPermission(Manifest.permission.READ_LOGS);
+        boolean readLogsGranted = (result == PackageManager.PERMISSION_GRANTED); 
+        boolean packageFilterEnabled = false;
+        
+        if (mViolationFilter != null &&
+            mViolationFilter.usesProperty(ViolationFilter.PROPERTY_PACKAGE)) { 
+            packageFilterEnabled = true;
+        }
+            
+        if(readLogsGranted) {
+            if (packageFilterEnabled) {
+                /* filtered by package */
+                return getText(R.string.violation_list_empty);
+            } else {
+                /* not filtered by package */
+                SpannableStringBuilder builder = new SpannableStringBuilder();
+                builder.append(getText(R.string.violation_list_empty));
+                builder.append("\n\n");
+                builder.append(getText(R.string.strictmode_violator_reference));
+                return builder;
+            }
+        } else {
+            /* no READ_LOGS permissions */            
+            String jellyBeanNotSupported = getString(R.string.jelly_bean_not_supported);
+            String permissionNotGranted = getString(R.string.permission_not_granted, 
+                                                    Manifest.permission.READ_LOGS);            
+            return permissionNotGranted + " " + jellyBeanNotSupported;
+        }
+    }
+    
+    private void updateEmptyView() {        
+        setEmptyText(getEmptyText());
     }
     
     @Override
@@ -154,6 +194,7 @@ public class ViolationListFragment extends ListFragment
                 mAdapter.setAllApplicationsMode(isAllApplicationsMode(mViolationFilter));
             }
         }
+        updateEmptyView();
     }
     
     @Override
@@ -191,6 +232,7 @@ public class ViolationListFragment extends ListFragment
         
         mViolationCount.setText(Integer.toString(violationCount));
         mViolationGroupCount.setText(Integer.toString(data.getSortedGroups().size()));
+        updateEmptyView();
     }
 }
 

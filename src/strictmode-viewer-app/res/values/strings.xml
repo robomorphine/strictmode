@@ -3,8 +3,21 @@
     <string name="app_name">StrictMode Viewer</string>
     <string name="app_name_title">StrictMode</string>
     <string name="app_name_subtitle">Violation Viewer</string>
-    <string name="package_list_empty">No packages found.</string>
-    <string name="dropbox_list_empty">No StrictMode violations are found.</string>
+    
+    <string name="package_list_empty">No packages found.</string>    
+    <string name="violation_list_empty">No StrictMode violations are found.</string>
+            
+    <string name="permission_not_granted">
+        Permission %1$s was not granted.
+    </string>
+    <string name="jelly_bean_not_supported">
+        Looks like you have Jelly Bean. It\'s not yet supported.
+    </string>
+    <string name="strictmode_violator_reference">
+        If you want to quickly generate violations to see what this application is capable of,
+        install
+        <a href='https://play.google.com/store/apps/details?id=com.robomorphine.strictmode.violator'>StrictMode Violator</a>
+    </string>    
     
     <string name="menu_search">Search</string>
     <string name="menu_describe_violation">describe violation</string>    
@@ -50,11 +63,7 @@
     <string name="all_applications">All applications</string>    
     <string name="all_violations_are_visible">All violations are visible</string>
     <string name="click_to_select_application">Click to select application.</string>
-    <string name="permission_not_granted">Permission %1$s was not granted.</string>
-    <string name="jelly_bean_not_supported">
-        Looks like you have Jelly Bean. It\'s not yet supported.
-    </string>    
-    
+      
     <string name="ignore_timestamp">Ignore Timestamp</string>
     <string name="ignore_timestamp_descr">All violations are visible.</string>
     <string name="show_since_last_install">Show Since Last Install</string>
