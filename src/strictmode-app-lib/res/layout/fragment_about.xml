@@ -1,74 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fillViewport="true" >
-
-    <TableLayout
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+    
+    <include layout="@layout/vertical_line" />
+    
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/large" >
-
-        <TableRow>
-            <TextView
-                style="@style/about_key"               
-                android:text="@string/app_name_title" />
-            <TextView
-                style="@style/about_value"
-                android:text="@string/app_name_subtitle" />
-        </TableRow>
-
-        <TableRow>
-            <TextView
-                style="@style/about_key"                
-                android:text="@string/about_version" />
-            <TextView
-                android:id="@+id/version"
-                style="@style/about_value"
-                android:text="0.2.beta"
-                tools:ignore="HardcodedText" />
-        </TableRow>
-
-        <TableRow>
-            <TextView
-                style="@style/about_key"
-                android:text="@string/about_developed_by" />
-            <TextView
-                android:id="@+id/author"
-                style="@style/about_value"
-                android:text="@string/author" />
-        </TableRow>
-        
-        <TableRow>
-            <TextView
-                style="@style/about_key"
-                android:text="@string/about_project" />
-            <TextView
-                android:id="@+id/project"
-                style="@style/about_value"
-                android:text="@string/project" />
-        </TableRow>
-
-        <TableRow>
-            <TextView
-                style="@style/about_key"
-                android:text="@string/about_license" />
-            <TextView
-                android:id="@+id/license"
-                style="@style/about_value"
-                android:text="@string/license" />
-        </TableRow>
-
-        <TableRow>
-            <TextView
-                style="@style/about_key"
-                android:text="@string/about_repo" />
-            <TextView
-                android:id="@+id/repo"
-                style="@style/about_value"
-                android:text="@string/repo" />
-        </TableRow>
-    </TableLayout>
-
-</ScrollView>
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fadeScrollbars="false"
+        android:fillViewport="true" >
+    
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/large" >
+    
+            <TableRow>
+                <TextView
+                    style="@style/about_key"               
+                    android:text="@string/app_name_title" />
+                <TextView
+                    style="@style/about_value"
+                    android:text="@string/app_name_subtitle" />
+            </TableRow>
+    
+            <TableRow>
+                <TextView
+                    style="@style/about_key"                
+                    android:text="@string/about_version" />
+                <TextView
+                    android:id="@+id/version"
+                    style="@style/about_value"
+                    android:text="0.2.beta"
+                    tools:ignore="HardcodedText" />
+            </TableRow>
+    
+            <TableRow>
+                <TextView
+                    style="@style/about_key"
+                    android:text="@string/about_developed_by" />
+                <TextView
+                    android:id="@+id/author"
+                    style="@style/about_value"
+                    android:text="@string/author" />
+            </TableRow>
+            
+            <TableRow>
+                <TextView
+                    style="@style/about_key"
+                    android:text="@string/about_project" />
+                <TextView
+                    android:id="@+id/project"
+                    style="@style/about_value"
+                    android:text="@string/project" />
+            </TableRow>
+    
+            <TableRow>
+                <TextView
+                    style="@style/about_key"
+                    android:text="@string/about_license" />
+                <TextView
+                    android:id="@+id/license"
+                    style="@style/about_value"
+                    android:text="@string/license" />
+            </TableRow>
+    
+            <TableRow>
+                <TextView
+                    style="@style/about_key"
+                    android:text="@string/about_repo" />
+                <TextView
+                    android:id="@+id/repo"
+                    style="@style/about_value"
+                    android:text="@string/repo" />
+            </TableRow>
+        </TableLayout>
+    
+    </ScrollView>
+    
+    <include layout="@layout/vertical_line" />    
+</LinearLayout>

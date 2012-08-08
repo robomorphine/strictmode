@@ -24,4 +24,9 @@
         https://plus.google.com/u/0/b/110168732545954637172/110168732545954637172/posts
     </string>
     
+    <string name="help">Help</string>
+    <string name="help_text">
+        This is help.
+    </string>
+    
 </resources>
