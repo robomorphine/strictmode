@@ -1,5 +1,6 @@
 package com.robomorphine.strictmode.viewer.fragment;
 
+import com.actionbarsherlock.app.SherlockFragment;
 import com.robomorphine.strictmode.viewer.R;
 import com.robomorphine.strictmode.viewer.histogram.Histogram;
 import com.robomorphine.strictmode.viewer.histogram.HistogramView;
@@ -8,7 +9,6 @@ import com.robomorphine.strictmode.viewer.violation.Violation;
 import com.robomorphine.strictmode.viewer.violation.group.ViolationGroup;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +20,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 
-public class ThreadViolationStatsFragment extends Fragment {
+public class ThreadViolationStatsFragment extends SherlockFragment {
 
     private static class HistogramRange {        
         private final int min;

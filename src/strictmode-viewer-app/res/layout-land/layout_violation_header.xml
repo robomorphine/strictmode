@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:paddingRight="@dimen/medium"
     android:baselineAligned="false"
-    android:padding="@dimen/small"
+    android:padding="@dimen/xsmall"
     android:gravity="center" >
     
     <LinearLayout

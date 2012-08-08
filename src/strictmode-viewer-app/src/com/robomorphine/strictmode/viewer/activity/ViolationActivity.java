@@ -182,7 +182,7 @@ public class ViolationActivity extends SherlockFragmentActivity implements TabLi
     }
     
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu) {        
         MenuInflater inflater = new MenuInflater(this);
         inflater.inflate(R.menu.activity_violation, menu);
         return true;

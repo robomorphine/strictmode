@@ -4,7 +4,7 @@
     android:layout_height="fill_parent"
     android:orientation="vertical">
     
-    <include layout="@layout/layout_violation_activity_header"
+    <include layout="@layout/layout_violation_header"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
     

@@ -1,5 +1,6 @@
 package com.robomorphine.strictmode.viewer.fragment;
 
+import com.actionbarsherlock.app.SherlockFragment;
 import com.google.common.base.Objects;
 import com.robomorphine.strictmode.viewer.R;
 import com.robomorphine.strictmode.viewer.activity.PackageListActivity;
@@ -25,7 +26,6 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,7 +40,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-public class ViolationListFilterFragment extends Fragment 
+public class ViolationListFilterFragment extends SherlockFragment 
                                          implements OnClickListener,
                                                     OnItemSelectedListener,
                                                     SelectedPackageAdapterListener {

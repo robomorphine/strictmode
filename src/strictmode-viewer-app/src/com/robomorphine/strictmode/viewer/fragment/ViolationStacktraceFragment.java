@@ -1,20 +1,20 @@
 package com.robomorphine.strictmode.viewer.fragment;
 
+import com.actionbarsherlock.app.SherlockListFragment;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.robomorphine.strictmode.viewer.R;
 import com.robomorphine.strictmode.viewer.adapter.ViolationStacktraceAdapter;
 import com.robomorphine.strictmode.viewer.violation.ViolationException;
 import com.robomorphine.strictmode.viewer.violation.group.ViolationGroup;
 
 import android.os.Bundle;
-import android.support.v4.app.ListFragment;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.widget.Toast;
 
 
-public class ViolationStacktraceFragment extends ListFragment {
+public class ViolationStacktraceFragment extends SherlockListFragment {
     
     private ViolationGroup mViolationGroup;
     private ViolationStacktraceAdapter mAdapter;

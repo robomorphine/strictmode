@@ -1,5 +1,6 @@
 package com.robomorphine.strictmode.viewer.fragment;
 
+import com.actionbarsherlock.app.SherlockFragment;
 import com.robomorphine.strictmode.viewer.R;
 import com.robomorphine.strictmode.viewer.adapter.ViolationHeadersPagerAdapter;
 import com.robomorphine.strictmode.viewer.violation.group.ViolationGroup;
@@ -9,7 +10,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.LayoutInflater;
@@ -17,7 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-public class ViolationHeadersPagerFragment extends Fragment implements OnPageChangeListener {
+public class ViolationHeadersPagerFragment extends SherlockFragment implements OnPageChangeListener {
     
     private Handler mHandler;
     private ViolationGroup mViolationGroup;

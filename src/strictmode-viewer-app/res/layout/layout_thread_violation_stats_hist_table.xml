@@ -4,27 +4,35 @@
     android:layout_height="wrap_content"
     android:padding="@dimen/small" >
     
-       <TableRow>
+    <TableRow>
 
-        <ImageView style="@style/TableImage" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
 
-        <TextView
-            style="@style/TableKey"
-            android:text="@string/thread_violation_stats_hist_range" />
+            <TextView
+                style="@style/TableKey"
+                android:text="@string/thread_violation_stats_hist_range" />
+            
+        </LinearLayout>
 
         <TextView
             android:id="@+id/hist_range"
             style="@style/TableValue" />
+
     </TableRow>
 
     <TableRow>
 
-        <ImageView style="@style/TableImage" />
-
-        <TextView
-            style="@style/TableKey"
-            android:text="@string/thread_violation_stats_hist_delta" />
-
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+        
+            <TextView
+                style="@style/TableKey"
+                android:text="@string/thread_violation_stats_hist_delta" />
+        </LinearLayout>
+            
         <TextView
             android:id="@+id/hist_delta"
             style="@style/TableValue" />
@@ -32,13 +40,19 @@
     
     <TableRow>
 
-        <ImageView
-            style="@style/TableImage"
-            android:src="@drawable/histogram_avg" />
-
-        <TextView
-            style="@style/TableKey"
-            android:text="@string/thread_violation_stats_hist_avarage" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+        
+            <ImageView
+                style="@style/TableImage"
+                android:src="@drawable/histogram_avg" />
+    
+            <TextView
+                style="@style/TableKey"
+                android:text="@string/thread_violation_stats_hist_avarage" />
+            
+        </LinearLayout>
 
         <TextView
             android:id="@+id/hist_avg"
@@ -48,13 +62,19 @@
 
     <TableRow>
 
-        <ImageView
-            style="@style/TableImage"
-            android:src="@drawable/histogram_90" />
-
-        <TextView
-            style="@style/TableKey"
-            android:text="@string/thread_violation_stats_hist_90" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+            
+            <ImageView
+                style="@style/TableImage"
+                android:src="@drawable/histogram_90" />
+    
+            <TextView
+                style="@style/TableKey"
+                android:text="@string/thread_violation_stats_hist_90" />
+            
+        </LinearLayout>
 
         <TextView
             android:id="@+id/hist_90"
@@ -63,13 +83,18 @@
 
     <TableRow>
 
-        <ImageView
-            style="@style/TableImage"
-            android:src="@drawable/histogram_95" />
-
-        <TextView
-            style="@style/TableKey"
-            android:text="@string/thread_violation_stats_hist_95" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+        
+            <ImageView
+                style="@style/TableImage"
+                android:src="@drawable/histogram_95" />
+    
+            <TextView
+                style="@style/TableKey"
+                android:text="@string/thread_violation_stats_hist_95" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/hist_95"
