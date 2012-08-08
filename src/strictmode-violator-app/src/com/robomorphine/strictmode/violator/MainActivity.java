@@ -48,7 +48,7 @@ public class MainActivity extends SherlockFragmentActivity {
     }
     
     private void onHelp() {
-        HelpDialogFragment fragment = new HelpDialogFragment();
+        HelpDialogFragment fragment = HelpDialogFragment.createFragment(R.raw.help);
         fragment.show(getSupportFragmentManager(), "help");
     }
 }

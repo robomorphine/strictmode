@@ -39,15 +39,22 @@ public class HelpDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         
+        int resId = 0;
+        
         Bundle bundle = getArguments();
-        int resId = bundle.getInt(HTML_RESOURCE_ID_KEY, -1);
+        if (bundle != null) {
+            resId = bundle.getInt(HTML_RESOURCE_ID_KEY, -1);
+        }
         
         LayoutInflater inflater = LayoutInflater.from(getActivity());        
         View view = inflater.inflate(R.layout.fragment_help, null);        
         final WebView webView = (WebView)view.findViewById(R.id.webview);
         webView.setBackgroundColor(getDefaultBackgroundColor());
         disableHardwareAccelaration(webView);
-        webView.loadData(fromRawResource(resId), "text/html", Encoding.UTF_16.name());        
+        
+        if (resId != 0) {
+            webView.loadData(fromRawResource(resId), "text/html", Encoding.UTF_16.name());
+        }
                         
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(getText(R.string.help));
