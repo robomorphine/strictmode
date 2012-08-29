@@ -27,4 +27,9 @@ public class VmPenaltyLog extends AbstractStrictModeSetter {
         builder.penaltyLog();
         return builder.build();
     }
+    
+    @Override
+    protected boolean shouldRestoreVmPenaltyLog() {
+        return false;
+    }
 }

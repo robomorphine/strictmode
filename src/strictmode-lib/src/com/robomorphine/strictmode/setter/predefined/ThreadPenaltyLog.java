@@ -24,8 +24,13 @@ public class ThreadPenaltyLog extends AbstractStrictModeSetter {
     @Override
     @TargetApi(TARGET_VERSION)
     protected ThreadPolicy onUpdateThreadPolicy(Builder builder) {
-        builder.penaltyDropBox();
+        builder.penaltyLog();
         return builder.build();
+    }
+    
+    @Override
+    protected boolean shouldRestoreThreadPenaltyLog() {
+        return false;
     }
 
 }

@@ -27,5 +27,4 @@ public class ThreadDetectAll extends AbstractStrictModeSetter {
         builder.detectAll();
         return builder.build();
     }
-
 }

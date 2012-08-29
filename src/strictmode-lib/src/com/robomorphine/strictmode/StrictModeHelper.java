@@ -27,7 +27,7 @@ public class StrictModeHelper { //NOPMD
         setStrictMode(Policy.All.Reset, 
                       Policy.Thread.DetectAll, 
                       Policy.Thread.PenaltyDeathOnNetwork,
-                      Policy.Thread.PenaltyFalshScreen,
+                      Policy.Thread.PenaltyFlashScreen,
                       Policy.Vm.DetectAll,
                       Policy.Vm.PenaltyLog);
     }

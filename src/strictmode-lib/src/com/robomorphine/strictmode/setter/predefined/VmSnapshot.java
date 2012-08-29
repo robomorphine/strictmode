@@ -39,4 +39,9 @@ public class VmSnapshot extends AbstractStrictModeSetter {
         VmPolicy policy = (VmPolicy)mPolicy;
         return createVmBuilder(policy).build();
     }
+    
+    @Override
+    protected boolean shouldRestoreVmPenaltyLog() {
+        return !isPenaltyLogSet((VmPolicy)mPolicy);
+    }
 }

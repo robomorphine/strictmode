@@ -70,7 +70,7 @@ public class Policy {
         PenaltyDialog(new ThreadPenaltyDialog()),
         PenaltyDropBox(new ThreadPenaltyDropBox()),
         PenaltyLog(new ThreadPenaltyLog()),
-        PenaltyFalshScreen(new ThreadPenaltyFlashScreen());
+        PenaltyFlashScreen(new ThreadPenaltyFlashScreen());
         
         private final StrictModeSetter mSetter;
         private Thread(StrictModeSetter setter) {

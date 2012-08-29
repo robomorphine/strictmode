@@ -41,4 +41,9 @@ public class ThreadSnapshot extends AbstractStrictModeSetter {
         ThreadPolicy.Builder builder = new StrictMode.ThreadPolicy.Builder(policy);
         return builder.build();
     }
+    
+    @Override
+    protected boolean shouldRestoreThreadPenaltyLog() {
+        return !isPenaltyLogSet((ThreadPolicy)mPolicy);
+    }
 }
