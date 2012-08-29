@@ -1,14 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/rbm-strictmode-lib-android-common"/>
-	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/rbm-strictmode-lib-android-r09"/>
-	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/rbm-strictmode-lib-android-r14"/>
-	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/rbm-strictmode-lib-android-r15"/>
-	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/rbm-strictmode-lib-android-r16"/>
-	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/rbm-strictmode-lib-android-r11"/>
-	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/rbm-strictmode-lib-android-r12"/>
-	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/rbm-strictmode-lib-android-r13"/>
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="lib" path="/rbm-strictmode-lib-android-r16/prebuilt/core.jar"/>
 	<classpathentry kind="lib" path="/rbm-strictmode-lib-android-r16/prebuilt/framework.jar"/>
