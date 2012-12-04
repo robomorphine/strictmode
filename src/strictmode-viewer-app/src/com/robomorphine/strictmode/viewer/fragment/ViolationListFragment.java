@@ -1,12 +1,9 @@
 package com.robomorphine.strictmode.viewer.fragment;
 
-import com.google.common.base.Objects;
-import com.robomorphine.strictmode.viewer.R;
-import com.robomorphine.strictmode.viewer.adapter.ViolationListAdapter;
-import com.robomorphine.strictmode.viewer.loader.ViolationLoader;
-import com.robomorphine.strictmode.viewer.violation.filter.ViolationFilter;
-import com.robomorphine.strictmode.viewer.violation.group.ViolationGroup;
-import com.robomorphine.strictmode.viewer.violation.group.ViolationGroups;
+import java.io.IOException;
+import java.util.Comparator;
+
+import javax.annotation.Nullable;
 
 import android.Manifest;
 import android.app.Activity;
@@ -27,8 +24,20 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import javax.annotation.Nullable;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+import com.google.common.base.Objects;
+import com.robomorphine.strictmode.viewer.R;
+import com.robomorphine.strictmode.viewer.adapter.ViolationListAdapter;
+import com.robomorphine.strictmode.viewer.loader.ViolationLoader;
+import com.robomorphine.strictmode.viewer.violation.filter.ViolationFilter;
+import com.robomorphine.strictmode.viewer.violation.group.ViolationGroup;
+import com.robomorphine.strictmode.viewer.violation.group.ViolationGroup.CountComparator;
+import com.robomorphine.strictmode.viewer.violation.group.ViolationGroup.TimestampComparator;
+import com.robomorphine.strictmode.viewer.violation.group.ViolationGroups;
 
 public class ViolationListFragment extends ConfigurableListFragment 
                                    implements LoaderCallbacks<ViolationGroups>, 
@@ -51,6 +60,8 @@ public class ViolationListFragment extends ConfigurableListFragment
     private ViewGroup mListContainer;
     private TextView mViolationCount;
     private TextView mViolationGroupCount;
+    private Comparator<ViolationGroup> mViolationGroupComparator = new CountComparator();
+    @Nullable private ViolationGroups mLastData;
             
     private static boolean isAllApplicationsMode(@Nullable ViolationFilter filter) {
         return filter == null || !filter.usesProperty(ViolationFilter.PROPERTY_PACKAGE);
@@ -82,6 +93,8 @@ public class ViolationListFragment extends ConfigurableListFragment
                 
         mAdapter = new ViolationListAdapter(getActivity());         
         mAdapter.setAllApplicationsMode(isAllApplicationsMode(mViolationFilter));
+        
+        setHasOptionsMenu(true);
     }
     
     @Override
@@ -95,6 +108,40 @@ public class ViolationListFragment extends ConfigurableListFragment
         mListContainer.addView(listLayout);
                 
         return view;
+    }
+    
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    	inflater.inflate(R.menu.fragment_violation_list,  menu);
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+    	if (item.getItemId() == R.id.sort_by_count) {
+    		mViolationGroupComparator = new CountComparator();
+    		getLoaderManager().restartLoader(LOADER_ID, null, this);
+    		return true;
+    	} else if(item.getItemId() == R.id.sort_by_timetstamp) {
+    		mViolationGroupComparator = new TimestampComparator();
+    		getLoaderManager().restartLoader(LOADER_ID, null, this);
+    		return true;    		
+    	} else if(item.getItemId() == R.id.export) {
+    		ViolationGroups groups = mLastData;
+    		if (groups == null) {
+    			Toast.makeText(getActivity(), "No data available.", Toast.LENGTH_LONG).show();
+    		} else {
+    			//TODO: IO on ui thread
+    			try {
+    				groups.export(getActivity());
+    				Toast.makeText(getActivity(), "Exported", Toast.LENGTH_LONG).show();
+				} catch(IOException ex) {
+					Toast.makeText(getActivity(), ex.toString(), Toast.LENGTH_LONG).show();
+				}
+     		}
+    		return true;
+    	} else {
+    		return super.onOptionsItemSelected(item);
+    	}
     }
     
     @Override
@@ -212,6 +259,7 @@ public class ViolationListFragment extends ConfigurableListFragment
         ViolationLoader loader = new ViolationLoader(getActivity());
         loader.setUpdateThrottle(LOADER_THROTTLE_TIMEOUT_MS);
         loader.setFilter(mViolationFilter);
+        loader.setSorter(mViolationGroupComparator);
         return loader;
     }
     
@@ -223,6 +271,7 @@ public class ViolationListFragment extends ConfigurableListFragment
     @Override
     public void onLoadFinished(Loader<ViolationGroups> loader, ViolationGroups data) {        
         setListShown(true);
+        mLastData = data;
         mAdapter.swap(data.getSortedGroups());
         
         int violationCount = 0;

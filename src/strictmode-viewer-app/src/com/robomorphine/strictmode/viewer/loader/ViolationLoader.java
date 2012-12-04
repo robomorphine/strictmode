@@ -1,11 +1,6 @@
 package com.robomorphine.strictmode.viewer.loader;
 
-import com.google.common.base.Objects;
-import com.robomorphine.loader.AsyncLoader;
-import com.robomorphine.strictmode.viewer.violation.Violation;
-import com.robomorphine.strictmode.viewer.violation.ViolationParser;
-import com.robomorphine.strictmode.viewer.violation.filter.ViolationFilter;
-import com.robomorphine.strictmode.viewer.violation.group.ViolationGroups;
+import java.util.Comparator;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -13,6 +8,14 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.DropBoxManager;
 import android.util.Log;
+
+import com.google.common.base.Objects;
+import com.robomorphine.loader.AsyncLoader;
+import com.robomorphine.strictmode.viewer.violation.Violation;
+import com.robomorphine.strictmode.viewer.violation.ViolationParser;
+import com.robomorphine.strictmode.viewer.violation.filter.ViolationFilter;
+import com.robomorphine.strictmode.viewer.violation.group.ViolationGroup;
+import com.robomorphine.strictmode.viewer.violation.group.ViolationGroups;
 
 public class ViolationLoader extends AsyncLoader<ViolationGroups> {
     
@@ -42,6 +45,7 @@ public class ViolationLoader extends AsyncLoader<ViolationGroups> {
     private final DropBoxBroadcastReceiver mReceiver = new DropBoxBroadcastReceiver();
     private final ViolationParser mViolationParser = new ViolationParser();
     private final ViolationGroups mViolationGroups;
+    private Comparator<ViolationGroup> mViolationGroupComparator;
     
     private long mTimestamp = 0;
     private ViolationFilter mViolationFilter;
@@ -50,7 +54,7 @@ public class ViolationLoader extends AsyncLoader<ViolationGroups> {
         super(context);
         mViolationGroups = new ViolationGroups();
     }
-   
+      
     public void setFilter(ViolationFilter filter) {
         if(!Objects.equal(mViolationFilter, filter)) {
             mViolationFilter = filter;
@@ -58,11 +62,15 @@ public class ViolationLoader extends AsyncLoader<ViolationGroups> {
         }
     }
     
+    public void setSorter(Comparator<ViolationGroup> comparator) {
+    	mViolationGroupComparator = comparator;
+    }
+    
     @Override
     public ViolationGroups loadInBackground() {
         fetchNewDropBoxItems();
         ViolationGroups groups = ViolationGroups.clone(mViolationGroups, mViolationFilter);
-        groups.sort();
+        groups.sort(mViolationGroupComparator);
         return groups;
     }    
     

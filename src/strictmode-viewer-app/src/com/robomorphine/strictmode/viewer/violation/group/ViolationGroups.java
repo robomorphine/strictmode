@@ -1,10 +1,10 @@
 package com.robomorphine.strictmode.viewer.violation.group;
 
-import com.google.common.base.Preconditions;
-import com.robomorphine.strictmode.viewer.violation.Violation;
-import com.robomorphine.strictmode.viewer.violation.filter.ViolationFilter;
-import com.robomorphine.strictmode.viewer.violation.group.ViolationGroup.TimestampComparator;
-
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -13,14 +13,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import android.content.Context;
+import android.os.Environment;
+
+import com.google.common.base.Preconditions;
+import com.robomorphine.strictmode.viewer.violation.ThreadViolation;
+import com.robomorphine.strictmode.viewer.violation.Violation;
+import com.robomorphine.strictmode.viewer.violation.filter.ViolationFilter;
+import com.robomorphine.strictmode.viewer.violation.group.ViolationGroup.TimestampComparator;
+
 public class ViolationGroups {
 
     private final Map<Violation, ViolationGroup> mGroups = new HashMap<Violation, ViolationGroup>();
-    
-    private final Comparator<ViolationGroup> mGroupComparator = new TimestampComparator();
+        
     private final List<ViolationGroup> mSortedGroups = new ArrayList<ViolationGroup>();
-    private boolean mNeedsSorting = false;
-    
+        
     private long mLatestTimestamp = 0;
         
     public static ViolationGroups clone(ViolationGroups from, ViolationFilter filter) {
@@ -55,22 +62,84 @@ public class ViolationGroups {
             mGroups.put(violation, group);
             mSortedGroups.add(group);
         }
-        mNeedsSorting = true;
     }
     
-    public void sort() {
-        if(mNeedsSorting) {
-            Collections.sort(mSortedGroups, mGroupComparator);
-            mNeedsSorting = false;
-        }
+    public void sort(Comparator<ViolationGroup> comparator) {
+    	if (comparator == null) {
+    		comparator = new TimestampComparator();
+    	}
+        Collections.sort(mSortedGroups, comparator);
     }
     
     public List<ViolationGroup> getSortedGroups() {
-        sort();
-        return mSortedGroups;
+    	return mSortedGroups;
     }
     
     public Collection<ViolationGroup> getGroups() {
         return mGroups.values();
+    }
+    
+    /**
+     * TODO: implement in a better way
+     * Ugly way of exporting
+     */
+    public void export(Context context) throws IOException {
+    	File file = new File(Environment.getExternalStorageDirectory(), "strictmode.csv");
+    	OutputStreamWriter ow = new OutputStreamWriter(new FileOutputStream(file));
+    	BufferedWriter writer = new BufferedWriter(ow);
+    	
+    	try {
+    		writer.append("type, count, timestamp, time used, loop-counter, exception message, stack\n");
+	    	for (ViolationGroup group : mSortedGroups) {
+	    		export(writer, group);
+	    		writer.append("\n");
+	    	}
+    	} finally {
+    		writer.close();
+    	}
+    }
+    
+    public void export(BufferedWriter writer, ViolationGroup group) throws IOException {
+    	StringBuilder builder = new StringBuilder();
+    	
+    	//type, count, time used, exception name, exception message
+    	builder.append(group.getViolation().getClass().getSimpleName());
+    	builder.append(", ");
+    	builder.append(group.getSize());
+    	builder.append(", ");
+    	builder.append(group.getTimestamp());
+    	builder.append(", ");
+    	
+    	long elapsed = 0;
+    	for (Violation violation : group.getViolations()) {
+    		if (violation instanceof ThreadViolation) {
+    			ThreadViolation threadViolation = (ThreadViolation)violation;
+    			elapsed += threadViolation.getDuration();
+    		}
+    	}
+    	builder.append(elapsed);
+    	builder.append(", ");
+
+    	int loopCounter = 0;
+    	String key = "Loop-Violation-Number";
+    	if (group.getViolation().getHeaders().containsKey(key)) {
+    		String rawLoopCounter = group.getViolation().getHeaders().get(key);
+    		try {
+    			loopCounter = Integer.parseInt(rawLoopCounter);
+    		} catch (NumberFormatException ex) {
+    			// ignore for now
+    		}
+    	}
+    	builder.append(loopCounter);
+    	builder.append(",");
+    	
+    	builder.append("\"" + group.getViolation().getException().getMessage() + "\"");
+    	builder.append(", ");    	
+    	
+    	//hacky way to print exception
+    	for (StackTraceElement element : group.getViolation().getException().getStackTrace()) {
+    		builder.append(element.toString() + " ## ");
+    	}
+    	writer.append(builder.toString());
     }
 }

@@ -6,7 +6,6 @@
     
     <string name="package_list_empty">No packages found.</string>    
     <string name="violation_list_empty">No StrictMode violations are found.</string>
-            
     <string name="permission_not_granted">
         Permission %1$s was not granted.
     </string>
@@ -22,6 +21,9 @@
     <string name="menu_search">Search</string>
     <string name="menu_describe_violation">describe violation</string>    
     <string name="menu_print_to_logcat">Print to logcat</string>
+    <string name="menu_sort_by_timestamp">Sort by Timestamp</string>
+    <string name="menu_sort_by_count">Sort by Count</string>
+    <string name="menu_export_violations">Export</string>
         
     <string name="dropbox_item_no_entry">Failed to locate DropBox entry.</string>
     <string name="not_available">N/A</string>

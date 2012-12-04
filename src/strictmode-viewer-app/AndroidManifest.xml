@@ -9,6 +9,7 @@
         android:targetSdkVersion="16" />
 
     <uses-permission android:name="android.permission.READ_LOGS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     
     <application
         android:icon="@drawable/ic_launcher"

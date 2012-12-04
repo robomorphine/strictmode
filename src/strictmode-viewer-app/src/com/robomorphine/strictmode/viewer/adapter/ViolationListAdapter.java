@@ -1,9 +1,10 @@
 package com.robomorphine.strictmode.viewer.adapter;
 
-import com.robomorphine.strictmode.viewer.R;
-import com.robomorphine.strictmode.viewer.violation.Violation;
-import com.robomorphine.strictmode.viewer.violation.group.ViolationGroup;
-import com.robomorphine.strictmode.viewer.violation.icon.ViolationIconMap;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Locale;
 
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
@@ -19,11 +20,10 @@ import android.widget.ImageView;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Locale;
+import com.robomorphine.strictmode.viewer.R;
+import com.robomorphine.strictmode.viewer.violation.Violation;
+import com.robomorphine.strictmode.viewer.violation.group.ViolationGroup;
+import com.robomorphine.strictmode.viewer.violation.icon.ViolationIconMap;
 
 public class ViolationListAdapter extends BaseAdapter implements SectionIndexer {
 

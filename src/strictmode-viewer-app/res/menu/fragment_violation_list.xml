@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:id="@+id/sort_by_timetstamp"
+          android:title="@string/menu_sort_by_timestamp"
+          android:showAsAction="never" />
+    <item android:id="@+id/sort_by_count"
+          android:title="@string/menu_sort_by_count"
+          android:showAsAction="never" />
+    <item android:id="@+id/export"
+          android:title="@string/menu_export_violations"
+          android:showAsAction="never" />    
+</menu>

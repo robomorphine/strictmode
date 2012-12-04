@@ -32,6 +32,19 @@ public class ViolationGroup implements Serializable {
         }
     }
     
+    public static class CountComparator implements Comparator<ViolationGroup> {
+    	@Override
+    	public int compare(ViolationGroup lhs, ViolationGroup rhs) {
+    		int lhsSize = lhs.getSize();
+    		int rhsSize = rhs.getSize();
+    		if (lhsSize == rhsSize) {
+    			return 0;
+    		}
+    		
+    		return lhsSize > rhsSize ? -1 : 1;
+    	}
+    }
+    
     private final List<Violation> mViolations = new LinkedList<Violation>();
     private final List<Violation> mReadOnlyViolation = Collections.unmodifiableList(mViolations);
     
