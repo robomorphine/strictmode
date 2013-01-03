@@ -135,6 +135,7 @@
         <zipfileset src="${bin.dir}/com.robomorphine.strictmode.lib.prebuilt.r14.jar"/>
         <zipfileset src="${bin.dir}/com.robomorphine.strictmode.lib.prebuilt.r15.jar"/>
         <zipfileset src="${bin.dir}/com.robomorphine.strictmode.lib.prebuilt.r16.jar"/>
+        <zipfileset src="${bin.dir}/com.robomorphine.strictmode.lib.prebuilt.r17.jar"/>
         <manifest>
             <attribute name="Built-By" value="${user.name}"/>
             <attribute name="Implementation-Vendor" value="${vendor}"/>

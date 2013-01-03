@@ -2,6 +2,7 @@ How to pre-build rXX .jar files:
 1) repo init -u https://android.googlesource.com/platform/manifest -b android-4.0.1_r1
 (where android-4.0.1_r1 should be substituted with version of specified API - XX in our case).
 NOTE: see http://source.android.com/source/build-numbers.html
+NOTE2: when checked out the code, double check version at "build/core/version_defaults.ml". Look for "PLATFORM_SDK_VERSION".
 2) repo sync
 3) make clean
 4) make core framework

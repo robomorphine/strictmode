@@ -2,8 +2,8 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
-	<classpathentry kind="lib" path="/rbm-strictmode-lib-android-r16/prebuilt/core.jar"/>
-	<classpathentry kind="lib" path="/rbm-strictmode-lib-android-r16/prebuilt/framework.jar"/>
+	<classpathentry kind="lib" path="/rbm-strictmode-lib-android-r17/prebuilt/core.jar"/>
+	<classpathentry kind="lib" path="/rbm-strictmode-lib-android-r17/prebuilt/framework.jar"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

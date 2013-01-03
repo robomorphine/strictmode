@@ -1,5 +1,7 @@
 package com.robomorphine.strictmode;
 
+import java.lang.reflect.Field;
+
 import android.app.ActivityManagerNative;
 import android.app.IActivityManager;
 import android.app.IActivityManagerProxyR09;
@@ -9,11 +11,9 @@ import android.app.IActivityManagerProxyR13;
 import android.app.IActivityManagerProxyR14;
 import android.app.IActivityManagerProxyR15;
 import android.app.IActivityManagerProxyR16;
+import android.app.IActivityManagerProxyR17;
 import android.os.Build;
-import android.os.StrictMode.ViolationInfo;
 import android.util.Log;
-
-import java.lang.reflect.Field;
 
 public class ActivityManagerProxifier { //NOPMD
     
@@ -66,7 +66,7 @@ public class ActivityManagerProxifier { //NOPMD
     
     private static IActivityManager createActivityManagerProxy(IActivityManager manager, 
     		IntentProxy intentProxy) throws PlatformNotSupportedException {
-        
+            
         switch(Build.VERSION.SDK_INT) {//NOPMD
             case 9:
             case 10:
@@ -83,6 +83,8 @@ public class ActivityManagerProxifier { //NOPMD
                 return new IActivityManagerProxyR15(manager, intentProxy);
             case 16: 
                 return new IActivityManagerProxyR16(manager, intentProxy);
+            case 17:
+            	return new IActivityManagerProxyR17(manager, intentProxy);
             default:
                 throw new PlatformNotSupportedException("IActivityManagerProxy");
         }
