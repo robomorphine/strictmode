@@ -16,10 +16,6 @@ public class StrictModeHelper { //NOPMD
     private static Runnable sRestoreStrictMode = null;
     private static Handler sHandler = null;
     
-    public static void enableUniqueViolations(boolean enable) throws PlatformNotSupportedException {
-        ActivityManagerProxifier.enableUniqueViolations(enable);        
-    }
-    
     /**
      * Enables strict mode with default strict mode configuration.
      */

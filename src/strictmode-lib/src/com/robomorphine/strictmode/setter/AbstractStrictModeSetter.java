@@ -74,6 +74,9 @@ public abstract class AbstractStrictModeSetter implements StrictModeSetter {
             Field policyMaskField = policyClazz.getDeclaredField("mask");
             Field builderMaskField = builderClazz.getDeclaredField("mMask");
             
+            policyMaskField.setAccessible(true);
+            builderMaskField.setAccessible(true);
+            
             int policyMask = policyMaskField.getInt(policy);
             builderMaskField.setInt(builder, policyMask);        
         } catch (Throwable ex) {//NOPMD

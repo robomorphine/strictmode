@@ -33,16 +33,20 @@ public class App extends Application {
     @Override
     public void onCreate() {        
         if(BuildConfig.DEBUG) {
+        	StrictModeHelper.setStrictMode(Policy.All.DetectAll,
+                    					   Policy.All.PenaltyDropBox,
+                    					   Policy.Thread.PenaltyFlashScreen);
+        	
             StrictModeHelper.setStrictMode(Policy.All.Reset, 
                                            Policy.All.DetectAll,
                                            Policy.All.PenaltyDropBox,
                                            Policy.All.PenaltyLog);
             
-            try{ 
-                StrictModeHelper.enableUniqueViolations(true);
-            } catch(PlatformNotSupportedException ex) {
-                Log.e(TAG, "Unique violations are not supported.", ex);
-            }
+//            try{ 
+//                StrictModeHelper.enableUniqueViolations(true);
+//            } catch(PlatformNotSupportedException ex) {
+//                Log.e(TAG, "Unique violations are not supported.", ex);
+//            }
         }
         super.onCreate();
         

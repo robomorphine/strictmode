@@ -15,7 +15,7 @@ import android.util.Log;
 
 import java.lang.reflect.Field;
 
-class ActivityManagerProxifier { //NOPMD
+public class ActivityManagerProxifier { //NOPMD
     
     private static final String TAG = ActivityManagerProxifier.class.getSimpleName();
     
@@ -24,7 +24,7 @@ class ActivityManagerProxifier { //NOPMD
     private static final String SINGLETON_CLASSNAME = "android.util.Singleton";
     private static final String SINGLETON_INSTANCE = "mInstance"; 
     
-    private static IActivityManager sOldActivityManager;
+    private static IActivityManager sOriginalActivityManager;
     
     private static IActivityManager replaceActivityManager(IActivityManager activityManager) {
         /* make sure original IActivityManager instance is initialized */
@@ -64,66 +64,52 @@ class ActivityManagerProxifier { //NOPMD
         }
     }
     
-    private static DataProxy<ViolationInfo> createDataProxy() throws PlatformNotSupportedException {
-        DataProxy<ViolationInfo> dataProxy = null;        
-        switch(Build.VERSION.SDK_INT) {
-            case 9:
-            case 10:
-                dataProxy = new ViolationInfoProxyR09();
-                break;
-            case 11:
-            case 12:
-            case 13:
-            case 14:
-            case 15:
-            case 16:
-                dataProxy = new ViolationInfoProxyR11();
-                break;
-            default:
-                throw new PlatformNotSupportedException("ViolationInfoProxy");
-        }
-        return dataProxy;
-    }
-    
-    private static IActivityManager createActivityManagerProxy(IActivityManager manager)
-            throws PlatformNotSupportedException {
+    private static IActivityManager createActivityManagerProxy(IActivityManager manager, 
+    		IntentProxy intentProxy) throws PlatformNotSupportedException {
         
-        DataProxy<ViolationInfo> dataProxy = createDataProxy();        
         switch(Build.VERSION.SDK_INT) {//NOPMD
             case 9:
             case 10:
-                return new IActivityManagerProxyR09(manager, dataProxy);
+                return new IActivityManagerProxyR09(manager, intentProxy);
             case 11:
-                return new IActivityManagerProxyR11(manager, dataProxy);
+                return new IActivityManagerProxyR11(manager, intentProxy);
             case 12:
-                return new IActivityManagerProxyR12(manager, dataProxy);
+                return new IActivityManagerProxyR12(manager, intentProxy);
             case 13:
-                return new IActivityManagerProxyR13(manager, dataProxy);
+                return new IActivityManagerProxyR13(manager, intentProxy);
             case 14: 
-                return new IActivityManagerProxyR14(manager, dataProxy);
+                return new IActivityManagerProxyR14(manager, intentProxy);
             case 15: 
-                return new IActivityManagerProxyR15(manager, dataProxy);
+                return new IActivityManagerProxyR15(manager, intentProxy);
             case 16: 
-                return new IActivityManagerProxyR16(manager, dataProxy);
+                return new IActivityManagerProxyR16(manager, intentProxy);
             default:
                 throw new PlatformNotSupportedException("IActivityManagerProxy");
         }
     }
         
-    public static void enableUniqueViolations(boolean enable)
+    public static void setIntentProxy(IntentProxy intentProxy)
             throws PlatformNotSupportedException {
     
         synchronized (ActivityManagerProxifier.class) {
-            if (enable && sOldActivityManager == null) {
-                IActivityManager originalActivityManager = ActivityManagerNative.getDefault();
-                IActivityManager proxy = createActivityManagerProxy(originalActivityManager);
-                sOldActivityManager = replaceActivityManager(proxy);
-                if (sOldActivityManager == null) {
+            if (intentProxy != null) {
+            	if (sOriginalActivityManager == null) {
+            		sOriginalActivityManager = ActivityManagerNative.getDefault();
+            	}
+            	IActivityManager originalActivityManager = sOriginalActivityManager;
+            	if (sOriginalActivityManager == null) {
+            		throw new IllegalStateException("Original activity manager is null.");
+            	}
+            	
+                IActivityManager proxy = 
+                		createActivityManagerProxy(originalActivityManager, intentProxy);
+                
+                if (replaceActivityManager(proxy) == null) {
                     throw new PlatformNotSupportedException("replaceActivityManager");
                 }
-            } else if (!enable && sOldActivityManager != null) {
-                IActivityManager activityManager = replaceActivityManager(sOldActivityManager);
-                sOldActivityManager = null;
+            } else if (sOriginalActivityManager != null) {
+                IActivityManager activityManager = replaceActivityManager(sOriginalActivityManager);
+                sOriginalActivityManager = null;
                 if (activityManager == null) {
                     throw new PlatformNotSupportedException("replaceActivityManager");
                 }
