@@ -12,7 +12,9 @@ import android.app.IActivityManagerProxyR14;
 import android.app.IActivityManagerProxyR15;
 import android.app.IActivityManagerProxyR16;
 import android.app.IActivityManagerProxyR17;
+import android.content.Intent;
 import android.os.Build;
+import android.os.IBinder;
 import android.util.Log;
 
 public class ActivityManagerProxifier { //NOPMD
@@ -65,32 +67,34 @@ public class ActivityManagerProxifier { //NOPMD
     }
     
     private static IActivityManager createActivityManagerProxy(IActivityManager manager, 
-    		IntentProxy intentProxy) throws PlatformNotSupportedException {
+    		DataProxy<Intent> intentProxy,
+    		DataProxy<IBinder> binderProxy) throws PlatformNotSupportedException {
             
         switch(Build.VERSION.SDK_INT) {//NOPMD
             case 9:
             case 10:
-                return new IActivityManagerProxyR09(manager, intentProxy);
+                return new IActivityManagerProxyR09(manager, intentProxy, binderProxy);
             case 11:
-                return new IActivityManagerProxyR11(manager, intentProxy);
+                return new IActivityManagerProxyR11(manager, intentProxy, binderProxy);
             case 12:
-                return new IActivityManagerProxyR12(manager, intentProxy);
+                return new IActivityManagerProxyR12(manager, intentProxy, binderProxy);
             case 13:
-                return new IActivityManagerProxyR13(manager, intentProxy);
+                return new IActivityManagerProxyR13(manager, intentProxy, binderProxy);
             case 14: 
-                return new IActivityManagerProxyR14(manager, intentProxy);
+                return new IActivityManagerProxyR14(manager, intentProxy, binderProxy);
             case 15: 
-                return new IActivityManagerProxyR15(manager, intentProxy);
+                return new IActivityManagerProxyR15(manager, intentProxy, binderProxy);
             case 16: 
-                return new IActivityManagerProxyR16(manager, intentProxy);
+                return new IActivityManagerProxyR16(manager, intentProxy, binderProxy);
             case 17:
-            	return new IActivityManagerProxyR17(manager, intentProxy);
+            	return new IActivityManagerProxyR17(manager, intentProxy, binderProxy);
             default:
                 throw new PlatformNotSupportedException("IActivityManagerProxy");
         }
     }
         
-    public static void setIntentProxy(IntentProxy intentProxy)
+    public static void setProxy(DataProxy<Intent> intentProxy, 
+    		DataProxy<IBinder> binderProxy)
             throws PlatformNotSupportedException {
     
         synchronized (ActivityManagerProxifier.class) {
@@ -104,7 +108,7 @@ public class ActivityManagerProxifier { //NOPMD
             	}
             	
                 IActivityManager proxy = 
-                		createActivityManagerProxy(originalActivityManager, intentProxy);
+            		createActivityManagerProxy(originalActivityManager,	intentProxy, binderProxy);
                 
                 if (replaceActivityManager(proxy) == null) {
                     throw new PlatformNotSupportedException("replaceActivityManager");

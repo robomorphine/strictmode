@@ -25,47 +25,51 @@ import android.os.ParcelFileDescriptor;
 import android.os.RemoteException;
 import android.os.StrictMode.ViolationInfo;
 
-import com.robomorphine.strictmode.IntentProxy;
+import com.robomorphine.strictmode.DataProxy;
 
 @SuppressWarnings("all")
 public class IActivityManagerProxyR09 implements IActivityManager {
     
     private final IActivityManager mTo;
-    private final IntentProxy mIntentProxy;
+    private final DataProxy<Intent> mIntentProxy;
+    private final DataProxy<IBinder> mBinderProxy;
         
-    public IActivityManagerProxyR09(IActivityManager manager, IntentProxy violationProxy) {
+    public IActivityManagerProxyR09(IActivityManager manager, 
+    		DataProxy<Intent> intentProxy,
+    		DataProxy<IBinder> binderProxy) {
         mTo = manager;
-        mIntentProxy = violationProxy;
+        mIntentProxy = intentProxy;
+        mBinderProxy = binderProxy;
     }
     
     public void handleApplicationStrictModeViolation(IBinder binder, int mask, ViolationInfo info)
             throws RemoteException {
-        mTo.handleApplicationStrictModeViolation(binder, mask, info);
+        mTo.handleApplicationStrictModeViolation(mBinderProxy.handle(binder), mask, info);
     }
 
     public void activityDestroyed(IBinder arg0) throws RemoteException {
-        mTo.activityDestroyed(arg0);
+        mTo.activityDestroyed(mBinderProxy.handle(arg0));
     }
 
 
     public void activityIdle(IBinder arg0, Configuration arg1) throws RemoteException {
-        mTo.activityIdle(arg0, arg1);
+        mTo.activityIdle(mBinderProxy.handle(arg0), arg1);
     }
 
 
     public void activityPaused(IBinder arg0, Bundle arg1) throws RemoteException {
-        mTo.activityPaused(arg0, arg1);
+        mTo.activityPaused(mBinderProxy.handle(arg0), arg1);
     }
 
 
     public void activityStopped(IBinder arg0, Bitmap arg1, CharSequence arg2)
             throws RemoteException {
-        mTo.activityStopped(arg0, arg1, arg2);
+        mTo.activityStopped(mBinderProxy.handle(arg0), arg1, arg2);
     }
 
 
     public IBinder asBinder() {
-        return mTo.asBinder();
+        return mBinderProxy.handle(mTo.asBinder());
     }
 
 
@@ -75,7 +79,7 @@ public class IActivityManagerProxyR09 implements IActivityManager {
 
 
     public void backupAgentCreated(String arg0, IBinder arg1) throws RemoteException {
-        mTo.backupAgentCreated(arg0, arg1);
+        mTo.backupAgentCreated(arg0, mBinderProxy.handle(arg1));
     }
 
 
@@ -86,7 +90,8 @@ public class IActivityManagerProxyR09 implements IActivityManager {
 
     public int bindService(IApplicationThread arg0, IBinder arg1, Intent arg2, String arg3,
             IServiceConnection arg4, int arg5) throws RemoteException {
-        return mTo.bindService(arg0, arg1, mIntentProxy.handle(arg2), arg3, arg4, arg5);
+        return mTo.bindService(arg0, mBinderProxy.handle(arg1), 
+        		mIntentProxy.handle(arg2), arg3, arg4, arg5);
     }
 
 
@@ -136,7 +141,7 @@ public class IActivityManagerProxyR09 implements IActivityManager {
 
 
     public boolean finishActivity(IBinder arg0, int arg1, Intent arg2) throws RemoteException {
-        return mTo.finishActivity(arg0, arg1, mIntentProxy.handle(arg2));
+        return mTo.finishActivity(mBinderProxy.handle(arg0), arg1, mIntentProxy.handle(arg2));
     }
 
 
@@ -152,18 +157,18 @@ public class IActivityManagerProxyR09 implements IActivityManager {
 
 
     public void finishOtherInstances(IBinder arg0, ComponentName arg1) throws RemoteException {
-        mTo.finishOtherInstances(arg0, arg1);
+        mTo.finishOtherInstances(mBinderProxy.handle(arg0), arg1);
     }
 
 
     public void finishReceiver(IBinder arg0, int arg1, String arg2, Bundle arg3, boolean arg4)
             throws RemoteException {
-        mTo.finishReceiver(arg0, arg1, arg2, arg3, arg4);
+        mTo.finishReceiver(mBinderProxy.handle(arg0), arg1, arg2, arg3, arg4);
     }
 
 
     public void finishSubActivity(IBinder arg0, String arg1, int arg2) throws RemoteException {
-        mTo.finishSubActivity(arg0, arg1, arg2);
+        mTo.finishSubActivity(mBinderProxy.handle(arg0), arg1, arg2);
     }
 
 
@@ -173,17 +178,17 @@ public class IActivityManagerProxyR09 implements IActivityManager {
 
 
     public ComponentName getActivityClassForToken(IBinder arg0) throws RemoteException {
-        return mTo.getActivityClassForToken(arg0);
+        return mTo.getActivityClassForToken(mBinderProxy.handle(arg0));
     }
 
 
     public ComponentName getCallingActivity(IBinder arg0) throws RemoteException {
-        return mTo.getCallingActivity(arg0);
+        return mTo.getCallingActivity(mBinderProxy.handle(arg0));
     }
 
 
     public String getCallingPackage(IBinder arg0) throws RemoteException {
-        return mTo.getCallingPackage(arg0);
+        return mTo.getCallingPackage(mBinderProxy.handle(arg0));
     }
 
 
@@ -205,8 +210,8 @@ public class IActivityManagerProxyR09 implements IActivityManager {
 
     public IIntentSender getIntentSender(int arg0, String arg1, IBinder arg2, String arg3,
             int arg4, Intent arg5, String arg6, int arg7) throws RemoteException {
-        return mTo.getIntentSender(arg0, arg1, arg2, arg3, arg4, mIntentProxy.handle(arg5), 
-        		arg6, arg7);
+        return mTo.getIntentSender(arg0, arg1, mBinderProxy.handle(arg2), 
+        		arg3, arg4, mIntentProxy.handle(arg5), arg6, arg7);
     }
 
 
@@ -221,7 +226,7 @@ public class IActivityManagerProxyR09 implements IActivityManager {
 
 
     public String getPackageForToken(IBinder arg0) throws RemoteException {
-        return mTo.getPackageForToken(arg0);
+        return mTo.getPackageForToken(mBinderProxy.handle(arg0));
     }
 
 
@@ -251,7 +256,7 @@ public class IActivityManagerProxyR09 implements IActivityManager {
 
 
     public int getRequestedOrientation(IBinder arg0) throws RemoteException {
-        return mTo.getRequestedOrientation(arg0);
+        return mTo.getRequestedOrientation(mBinderProxy.handle(arg0));
     }
 
 
@@ -276,7 +281,7 @@ public class IActivityManagerProxyR09 implements IActivityManager {
 
 
     public int getTaskForActivity(IBinder arg0, boolean arg1) throws RemoteException {
-        return mTo.getTaskForActivity(arg0, arg1);
+        return mTo.getTaskForActivity(mBinderProxy.handle(arg0), arg1);
     }
 
 
@@ -298,17 +303,17 @@ public class IActivityManagerProxyR09 implements IActivityManager {
 
     public void grantUriPermissionFromOwner(IBinder arg0, int arg1, String arg2, Uri arg3, int arg4)
             throws RemoteException {
-        mTo.grantUriPermissionFromOwner(arg0, arg1, arg2, arg3, arg4);
+        mTo.grantUriPermissionFromOwner(mBinderProxy.handle(arg0), arg1, arg2, arg3, arg4);
     }
 
 
     public void handleApplicationCrash(IBinder arg0, CrashInfo arg1) throws RemoteException {
-        mTo.handleApplicationCrash(arg0, arg1);
+        mTo.handleApplicationCrash(mBinderProxy.handle(arg0), arg1);
     }
 
     public boolean handleApplicationWtf(IBinder arg0, String arg1, CrashInfo arg2)
             throws RemoteException {
-        return mTo.handleApplicationWtf(arg0, arg1, arg2);
+        return mTo.handleApplicationWtf(mBinderProxy.handle(arg0), arg1, arg2);
     }
 
 
@@ -338,7 +343,7 @@ public class IActivityManagerProxyR09 implements IActivityManager {
 
 
     public boolean moveActivityTaskToBack(IBinder arg0, boolean arg1) throws RemoteException {
-        return mTo.moveActivityTaskToBack(arg0, arg1);
+        return mTo.moveActivityTaskToBack(mBinderProxy.handle(arg0), arg1);
     }
 
 
@@ -358,7 +363,7 @@ public class IActivityManagerProxyR09 implements IActivityManager {
 
 
     public IBinder newUriPermissionOwner(String arg0) throws RemoteException {
-        return mTo.newUriPermissionOwner(arg0);
+        return mBinderProxy.handle(mTo.newUriPermissionOwner(arg0));
     }
 
 
@@ -374,12 +379,12 @@ public class IActivityManagerProxyR09 implements IActivityManager {
 
     public void overridePendingTransition(IBinder arg0, String arg1, int arg2, int arg3)
             throws RemoteException {
-        mTo.overridePendingTransition(arg0, arg1, arg2, arg3);
+        mTo.overridePendingTransition(mBinderProxy.handle(arg0), arg1, arg2, arg3);
     }
 
 
     public IBinder peekService(Intent arg0, String arg1) throws RemoteException {
-        return mTo.peekService(mIntentProxy.handle(arg0), arg1);
+        return mBinderProxy.handle(mTo.peekService(mIntentProxy.handle(arg0), arg1));
     }
 
 
@@ -396,7 +401,9 @@ public class IActivityManagerProxyR09 implements IActivityManager {
 
 
     public void publishService(IBinder arg0, Intent arg1, IBinder arg2) throws RemoteException {
-        mTo.publishService(arg0, mIntentProxy.handle(arg1), arg2);
+        mTo.publishService(mBinderProxy.handle(arg0), 
+        		mIntentProxy.handle(arg1), 
+        		mBinderProxy.handle(arg2));
     }
 
 
@@ -418,7 +425,7 @@ public class IActivityManagerProxyR09 implements IActivityManager {
 
     public void reportThumbnail(IBinder arg0, Bitmap arg1, CharSequence arg2)
             throws RemoteException {
-        mTo.reportThumbnail(arg0, arg1, arg2);
+        mTo.reportThumbnail(mBinderProxy.handle(arg0), arg1, arg2);
     }
 
 
@@ -435,13 +442,13 @@ public class IActivityManagerProxyR09 implements IActivityManager {
 
     public void revokeUriPermissionFromOwner(IBinder arg0, Uri arg1, int arg2)
             throws RemoteException {
-        mTo.revokeUriPermissionFromOwner(arg0, arg1, arg2);
+        mTo.revokeUriPermissionFromOwner(mBinderProxy.handle(arg0), arg1, arg2);
     }
 
 
     public void serviceDoneExecuting(IBinder arg0, int arg1, int arg2, int arg3)
             throws RemoteException {
-        mTo.serviceDoneExecuting(arg0, arg1, arg2, arg3);
+        mTo.serviceDoneExecuting(mBinderProxy.handle(arg0), arg1, arg2, arg3);
     }
 
 
@@ -461,7 +468,7 @@ public class IActivityManagerProxyR09 implements IActivityManager {
 
 
     public void setProcessForeground(IBinder arg0, int arg1, boolean arg2) throws RemoteException {
-        mTo.setProcessForeground(arg0, arg1, arg2);
+        mTo.setProcessForeground(mBinderProxy.handle(arg0), arg1, arg2);
     }
 
 
@@ -471,13 +478,13 @@ public class IActivityManagerProxyR09 implements IActivityManager {
 
 
     public void setRequestedOrientation(IBinder arg0, int arg1) throws RemoteException {
-        mTo.setRequestedOrientation(arg0, arg1);
+        mTo.setRequestedOrientation(mBinderProxy.handle(arg0), arg1);
     }
 
 
     public void setServiceForeground(ComponentName arg0, IBinder arg1, int arg2, Notification arg3,
             boolean arg4) throws RemoteException {
-        mTo.setServiceForeground(arg0, arg1, arg2, arg3, arg4);
+        mTo.setServiceForeground(arg0, mBinderProxy.handle(arg1), arg2, arg3, arg4);
     }
 
 
@@ -500,7 +507,8 @@ public class IActivityManagerProxyR09 implements IActivityManager {
     public int startActivity(IApplicationThread arg0, Intent arg1, String arg2, Uri[] arg3,
             int arg4, IBinder arg5, String arg6, int arg7, boolean arg8, boolean arg9)
             throws RemoteException {
-        return mTo.startActivity(arg0, mIntentProxy.handle(arg1), arg2, arg3, arg4, arg5, arg6, 
+        return mTo.startActivity(arg0, mIntentProxy.handle(arg1), arg2, arg3, arg4, 
+        		mBinderProxy.handle(arg5), arg6, 
         		arg7, arg8, arg9);
     }
 
@@ -509,29 +517,30 @@ public class IActivityManagerProxyR09 implements IActivityManager {
             Uri[] arg3, int arg4, IBinder arg5, String arg6, int arg7, boolean arg8, boolean arg9)
             throws RemoteException {
         return mTo.startActivityAndWait(arg0, mIntentProxy.handle(arg1), arg2, arg3, arg4, 
-        		arg5, arg6, arg7, arg8, arg9);
+        		mBinderProxy.handle(arg5), arg6, arg7, arg8, arg9);
     }
 
 
     public int startActivityInPackage(int arg0, Intent arg1, String arg2, IBinder arg3,
             String arg4, int arg5, boolean arg6) throws RemoteException {
         return mTo.startActivityInPackage(arg0, mIntentProxy.handle(arg1), arg2, 
-        		arg3, arg4, arg5, arg6);
+        		mBinderProxy.handle(arg3), arg4, arg5, arg6);
     }
 
 
     public int startActivityIntentSender(IApplicationThread arg0, IntentSender arg1, Intent arg2,
             String arg3, IBinder arg4, String arg5, int arg6, int arg7, int arg8)
             throws RemoteException {
-        return mTo.startActivityIntentSender(arg0, arg1, mIntentProxy.handle(arg2), arg3, arg4, arg5, arg6, arg7, arg8);
+        return mTo.startActivityIntentSender(arg0, arg1, mIntentProxy.handle(arg2), arg3, 
+        		mBinderProxy.handle(arg4), arg5, arg6, arg7, arg8);
     }
 
 
     public int startActivityWithConfig(IApplicationThread arg0, Intent arg1, String arg2,
             Uri[] arg3, int arg4, IBinder arg5, String arg6, int arg7, boolean arg8, boolean arg9,
             Configuration arg10) throws RemoteException {
-        return mTo.startActivityWithConfig(arg0, mIntentProxy.handle(arg1), arg2, arg3, arg4, arg5, arg6, arg7, arg8,
-                arg9, arg10);
+        return mTo.startActivityWithConfig(arg0, mIntentProxy.handle(arg1), arg2, arg3, arg4, 
+        		mBinderProxy.handle(arg5), arg6, arg7, arg8, arg9, arg10);
     }
 
 
@@ -542,7 +551,8 @@ public class IActivityManagerProxyR09 implements IActivityManager {
 
 
     public boolean startNextMatchingActivity(IBinder arg0, Intent arg1) throws RemoteException {
-        return mTo.startNextMatchingActivity(arg0, mIntentProxy.handle(arg1));
+        return mTo.startNextMatchingActivity(mBinderProxy.handle(arg0), 
+        		mIntentProxy.handle(arg1));
     }
 
 
@@ -571,7 +581,7 @@ public class IActivityManagerProxyR09 implements IActivityManager {
 
     public boolean stopServiceToken(ComponentName arg0, IBinder arg1, int arg2)
             throws RemoteException {
-        return mTo.stopServiceToken(arg0, arg1, arg2);
+        return mTo.stopServiceToken(arg0, mBinderProxy.handle(arg1), arg2);
     }
 
 
@@ -586,7 +596,7 @@ public class IActivityManagerProxyR09 implements IActivityManager {
 
 
     public void unbindFinished(IBinder arg0, Intent arg1, boolean arg2) throws RemoteException {
-        mTo.unbindFinished(arg0, mIntentProxy.handle(arg1), arg2);
+        mTo.unbindFinished(mBinderProxy.handle(arg0), mIntentProxy.handle(arg1), arg2);
     }
 
 
@@ -626,7 +636,7 @@ public class IActivityManagerProxyR09 implements IActivityManager {
 
 
     public boolean willActivityBeVisible(IBinder arg0) throws RemoteException {
-        return mTo.willActivityBeVisible(arg0);
+        return mTo.willActivityBeVisible(mBinderProxy.handle(arg0));
     }
     
 }
