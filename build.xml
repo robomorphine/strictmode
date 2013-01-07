@@ -143,6 +143,25 @@
             <attribute name="Implementation-Version" value="${jar.version}"/>
         </manifest>
     </jarjar>
+
+	<jarjar jarfile="${package.dir}/com.robomorphine.strictmode-src.jar">
+        <fileset dir="${root.dir}/src/strictmode-lib/src"/>
+        <fileset dir="src/strictmode-lib/android-prebuilt/common/src"/>
+        <fileset dir="src/strictmode-lib/android-prebuilt/r09/src"/>
+        <fileset dir="src/strictmode-lib/android-prebuilt/r11/src"/>
+        <fileset dir="src/strictmode-lib/android-prebuilt/r12/src"/>
+        <fileset dir="src/strictmode-lib/android-prebuilt/r13/src"/>
+        <fileset dir="src/strictmode-lib/android-prebuilt/r14/src"/>
+        <fileset dir="src/strictmode-lib/android-prebuilt/r15/src"/>
+        <fileset dir="src/strictmode-lib/android-prebuilt/r16/src"/>
+        <fileset dir="src/strictmode-lib/android-prebuilt/r17/src"/>
+        <manifest>
+            <attribute name="Built-By" value="${user.name}"/>
+            <attribute name="Implementation-Vendor" value="${vendor}"/>
+            <attribute name="Implementation-Title" value="robomorphine-strictmode"/>
+            <attribute name="Implementation-Version" value="${jar.version}"/>
+        </manifest>
+    </jarjar>
   </target>
   
 </project>
