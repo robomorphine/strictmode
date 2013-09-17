@@ -6,7 +6,7 @@
     <target name="-pre-compile" >
     	<echo>Changing bootclasspath to use non-stripped core and framework files</echo>
         <path id="project.target.class.path" >
-            <fileset dir="${project.dir}/android-prebuilt/r17/prebuilt">
+            <fileset dir="${project.dir}/android-prebuilt/r18/prebuilt">
                 <include name="core.jar" />
                 <include name="framework.jar" />
             </fileset>

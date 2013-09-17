@@ -86,7 +86,7 @@ Helper tasks to define robormophine tasks.
     	<element name="classpath" optional="true"/>
         <sequential>
         	<path id="rbm-sdk-dir-antlib">
-    	        <pathelement path="${sdk.dir}/tools/lib/anttasks.jar" />
+    	        <pathelement path="${sdk.dir}/tools/lib/ant-tasks.jar" />
     	    </path>
     	    <taskdef name="rbm-if" 
     	    	     classname="com.android.ant.IfElseTask" 

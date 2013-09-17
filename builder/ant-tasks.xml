@@ -47,7 +47,7 @@
     -->
     <!--###########################################################-->     
     <path id="build.android.antlibs">
-        <pathelement path="${sdk.dir}/tools/lib/anttasks.jar" />
+        <pathelement path="${sdk.dir}/tools/lib/ant-tasks.jar" />
     </path>    
     <taskdef name="if" classname="com.android.ant.IfElseTask" classpathref="build.android.antlibs" />
     <!--###########################################################-->
