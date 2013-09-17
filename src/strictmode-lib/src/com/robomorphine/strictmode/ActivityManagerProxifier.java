@@ -12,6 +12,7 @@ import android.app.IActivityManagerProxyR14;
 import android.app.IActivityManagerProxyR15;
 import android.app.IActivityManagerProxyR16;
 import android.app.IActivityManagerProxyR17;
+import android.app.IActivityManagerProxyR18;
 import android.os.Build;
 import android.os.StrictMode.ViolationInfo;
 import android.util.Log;
@@ -79,6 +80,7 @@ class ActivityManagerProxifier { //NOPMD
             case 15:
             case 16:
             case 17:
+            case 18:
                 dataProxy = new ViolationInfoProxyR11();
                 break;
             default:
@@ -109,6 +111,8 @@ class ActivityManagerProxifier { //NOPMD
                 return new IActivityManagerProxyR16(manager, dataProxy);
             case 17:
             	return new IActivityManagerProxyR17(manager, dataProxy);
+            case 18:
+            	return new IActivityManagerProxyR18(manager, dataProxy);
             default:
                 throw new PlatformNotSupportedException("IActivityManagerProxy");
         }
